@@ -5,6 +5,7 @@
 #include <vector> 
 #include "RGB.hpp"
 
+// This class represents an image and provides an interface for exporting the image as a PPM file. 
 class Image {
 private: 
 	int width; 

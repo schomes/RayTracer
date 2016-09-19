@@ -18,12 +18,12 @@ void Image::setPixel(const RGB &pixel, int x, int y) {
 	image.at(index) = pixel; 
 }
 
-void Image::saveImage(const std::string filePath) {
+void Image::saveImageAsPPM(const std::string filePath) {
 	using std::cout; 
 	using std::endl; 
 	using std::ofstream; 
 
-	cout << "Saving " << columns << " by " << rows << " image to file " << filePath << endl; 
+	cout << "Saving " << width << " by " << height << " image to file " << filePath << endl; 
 
 	ofstream file (filePath); 
 	if (file.is_open()) {
