@@ -8,6 +8,8 @@ set(SOURCE_FILES
 	src/main.cpp
 	src/Image.hpp
 	src/Image.cpp
+	src/Kernel.hpp
+	src/Kernel.cpp
 	src/RGB.hpp
 )
 
