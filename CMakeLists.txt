@@ -10,6 +10,8 @@ set(SOURCE_FILES
 	src/Image.cpp
 	src/Kernel.hpp
 	src/Kernel.cpp
+	src/Point3.hpp
+	src/Point3.cpp
 	src/RGB.hpp
 )
 
