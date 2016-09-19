@@ -17,9 +17,10 @@ int main( int argc, char **argv ) {
 	std::ifstream inputFile(filename.c_str()); 
 	raytracer.readScene(inputFile); 
 
+	std::cout << raytracer.cameraPosition.x << std::endl; 
+	std::cout << raytracer.cameraPosition.y << std::endl; 
+	std::cout << raytracer.cameraPosition.z << std::endl; 
 
-	Image img = Image(50, 50, RGB(125, 55, 186)); 
-	img.saveImageAsPPM("img.ppm"); 
 
 	return 0; 
 }
