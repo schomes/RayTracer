@@ -1,6 +1,6 @@
+#include "Image.hpp"
 #include <iostream>
 #include <fstream> 
-#include "Image.hpp"
 
 Image::Image(int width_in, int height_in, RGB backgroundColor) : width(width_in), height(height_in) {
 	// Set all pixels to the backgroundColor 
