@@ -12,6 +12,8 @@ set(SOURCE_FILES
 	src/Kernel.cpp
 	src/Point3.hpp
 	src/Point3.cpp
+	src/Vector3.hpp
+	src/Vector3.cpp
 	src/RGB.hpp
 )
 
