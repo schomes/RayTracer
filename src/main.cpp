@@ -17,6 +17,7 @@ int main( int argc, char **argv ) {
 	std::ifstream inputFile(filename.c_str()); 
 	raytracer.readScene(inputFile); 
 
+	/*
 	std::cout << raytracer.cameraPosition.x << std::endl; 
 	std::cout << raytracer.cameraPosition.y << std::endl; 
 	std::cout << raytracer.cameraPosition.z << std::endl; 
@@ -40,7 +41,8 @@ int main( int argc, char **argv ) {
 
 	std::cout << raytracer.materialColor.r << std::endl; 
 	std::cout << raytracer.materialColor.g << std::endl; 
-	std::cout << raytracer.materialColor.b << std::endl; 
+	std::cout << raytracer.materialColor.b << std::endl;
+	*/ 
 
 	return 0; 
 }
