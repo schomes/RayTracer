@@ -21,6 +21,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 			}
 
+			else if (variable == "updir") {
+				
+			}
+
 
 
 
