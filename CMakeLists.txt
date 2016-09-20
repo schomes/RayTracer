@@ -14,6 +14,10 @@ set(SOURCE_FILES
 	src/Point3.cpp
 	src/Vector3.hpp
 	src/Vector3.cpp
+	src/Surface.hpp
+	src/Surface.cpp
+	src/Sphere.hpp
+	src/Sphere.cpp
 	src/RGB.hpp
 )
 
