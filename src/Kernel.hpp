@@ -16,7 +16,7 @@
 class Kernel {
 private: 
 	RGB TraceRay(Ray &ray); 
-	RGB ShadeRay(Point3 point, Material m); 
+	//RGB ShadeRay(Point3 point, Material m); 
 
 public: 
 	Point3 cameraPosition; 
@@ -29,8 +29,6 @@ public:
 	Material material; 
 	std::vector<Surface*> objects;
 
-
-// PUBLIC
 	void readScene(std::ifstream &inputFile); 
 	Image render(); 
 

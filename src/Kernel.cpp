@@ -101,8 +101,8 @@ Image Kernel::render() {
 	Vector3 n = viewingDirection.normalize(); 
 
 	// Determine corners of viewing window 
-	double aspectRatio = width / height; 
-	double d = 10.0; // d is arbitrarily chosen
+	double aspectRatio = (double)(width) / height; 
+	double d = 15.0; // d is arbitrarily chosen
 	double radians = (verticalFieldOfView / 2.0) * M_PI / 180.0; 
 	double viewHeight = 2 * d * tan(radians); 
 	double viewWidth = aspectRatio * viewHeight; 
@@ -131,11 +131,6 @@ Image Kernel::render() {
 		}
 	}
 
-	// for each pixel
-	// ... determine the 3d coordinates of the pixel
-	// ... Trace_Ray()
-	// ... update color of pixel 
-
 	return img; 
 
 }
@@ -159,7 +154,7 @@ RGB Kernel::TraceRay(Ray &ray) {
 		}
 	}
 
-	std::cout << "t: " << minT << std::endl; 
+	//std::cout << "t: " << minT << std::endl; 
 
 	// if 0, we didn't hit anything in front of us
 	if (minT == 0) {
@@ -176,11 +171,11 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 }
 
-RGB Kernel::ShadeRay(Point3 point, Material m) {
+// RGB Kernel::ShadeRay(Point3 point, Material m) {
 
-	// return m.getMaterialColor()
+// 	// return m.getMaterialColor()
 
-}
+// }
 
 
 

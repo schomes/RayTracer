@@ -10,7 +10,7 @@ double Vector3::magnitude() {
 }
 
 Vector3 Vector3::normalize() {
-	double length = this->magnitude(); 
+	double length = magnitude(); 
 	double newX = x / length; 
 	double newY = y / length; 
 	double newZ = z / length; 
@@ -48,5 +48,3 @@ Vector3 Vector3::operator + (const Vector3 & rhs) const {
 Vector3 Vector3::operator - (const Vector3 & rhs) const {
 	return Vector3(x - rhs.x, y - rhs.y, z - rhs.z);
 }
-
-// MARK: non-member operator overloads
