@@ -121,7 +121,9 @@ Image Kernel::render() {
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
 			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column); 
-			//Ray ray = Ray
+			Vector3 rayDirection = viewingWindowPoint - cameraPosition; 
+			rayDirection = rayDirection.normalize(); 
+			Ray ray = Ray(cameraPosition, rayDirection); 
 		}
 	}
 
