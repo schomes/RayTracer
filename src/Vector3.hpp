@@ -14,25 +14,39 @@ public:
 	Vector3 normalize(); 
 	Vector3 cross(Vector3 v); 
 	double dot(Vector3 v); 
+	//Vector3 & operator = (const Vector3 &); 
+	Vector3 operator + (const Vector3 &) const; 
+	Vector3 operator - (const Vector3 &) const; 
 }; 
 
-// Scalar, vector multiplication s * V
+// scalar, vector multiplication: s * V
 inline Vector3 operator * (double lhs, const Vector3 & rhs) {
 	return Vector3(rhs.x * lhs, rhs.y * lhs, rhs.z * lhs); 
 }
 
-// Scalar, vector multiplication V * s
+// scalar, vector multiplication: V * s
 inline Vector3 operator * (const Vector3 & lhs, double rhs) {
 	return Vector3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs); 
 }
 
-// Point plus a vector
+// vector, scalar division: V / s
+inline Vector3 operator / (const Vector3 & lhs, double rhs) {
+	return Vector3(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs); 
+}
+
+// point + vector
 inline Point3 operator + (const Point3 & lhs, const Vector3 & rhs) {
 	return Point3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z); 
 }
 
+// point - vector 
 inline Point3 operator - (const Point3 & lhs, const Vector3 & rhs) {
 	return Point3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z); 
+}
+
+// point - point 
+inline Vector3 operator - (const Point3 & lhs, const Point3 & rhs) {
+	return Vector3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
 }
 
 #endif 

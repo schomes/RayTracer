@@ -105,10 +105,16 @@ Image Kernel::render() {
 	double viewHeight = 2 * d * tan((verticalFieldOfView / 2.0) * M_PI / 180.0); 
 	double viewWidth = aspectRatio * viewHeight; 
 
+	// Viewing window corners 
 	Point3 ul = cameraPosition + (d * n) + (viewHeight / 2 * v) - (viewWidth / 2 * u);
 	Point3 ur = cameraPosition + (d * n) + (viewHeight / 2 * v) + (viewWidth / 2 * u);
 	Point3 ll = cameraPosition + (d * n) - (viewHeight / 2 * v) - (viewWidth / 2 * u); 
 	Point3 lr = cameraPosition + (d * n) - (viewHeight / 2 * v) + (viewWidth / 2 * u); 
+
+	// Horizontal offset per pixel
+	Vector3 hOffset = (ur - ul) / (width - 1.0); 
+	// Vertical offset per pixel 
+	Vector3 vOffset = (ll - ul) / (height - 1.0); 
 
 	// for each pixel
 	// ... determine the 3d coordinates of the pixel

@@ -28,3 +28,25 @@ Vector3 Vector3::cross(Vector3 v) {
 double Vector3::dot(Vector3 v) {
 	return (this->x * v.x) + (this->y * v.y) + (this->z * v.z); 
 }
+
+// copy constructor 
+// Vector3 & Vector3::operator = (const Vector3 & rhs) {
+// 	if (this != &rhs) {
+// 		x = rhs.x; 
+// 		y = rhs.y; 
+// 		z = rhs.z; 
+// 	}
+// 	return *this; 
+// }
+
+// vector + vector
+Vector3 Vector3::operator + (const Vector3 & rhs) const {
+	return Vector3(x + rhs.x, y + rhs.y, z + rhs.z); 
+} 
+
+// vector - vector 
+Vector3 Vector3::operator - (const Vector3 & rhs) const {
+	return Vector3(x - rhs.x, y - rhs.y, z - rhs.z);
+}
+
+// MARK: non-member operator overloads
