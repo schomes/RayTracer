@@ -16,6 +16,8 @@ set(SOURCE_FILES
 	src/Vector3.cpp
 	src/Ray.hpp
 	src/Ray.cpp
+	src/Material.hpp
+	src/Material.cpp
 	src/Surface.hpp
 	src/Surface.cpp
 	src/Sphere.hpp
