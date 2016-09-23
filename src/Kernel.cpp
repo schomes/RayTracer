@@ -124,6 +124,9 @@ Image Kernel::render() {
 			Vector3 rayDirection = viewingWindowPoint - cameraPosition; 
 			rayDirection = rayDirection.normalize(); 
 			Ray ray = Ray(cameraPosition, rayDirection); 
+
+			RGB color = TraceRay(ray); 
+			img.setPixel(color, column, row); 
 		}
 	}
 
@@ -138,6 +141,8 @@ Image Kernel::render() {
 
 RGB Kernel::TraceRay(Ray &ray) {
 
+	RGB color = bkgcolor; 
+
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
 
@@ -145,7 +150,7 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	// (if no intersection, then return background color)
 
-	// return RGB color
+	return color; 
 
 }
 
