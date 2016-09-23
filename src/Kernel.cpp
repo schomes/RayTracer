@@ -1,6 +1,8 @@
+#define _USE_MATH_DEFINES // allows access to pi
+#include <cmath> 
 #include "Kernel.hpp"
 #include <iostream> 
-#include <sstream> // string streams
+#include <sstream> // string streams 
 #include "Point3.hpp"
 #include "RGB.hpp" 
 #include "Sphere.hpp"
@@ -94,9 +96,20 @@ Image Kernel::render() {
 	v = u.cross(viewingDirection); 
 	v = v.normalize(); 
 
-	// Determine corners of viewing window 
+	// unit vector in the viewing direction 
+	Vector3 n = viewingDirection.normalize(); 
 
-	// for each pixel, Trace_Ray(), then update color
+	// Determine corners of viewing window 
+	double aspectRatio = width / height; 
+	double d = 10.0; // d is arbitrarily chosen
+	double viewHeight = 2 * d * tan((verticalFieldOfView / 2.0) * M_PI / 180.0); 
+	double viewWidth = aspectRatio * viewHeight; 
+
+
+	// for each pixel
+	// ... determine the 3d coordinates of the pixel
+	// ... Trace_Ray()
+	// ... update color of pixel 
 
 	return img; 
 
