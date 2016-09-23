@@ -145,8 +145,20 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
+	Surface object = objects.at(0); 
+	double minT = object.hit(); 
+	// skip the first object since we already looked at it
+	for (int index = 1; index < objects.size(); index++) {
+		Surface testObject = objects.at(index); 
+		double tempMinT = testObject.hit(); 
 
-	// ShadeRay(shading_coordinate, mat)
+		if (tempMinT < minT) {
+			object = testObject; 
+			minT = tempMinT; 
+		}
+	}
+
+	//ShadeRay(shading_coordinate, object.getMaterial())
 
 	// (if no intersection, then return background color)
 

@@ -2,6 +2,7 @@
 #define SPHERE_H
 
 #include "Surface.hpp"
+#include "Ray.hpp"
 
 class Sphere : public Surface {
 private: 
@@ -10,7 +11,7 @@ private:
 public: 
 	Sphere(); 
 	Sphere(Point3 center_in, double radius_in) : Surface(center_in), radius(radius_in) {}
-	bool hit(); 
+	double hit(Ray &ray);
 }; 
 
 #endif 

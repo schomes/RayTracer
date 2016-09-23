@@ -17,8 +17,9 @@ protected:
 
 public: 
 	const Point3 & getCenter() const {return _center;}
+	Material getMaterial() {return _material;}
 	void setMaterial(Material &material) {_material = material;}
-	//virtual bool hit(); 
+	virtual double hit() {} 
 	// virtual Box bounding-box(); 
 
 }; 
