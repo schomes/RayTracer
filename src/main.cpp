@@ -17,6 +17,10 @@ int main( int argc, char **argv ) {
 	std::ifstream inputFile(filename.c_str()); 
 	raytracer.readScene(inputFile); 
 
+	// Initialize raytracer (calculate coordinate-frame for camera, setup viewing plane)
+
+	// raytracer.TraceRays(); 
+
 	/*
 	std::cout << raytracer.cameraPosition.x << std::endl; 
 	std::cout << raytracer.cameraPosition.y << std::endl; 
