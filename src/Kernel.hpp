@@ -2,9 +2,11 @@
 #define KERNEL_H
 
 #include <fstream> 
+#include <vector> 
 #include "Point3.hpp"
 #include "Vector3.hpp"
 #include "RGB.hpp"
+#include "Material.hpp"
 
 // The kernel is responsible for rendering routines and scene reading. 
 class Kernel {
@@ -16,7 +18,7 @@ public:
 	int width; 
 	int height; 
 	RGB bkgcolor; 
-	RGB materialColor; 
+	Material material; 
 
 
 // PUBLIC

@@ -1,6 +1,7 @@
 #include "Kernel.hpp"
 #include <iostream> 
-#include <sstream> // string streams 
+#include <sstream> // string streams
+#include "RGB.hpp" 
 
 #define MAX_COLOR_VALUE 255
 
@@ -32,7 +33,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			}
 
 			else if (variable == "fovv") {
-				double fovv = 0.0; 
+				double fovv = 0.0; // in degrees
 				ss >> fovv; 
 				verticalFieldOfView = fovv; 
 			}
@@ -55,7 +56,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				double r, g, b; 
 				ss >> r >> g >> b; 
 				// convert colors in range 0 - 1 to range 0 - 255
-				materialColor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
+				RGB materialColor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
+				Material m = Material(); 
+				m.setMaterialColor(materialColor); 
+				material = m; 
 			}
 
 
