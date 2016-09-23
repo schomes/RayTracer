@@ -1,7 +1,9 @@
 #include "Kernel.hpp"
 #include <iostream> 
 #include <sstream> // string streams
+#include "Point3.hpp"
 #include "RGB.hpp" 
+#include "Sphere.hpp"
 
 #define MAX_COLOR_VALUE 255
 
@@ -60,6 +62,13 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				Material m = Material(); 
 				m.setMaterialColor(materialColor); 
 				material = m; 
+			}
+
+			else if (variable == "sphere") {
+				double x, y, z, r; 
+				ss >> x >> y >> z >> r; 
+				Sphere s = Sphere(Point3(x, y, z), r); 
+				objects.push_back(s); 
 			}
 
 

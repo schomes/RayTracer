@@ -6,6 +6,7 @@
 #include "Point3.hpp"
 #include "Vector3.hpp"
 #include "RGB.hpp"
+#include "Surface.hpp"
 #include "Material.hpp"
 
 // The kernel is responsible for rendering routines and scene reading. 
@@ -19,6 +20,7 @@ public:
 	int height; 
 	RGB bkgcolor; 
 	Material material; 
+	std::vector<Surface> objects;
 
 
 // PUBLIC
