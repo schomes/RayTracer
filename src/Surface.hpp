@@ -2,10 +2,12 @@
 #define SURFACE_H
 
 #include "Point3.hpp"
+#include "Material.hpp"
 
 class Surface {
 private: 
 	Point3 _center;
+	Material _material; 
 	// prevent construction of base class
 	Surface(){}
 
@@ -15,6 +17,7 @@ protected:
 
 public: 
 	const Point3 & getCenter() const {return _center;}
+	void setMaterial(Material &material) {_material = material;}
 	//virtual bool hit(); 
 	// virtual Box bounding-box(); 
 

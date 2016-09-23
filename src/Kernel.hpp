@@ -5,12 +5,18 @@
 #include <vector> 
 #include "Point3.hpp"
 #include "Vector3.hpp"
+#include "Ray.hpp"
 #include "RGB.hpp"
 #include "Surface.hpp"
 #include "Material.hpp"
+#include "Image.hpp"
 
 // The kernel is responsible for rendering routines and scene reading. 
 class Kernel {
+private: 
+	RGB TraceRay(Ray &ray); 
+	RGB ShadeRay(Point3 point, Material m); 
+
 public: 
 	Point3 cameraPosition; 
 	Vector3 viewingDirection; 
@@ -25,7 +31,7 @@ public:
 
 // PUBLIC
 	void readScene(std::ifstream &inputFile); 
-
+	Image render(); 
 
 }; 
 

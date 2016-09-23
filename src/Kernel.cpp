@@ -68,6 +68,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				double x, y, z, r; 
 				ss >> x >> y >> z >> r; 
 				Sphere s = Sphere(Point3(x, y, z), r); 
+				s.setMaterial(material);
 				objects.push_back(s); 
 			}
 
@@ -75,3 +76,42 @@ void Kernel::readScene(std::ifstream &inputFile) {
 		}
 	}
 }
+
+Image Kernel::render() {
+
+	// Initialize output image
+
+	// Determine camera coordinate axes 
+
+	// Determine corners of viewing window 
+
+	// for each pixel, Trace_Ray(), then update color
+
+	// return image 
+
+}
+
+RGB Kernel::TraceRay(Ray &ray) {
+
+	// For each object in scene, check for intersection (
+	// keep track of closest intersection, and that closest object) 
+
+	// ShadeRay(shading_coordinate, mat)
+
+	// return RGB color
+
+}
+
+RGB Kernel::ShadeRay(Point3 point, Material m) {
+
+	// return m.getMaterialColor()
+
+}
+
+
+
+
+
+
+
+
