@@ -84,6 +84,13 @@ Image Kernel::render() {
 	Image img = Image(width, height); 
 
 	// Determine camera coordinate axes 
+	//... u is orthogonal to the viewingDirection
+	//... v is orthogonal to the viewingDirection and u
+	Vector3 u, v; 
+	//...TODO: check if viewingDirection and upDirection are close to parallel
+	//... 
+	u = viewingDirection.cross(upDirection); 
+	u.normalize(); 
 
 	// Determine corners of viewing window 
 
