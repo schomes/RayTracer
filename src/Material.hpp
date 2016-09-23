@@ -9,6 +9,7 @@ private:
 
 public: 
 	void setMaterialColor(const RGB &color); 
+	RGB getMaterialColor() {return materialColor;}
 }; 
 
 #endif 

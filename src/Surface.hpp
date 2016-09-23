@@ -3,6 +3,7 @@
 
 #include "Point3.hpp"
 #include "Material.hpp"
+#include "Ray.hpp"
 
 class Surface {
 private: 
@@ -19,7 +20,7 @@ public:
 	const Point3 & getCenter() const {return _center;}
 	Material getMaterial() {return _material;}
 	void setMaterial(Material &material) {_material = material;}
-	virtual double hit() {} 
+	virtual double hit(Ray &ray) {return -2.0;} 
 	// virtual Box bounding-box(); 
 
 }; 
