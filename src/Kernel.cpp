@@ -110,7 +110,6 @@ Image Kernel::render() {
 	Point3 ll = cameraPosition + (d * n) - (viewHeight / 2 * v) - (viewWidth / 2 * u); 
 	Point3 lr = cameraPosition + (d * n) - (viewHeight / 2 * v) + (viewWidth / 2 * u); 
 
-
 	// for each pixel
 	// ... determine the 3d coordinates of the pixel
 	// ... Trace_Ray()
