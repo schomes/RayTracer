@@ -88,9 +88,11 @@ Image Kernel::render() {
 	//... v is orthogonal to the viewingDirection and u
 	Vector3 u, v; 
 	//...TODO: check if viewingDirection and upDirection are close to parallel
-	//... 
+	//...TODO cont'd: more parallel means cross is closer to (0, 0, 0) (slide 6 - raycasting02.pdf)
 	u = viewingDirection.cross(upDirection); 
-	u.normalize(); 
+	u = u.normalize(); 
+	v = u.cross(viewingDirection); 
+	v = v.normalize(); 
 
 	// Determine corners of viewing window 
 
