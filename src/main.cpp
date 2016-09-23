@@ -17,9 +17,11 @@ int main( int argc, char **argv ) {
 	std::ifstream inputFile(filename.c_str()); 
 	raytracer.readScene(inputFile); 
 
+	// render scene 
+	Image img = raytracer.render(); 
 
-	//raytracer.render(); 
 	//save image
+	img.saveImageAsPPM("img.ppm"); 
 
 
 

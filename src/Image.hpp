@@ -20,7 +20,7 @@ public:
 	 * \param height The height of the image. 
 	 * \param backgroundColor The backgroundColor of the image 
 	 */
-	Image(int width, int height, RGB backgroundColor); 
+	Image(int width, int height); 
 
 	// Returns the width of the image. 
 	int getWidth() const {return width;}

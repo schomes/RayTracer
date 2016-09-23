@@ -80,6 +80,8 @@ void Kernel::readScene(std::ifstream &inputFile) {
 Image Kernel::render() {
 
 	// Initialize output image
+	// TODO: check if height, width are valid
+	Image img = Image(width, height); 
 
 	// Determine camera coordinate axes 
 
@@ -87,7 +89,7 @@ Image Kernel::render() {
 
 	// for each pixel, Trace_Ray(), then update color
 
-	// return image 
+	return img; 
 
 }
 
@@ -97,6 +99,8 @@ RGB Kernel::TraceRay(Ray &ray) {
 	// keep track of closest intersection, and that closest object) 
 
 	// ShadeRay(shading_coordinate, mat)
+
+	// (if no intersection, then return background color)
 
 	// return RGB color
 

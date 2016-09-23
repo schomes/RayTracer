@@ -2,11 +2,12 @@
 #include <iostream>
 #include <fstream> 
 
-Image::Image(int width_in, int height_in, RGB backgroundColor) : width(width_in), height(height_in) {
-	// Set all pixels to the backgroundColor 
+Image::Image(int width_in, int height_in) : width(width_in), height(height_in) {
+	// Set all pixels to black
+	RGB defaultColor = RGB(0, 0, 0); 
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
-			image.push_back(backgroundColor); 
+			image.push_back(defaultColor); 
 		}
 	}
 }
