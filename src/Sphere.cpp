@@ -25,18 +25,18 @@ double Sphere::hit(Ray &ray) {
 	double B = 2 * (xd * (x0 - xc) + yd * (y0 - yc) + zd * (z0 - zc)); 
 	double C = pow((x0 - xc), 2.0) + pow((y0 - yc), 2.0) + pow((z0 - zc), 2.0) - pow(radius, 2.0); 
 
-	std::cout << B << std::endl;
-	std::cout << C << std::endl;
+	// std::cout << B << std::endl;
+	// std::cout << C << std::endl;
 
 	double discriminant = pow(B, 2.0) - (4 * C); 
 
-	std::cout << "d: " << discriminant << std::endl;
+	// std::cout << "d: " << discriminant << std::endl;
 
 	if (discriminant < 0) {
 		return -1.0; 
 	} else {
-		double result1 = (-B + sqrt(discriminant)) / 2; 
-		double result2 = (-B - sqrt(discriminant)) / 2; 
+		double result1 = (-B + sqrt(discriminant)) / 2.0; 
+		double result2 = (-B - sqrt(discriminant)) / 2.0;  
 
 		double minValue = fmin(result1, result2); 
 		if (minValue < 0) { 

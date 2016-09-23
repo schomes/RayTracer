@@ -103,7 +103,8 @@ Image Kernel::render() {
 	// Determine corners of viewing window 
 	double aspectRatio = width / height; 
 	double d = 10.0; // d is arbitrarily chosen
-	double viewHeight = 2 * d * tan((verticalFieldOfView / 2.0) * M_PI / 180.0); 
+	double radians = (verticalFieldOfView / 2.0) * M_PI / 180.0; 
+	double viewHeight = 2 * d * tan(radians); 
 	double viewWidth = aspectRatio * viewHeight; 
 
 	// Viewing window corners 
@@ -145,28 +146,27 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
-	Surface *object = objects.at(0); 
-	double minT = object->hit(ray); 
-	std::cout << "herro1" << std::endl; 
+	Surface *object; 
+	double minT = 0; 
 	// skip the first object since we already looked at it
-	for (int index = 1; index < objects.size(); index++) {
+	for (int index = 0; index < objects.size(); index++) {
 		Surface *testObject = objects.at(index); 
-		double tempMinT = (*testObject).hit(ray); 
+		double tempMinT = testObject->hit(ray); 
 
-		if ((tempMinT >= 0) && (tempMinT < minT)) {
+		if ((tempMinT >= 0) && ((minT == 0) || (tempMinT < minT))) {
 			object = testObject; 
 			minT = tempMinT; 
 		}
 	}
 
-	std::cout << minT << std::endl; 
+	std::cout << "t: " << minT << std::endl; 
 
-	// if negative, we didn't hit anything in front of us
-	if (minT < 0) {
+	// if 0, we didn't hit anything in front of us
+	if (minT == 0) {
 		return color; 
 	} else {
 		return (object->getMaterial()).getMaterialColor(); 
-	}
+	} 
 
 	//ShadeRay(shading_coordinate, object.getMaterial())
 
