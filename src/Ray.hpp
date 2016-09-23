@@ -8,6 +8,7 @@ class Ray {
 public: 
 	Point3 origin; 
 	Vector3 direction; 
+	Ray(Point3 &p, Vector3 &v) : origin(p), direction(v) {}
 }; 
 
 #endif 

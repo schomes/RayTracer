@@ -4,6 +4,7 @@
 #include <iostream> 
 #include <sstream> // string streams 
 #include "Point3.hpp"
+#include "Ray.hpp"
 #include "RGB.hpp" 
 #include "Sphere.hpp"
 
@@ -115,6 +116,14 @@ Image Kernel::render() {
 	Vector3 hOffset = (ur - ul) / (width - 1.0); 
 	// Vertical offset per pixel 
 	Vector3 vOffset = (ll - ul) / (height - 1.0); 
+
+
+	for (int row = 0; row < height; row++) {
+		for (int column = 0; column < width; column++) {
+			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column); 
+			//Ray ray = Ray
+		}
+	}
 
 	// for each pixel
 	// ... determine the 3d coordinates of the pixel
