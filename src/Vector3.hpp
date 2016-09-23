@@ -1,6 +1,8 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
+#include "Point3.hpp"
+
 class Vector3 {
 public: 
 	double x; 
@@ -13,5 +15,24 @@ public:
 	Vector3 cross(Vector3 v); 
 	double dot(Vector3 v); 
 }; 
+
+// Scalar, vector multiplication s * V
+inline Vector3 operator * (double lhs, const Vector3 & rhs) {
+	return Vector3(rhs.x * lhs, rhs.y * lhs, rhs.z * lhs); 
+}
+
+// Scalar, vector multiplication V * s
+inline Vector3 operator * (const Vector3 & lhs, double rhs) {
+	return Vector3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs); 
+}
+
+// Point plus a vector
+inline Point3 operator + (const Point3 & lhs, const Vector3 & rhs) {
+	return Point3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z); 
+}
+
+inline Point3 operator - (const Point3 & lhs, const Vector3 & rhs) {
+	return Point3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z); 
+}
 
 #endif 

@@ -105,10 +105,10 @@ Image Kernel::render() {
 	double viewHeight = 2 * d * tan((verticalFieldOfView / 2.0) * M_PI / 180.0); 
 	double viewWidth = aspectRatio * viewHeight; 
 
-	double ul = cameraPosition + (d * n) + (viewHeight / 2 * v) - (viewWidth / 2 * u);
-	double ur = cameraPosition + (d * n) + (viewHeight / 2 * v) + (viewWidth / 2 * u);
-	double ll = cameraPosition + (d * n) - (viewHeight / 2 * v) - (viewWidth / 2 * u); 
-	double lr = cameraPosition + (d * n) - (viewHeight / 2 * v) + (viewWidth / 2 * u); 
+	Point3 ul = cameraPosition + (d * n) + (viewHeight / 2 * v) - (viewWidth / 2 * u);
+	Point3 ur = cameraPosition + (d * n) + (viewHeight / 2 * v) + (viewWidth / 2 * u);
+	Point3 ll = cameraPosition + (d * n) - (viewHeight / 2 * v) - (viewWidth / 2 * u); 
+	Point3 lr = cameraPosition + (d * n) - (viewHeight / 2 * v) + (viewWidth / 2 * u); 
 
 
 	// for each pixel
