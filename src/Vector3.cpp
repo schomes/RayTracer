@@ -10,7 +10,7 @@ double Vector3::magnitude() {
 }
 
 Vector3 Vector3::normalize() {
-	double length = this.magnitude(); 
+	double length = this->magnitude(); 
 	double newX = x / length; 
 	double newY = y / length; 
 	double newZ = z / length; 
@@ -19,8 +19,12 @@ Vector3 Vector3::normalize() {
 }
 
 Vector3 Vector3::cross(Vector3 v) {
-	double newX = (this.y * v.z) - (this.z * v.y); 
-	double newY = (this.z * v.x) - (this.x * v.z); 
-	double newZ = (this.x * v.y) - (this.y * v.x);
+	double newX = (this->y * v.z) - (this->z * v.y); 
+	double newY = (this->z * v.x) - (this->x * v.z); 
+	double newZ = (this->x * v.y) - (this->y * v.x);
 	return Vector3(newX, newY, newZ);  
+}
+
+double Vector3::dot(Vector3 v) {
+	return (this->x * v.x) + (this->y * v.y) + (this->z * v.z); 
 }

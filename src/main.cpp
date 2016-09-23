@@ -3,6 +3,9 @@
 #include "Kernel.hpp"
 #include "Image.hpp"
 
+// testing
+#include "Vector3.hpp"
+
 int main( int argc, char **argv ) {
 
 	// check if input file has been specified 
@@ -22,9 +25,6 @@ int main( int argc, char **argv ) {
 
 	//save image
 	img.saveImageAsPPM("img.ppm"); 
-
-
-
 
 	// Initialize raytracer (calculate coordinate-frame for camera, setup viewing plane)
 
