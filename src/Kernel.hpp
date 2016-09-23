@@ -26,7 +26,7 @@ public:
 	int height; 
 	RGB bkgcolor; 
 	Material material; 
-	std::vector<Surface> objects;
+	std::vector<Surface*> objects;
 
 
 // PUBLIC

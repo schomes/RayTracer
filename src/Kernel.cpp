@@ -72,7 +72,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				ss >> x >> y >> z >> r; 
 				Sphere s = Sphere(Point3(x, y, z), r); 
 				s.setMaterial(material);
-				objects.push_back(s); 
+				objects.push_back(&s); 
 			}
 
 
@@ -145,11 +145,11 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
-	Surface object = objects.at(0); 
+	Surface object = *(objects.at(0)); 
 	double minT = object.hit(ray); 
 	// skip the first object since we already looked at it
 	for (int index = 1; index < objects.size(); index++) {
-		Surface testObject = objects.at(index); 
+		Surface testObject = *(objects.at(index)); 
 		double tempMinT = testObject.hit(ray); 
 
 		if ((tempMinT >= 0) && (tempMinT < minT)) {

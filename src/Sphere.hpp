@@ -11,7 +11,7 @@ private:
 public: 
 	Sphere(); 
 	Sphere(Point3 center_in, double radius_in) : Surface(center_in), radius(radius_in) {}
-	double hit(Ray &ray);
+	double hit(Ray &ray) override;
 }; 
 
 #endif 
