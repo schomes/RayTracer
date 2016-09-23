@@ -20,7 +20,7 @@ public:
 	const Point3 & getCenter() const {return _center;}
 	Material getMaterial() {return _material;}
 	void setMaterial(Material &material) {_material = material;}
-	virtual double hit(Ray &ray) {return -2.0;} 
+	virtual double hit(Ray &ray) = 0;  
 	// virtual Box bounding-box(); 
 
 }; 

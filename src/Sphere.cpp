@@ -2,8 +2,11 @@
 #include "Point3.hpp"
 #include <cmath> 
 
+#include <iostream> 
+
 double Sphere::hit(Ray &ray) {
 
+	std::cout << "entered" << std::endl; 
 	// for equation At^2 + Bt + c = 0
 
 	double x0 = (ray.origin).x; 

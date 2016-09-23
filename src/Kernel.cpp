@@ -6,7 +6,7 @@
 #include "Point3.hpp"
 #include "Ray.hpp"
 #include "RGB.hpp" 
-#include "Sphere.hpp"
+// #include "Sphere.hpp"
 
 #define MAX_COLOR_VALUE 255
 
@@ -70,9 +70,9 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "sphere") {
 				double x, y, z, r; 
 				ss >> x >> y >> z >> r; 
-				Sphere s = Sphere(Point3(x, y, z), r); 
-				s.setMaterial(material);
-				objects.push_back(&s); 
+				Sphere *s = new Sphere(Point3(x, y, z), r); 
+				s->setMaterial(material);
+				objects.push_back(s); 
 			}
 
 
@@ -145,12 +145,13 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
-	Surface object = *(objects.at(0)); 
-	double minT = object.hit(ray); 
+	Surface *object = objects.at(0); 
+	double minT = object->hit(ray); 
+	std::cout << "herro1" << std::endl; 
 	// skip the first object since we already looked at it
 	for (int index = 1; index < objects.size(); index++) {
-		Surface testObject = *(objects.at(index)); 
-		double tempMinT = testObject.hit(ray); 
+		Surface *testObject = objects.at(index); 
+		double tempMinT = (*testObject).hit(ray); 
 
 		if ((tempMinT >= 0) && (tempMinT < minT)) {
 			object = testObject; 
@@ -164,7 +165,7 @@ RGB Kernel::TraceRay(Ray &ray) {
 	if (minT < 0) {
 		return color; 
 	} else {
-		return (object.getMaterial()).getMaterialColor(); 
+		return (object->getMaterial()).getMaterialColor(); 
 	}
 
 	//ShadeRay(shading_coordinate, object.getMaterial())

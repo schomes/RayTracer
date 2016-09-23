@@ -8,6 +8,7 @@
 #include "Ray.hpp"
 #include "RGB.hpp"
 #include "Surface.hpp"
+#include "Sphere.hpp"
 #include "Material.hpp"
 #include "Image.hpp"
 
