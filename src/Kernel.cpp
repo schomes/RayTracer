@@ -1,4 +1,3 @@
-#define _USE_MATH_DEFINES // allows access to pi
 #include <cmath> 
 #include "Kernel.hpp"
 #include <iostream> 
@@ -70,8 +69,8 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "sphere") {
 				double x, y, z, r; 
 				ss >> x >> y >> z >> r; 
-				Sphere *s = new Sphere(Point3(x, y, z), r); 
-				s->setMaterial(material);
+				Sphere s = Sphere(Point3(x, y, z), r); 
+				s.setMaterial(material);
 				objects.push_back(s); 
 			}
 
@@ -103,7 +102,8 @@ Image Kernel::render() {
 	// Determine corners of viewing window 
 	double aspectRatio = (double)(width) / height; 
 	double d = 15.0; // d is arbitrarily chosen
-	double radians = (verticalFieldOfView / 2.0) * M_PI / 180.0; 
+	double pi = 4 * atan(1.0); 
+	double radians = ((verticalFieldOfView / 2.0) * pi) / 180.0; 
 	double viewHeight = 2 * d * tan(radians); 
 	double viewWidth = aspectRatio * viewHeight; 
 
@@ -114,15 +114,19 @@ Image Kernel::render() {
 	Point3 lr = cameraPosition + (d * n) - (viewHeight / 2 * v) + (viewWidth / 2 * u); 
 
 	// Horizontal offset per pixel
-	Vector3 hOffset = (ur - ul) / (width - 1.0); 
+	//Vector3 hOffset = (ur - ul) / (width - 1.0); 
 	// Vertical offset per pixel 
-	Vector3 vOffset = (ll - ul) / (height - 1.0); 
+	//Vector3 vOffset = (ll - ul) / (height - 1.0); 
 
 
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
-			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column); 
-			Vector3 rayDirection = viewingWindowPoint - cameraPosition; 
+			//Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column); 
+			double xView = ul.x + (ur.x - ul.x) * (column + 0.5) / width; 
+			double yView = ll.y + (ul.y - ll.y) * (row + 0.5) / height; 
+			Point3 viewingWindowPoint = Point3(xView, yView, d); 
+			//Vector3 rayDirection = viewingWindowPoint - cameraPosition; 
+			Vector3 rayDirection = (d * n) + (xView * u) + (yView * v);  
 			rayDirection = rayDirection.normalize(); 
 			Ray ray = Ray(cameraPosition, rayDirection); 
 
@@ -141,26 +145,25 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
-	Surface *object; 
+	Sphere object; 
 	double minT = 0; 
 	// skip the first object since we already looked at it
 	for (int index = 0; index < objects.size(); index++) {
-		Surface *testObject = objects.at(index); 
-		double tempMinT = testObject->hit(ray); 
+		Sphere testObject = objects.at(index); 
+		double tempMinT = testObject.hit(ray); 
 
-		if ((tempMinT >= 0) && ((minT == 0) || (tempMinT < minT))) {
+		if ((tempMinT > 0) && ((minT == 0) || (tempMinT < minT))) {
 			object = testObject; 
 			minT = tempMinT; 
 		}
 	}
 
-	//std::cout << "t: " << minT << std::endl; 
-
 	// if 0, we didn't hit anything in front of us
 	if (minT == 0) {
 		return color; 
 	} else {
-		return (object->getMaterial()).getMaterialColor(); 
+		Material mat = object.getMaterial(); 
+		return mat.getMaterialColor(); 
 	} 
 
 	//ShadeRay(shading_coordinate, object.getMaterial())

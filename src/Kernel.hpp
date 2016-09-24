@@ -27,7 +27,7 @@ public:
 	int height; 
 	RGB bkgcolor; 
 	Material material; 
-	std::vector<Surface*> objects;
+	std::vector<Sphere> objects;
 
 	void readScene(std::ifstream &inputFile); 
 	Image render(); 
