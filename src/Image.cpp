@@ -38,8 +38,8 @@ void Image::saveImageAsPPM(const std::string filePath) {
 		file << maximumColorValue << endl; 
 
 		// Write image data 
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
 				// Determine the 1D coordinate from 2D coordinate (x, y). 
 				int index = x + width * y; 
 				RGB p = image.at(index); 
