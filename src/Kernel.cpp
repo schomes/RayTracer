@@ -8,6 +8,7 @@
 // #include "Sphere.hpp"
 
 #define MAX_COLOR_VALUE 255
+#define FAR_CLIP 1000.0
 
 void Kernel::readScene(std::ifstream &inputFile) {
 	if (inputFile.is_open()) {
@@ -148,22 +149,23 @@ RGB Kernel::TraceRay(Ray &ray) {
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
 	Sphere object; 
-	double minT = 0;
-	// skip the first object since we already looked at it
+	double minT = FAR_CLIP;
+	// for each object, check if a ray hits it
 	for (int index = 0; index < objects.size(); index++) {
 		Sphere testObject = objects.at(index); 
 		double tempMinT = testObject.hit(ray);
 
-		if ((tempMinT > 0) && ((minT == 0) || (tempMinT < minT))) {
+		if ((tempMinT > 0) && (tempMinT < minT)) {
 			object = testObject; 
 			minT = tempMinT; 
 		}
 	}
     
 	// if 0, we didn't hit anything in front of us
-	if (minT == 0) {
+	if (minT == FAR_CLIP) {
 		return color; 
 	} else {
+		Point3 shadingCoordinate = ray.origin + (minT * ray.direction); 
 		Material mat = object.getMaterial(); 
 		return mat.getMaterialColor(); 
 	} 
@@ -176,7 +178,7 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 }
 
-// RGB Kernel::ShadeRay(Point3 point, Material m) {
+// RGB Kernel::ShadeRay(Point3 point, Surface object) {
 
 // 	// return m.getMaterialColor()
 
