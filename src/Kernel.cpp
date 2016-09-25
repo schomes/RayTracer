@@ -10,6 +10,7 @@
 #define MAX_COLOR_VALUE 255
 
 void Kernel::readScene(std::ifstream &inputFile) {
+	std::cout << "opened" << std::endl; 
 	if (inputFile.is_open()) {
 		std::string line = ""; 
 		while(std::getline(inputFile, line)) {
