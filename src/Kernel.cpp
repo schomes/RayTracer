@@ -7,8 +7,8 @@
 #include "RGB.hpp" 
 // #include "Sphere.hpp"
 
-#define MAX_COLOR_VALUE 255
-#define FAR_CLIP 1000.0
+#define MAX_COLOR_VALUE 255 // maximum value for an RGB component
+#define FAR_CLIP 1000.0 // maximum distance to consider ray collision
 
 void Kernel::readScene(std::ifstream &inputFile) {
 	if (inputFile.is_open()) {
@@ -99,7 +99,7 @@ Image Kernel::render() {
 	v = w.cross(u);
 	v = v.normalize(); 
 
-	// unit vector in the viewing direction 
+	// Unit vector in the viewing direction 
 	Vector3 n = viewingDirection.normalize(); 
 
 	// Determine corners of viewing window 
@@ -109,8 +109,7 @@ Image Kernel::render() {
 	double radians = ((verticalFieldOfView / 2.0) * pi) / 180.0; 
 	double viewHeight = 2 * d * tan(radians); 
 	double viewWidth = aspectRatio * viewHeight; 
-
-	// Viewing window corners 
+	//... Viewing window corners 
 	Point3 ul = cameraPosition + (d * n) + (viewHeight / 2 * v) - (viewWidth / 2 * u);
 	Point3 ur = cameraPosition + (d * n) + (viewHeight / 2 * v) + (viewWidth / 2 * u);
 	Point3 ll = cameraPosition + (d * n) - (viewHeight / 2 * v) - (viewWidth / 2 * u); 
@@ -125,10 +124,6 @@ Image Kernel::render() {
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
 			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column);
-			/// double xView = ul.x + (ur.x - ul.x) * (column + 0.5) / width;
-			/// double yView = ll.y + (ul.y - ll.y) * (row + 0.5) / height;
-			/// Point3 viewingWindowPoint = Point3(xView, yView, -10);
-			//Vector3 rayDirection = viewingWindowPoint - cameraPosition; 
 			Vector3 rayDirection = viewingWindowPoint - cameraPosition;
 			rayDirection = rayDirection.normalize(); 
 			Ray ray = Ray(cameraPosition, rayDirection); 
