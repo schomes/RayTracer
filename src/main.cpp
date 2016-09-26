@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream> 
+#include <fstream>
 #include "Kernel.hpp"
 #include "Image.hpp"
 
@@ -8,23 +8,27 @@
 
 int main( int argc, char **argv ) {
 
-	// check if input file has been specified 
+	// check if input file has been specified
 	if (argc < 2) {
-		std::cerr << "**Error: an input file must be specified." << std::endl; 
-		return 0; 
+		std::cerr << "**Error: an input file must be specified." << std::endl;
+		return 0;
 	}
 
-	// Initialize kernel and read scene description 
-	Kernel raytracer; 
-	std::string filename(argv[1]); 
-	std::ifstream inputFile(filename.c_str()); 
-	raytracer.readScene(inputFile); 
+	// Initialize kernel and read scene description
+	Kernel raytracer;
+	//... Get file name, and save filename without extension
+	std::string filename(argv[1]);
+	std::size_t indexOfFileExtension = filename.find_last_of(".");
+	std::string filenameWithoutExtension = filename.substr(0, indexOfFileExtension);
+	//... Read scene description
+	std::ifstream inputFile(filename.c_str());
+	raytracer.readScene(inputFile);
 
-	// render scene 
-	Image img = raytracer.render(); 
+	// Render scene
+	Image img = raytracer.render();
 
-	//save image
-	img.saveImageAsPPM("img.ppm"); 
+	// Save image
+	img.saveImageAsPPM(filenameWithoutExtension + ".ppm");
 
-	return 0; 
+	return 0;
 }
