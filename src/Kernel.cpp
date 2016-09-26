@@ -124,7 +124,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 Image Kernel::render() {
 
 	// Initialize output image
-	// TODO: check if height, width are valid
+	if (width == 0 || height == 0) {
+		std::cerr << "Error: Invalid image width or height." << std::endl;
+		exit(EXIT_FAILURE);
+	}
 	Image img = Image(width, height);
 
 	// Determine camera coordinate axes
