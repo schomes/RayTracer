@@ -6,7 +6,6 @@
 #include "Point3.hpp"
 #include "Ray.hpp"
 #include "RGB.hpp"
-// #include "Sphere.hpp"
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
@@ -164,6 +163,7 @@ Image Kernel::render() {
 	Vector3 vOffset = (ll - ul) / (height - 1.0);
 
 
+	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
 			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column);
@@ -175,9 +175,7 @@ Image Kernel::render() {
 			img.setPixel(color, column, row);
 		}
 	}
-
 	return img;
-
 }
 
 RGB Kernel::TraceRay(Ray &ray) {

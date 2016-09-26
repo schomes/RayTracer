@@ -5,7 +5,7 @@
 #include "Material.hpp"
 #include "Ray.hpp"
 
-/// This class represents any surface that can be hit by a ray.
+// This class represents any surface that can be hit by a ray.
 class Surface {
 protected: 
 	Point3 center;
