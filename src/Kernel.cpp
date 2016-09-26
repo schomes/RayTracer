@@ -71,8 +71,8 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "sphere") {
 				double x, y, z, r; 
 				ss >> x >> y >> z >> r; 
-				Sphere s = Sphere(Point3(x, y, z), r); 
-				s.setMaterial(material);
+				Sphere *s = new Sphere(Point3(x, y, z), r); 
+				s->setMaterial(material);
 				objects.push_back(s); 
 			}
 
@@ -143,12 +143,12 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	// For each object in scene, check for intersection (
 	// keep track of closest intersection, and that closest object) 
-	Sphere object; 
+	Surface *object; 
 	double minT = FAR_CLIP;
 	// for each object, check if a ray hits it
 	for (int index = 0; index < objects.size(); index++) {
-		Sphere testObject = objects.at(index); 
-		double tempMinT = testObject.hit(ray);
+		Surface *testObject = objects.at(index); 
+		double tempMinT = testObject->hit(ray);
 
 		if ((tempMinT > 0) && (tempMinT < minT)) {
 			object = testObject; 
@@ -161,7 +161,7 @@ RGB Kernel::TraceRay(Ray &ray) {
 		return color; 
 	} else {
 		Point3 shadingCoordinate = ray.origin + (minT * ray.direction); 
-		Material mat = object.getMaterial(); 
+		Material mat = object->getMaterial(); 
 		return mat.getMaterialColor(); 
 	} 
 
