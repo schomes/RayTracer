@@ -84,6 +84,20 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 			}
 
+			else if (variable == "ellipsoid") {
+				double cx, cy, cz, rx, ry, rz;
+				ss >> cx >> cy >> cz >> rx >> ry >> rz;
+				// Check if a material exists
+				if (material) {
+					Ellipsoid *e = new Ellipsoid(Point3(cx, cy, cz), rx, ry, rz);
+					e->setMaterial(*material);
+					objects.push_back(e);
+				} else {
+					std::cerr << "Error: No material was specified before defining a sphere." << std::endl;
+					exit(EXIT_FAILURE);
+				}
+			}
+
 			else if (variable.find_first_not_of (' ') == variable.npos) {
 				continue;
 			}

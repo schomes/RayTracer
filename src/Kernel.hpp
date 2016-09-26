@@ -9,6 +9,7 @@
 #include "RGB.hpp"
 #include "Surface.hpp"
 #include "Sphere.hpp"
+#include "Ellipsoid.hpp"
 #include "Material.hpp"
 #include "Image.hpp"
 
