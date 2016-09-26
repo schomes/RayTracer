@@ -141,8 +141,7 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 	RGB color = bkgcolor; 
 
-	// For each object in scene, check for intersection (
-	// keep track of closest intersection, and that closest object) 
+	// For each object in the scene, check for intersection with ray
 	Surface *object; 
 	double minT = FAR_CLIP;
 	// for each object, check if a ray hits it
@@ -156,29 +155,18 @@ RGB Kernel::TraceRay(Ray &ray) {
 		}
 	}
     
-	// if 0, we didn't hit anything in front of us
+	// We didn't hit anything in front of us, so return background color
 	if (minT == FAR_CLIP) {
 		return color; 
 	} else {
 		Point3 shadingCoordinate = ray.origin + (minT * ray.direction);
 		return ShadeRay(shadingCoordinate, object);
-		//Material mat = object->getMaterial(); 
-		//return mat.getMaterialColor(); 
 	} 
-
-	//ShadeRay(shading_coordinate, object.getMaterial())
-
-	// (if no intersection, then return background color)
-
-	return color; 
-
 }
 
 RGB Kernel::ShadeRay(Point3 point, Surface *object) {
-
 	Material material = object->getMaterial(); 
 	return material.getMaterialColor(); 
-
 }
 
 
