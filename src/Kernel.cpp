@@ -11,6 +11,10 @@
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
 
+double clamp(double number, double min, double max) {
+	return std::max(min, std::min(number, max));
+}
+
 void Kernel::readScene(std::ifstream &inputFile) {
 	if (inputFile.is_open()) {
 		std::string line = "";
@@ -55,6 +59,9 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				double r, g, b;
 				ss >> r >> g >> b;
 				// convert colors in range 0 - 1 to range 0 - 255
+				r = clamp(r, 0.0, 1.0);
+				g = clamp(g, 0.0, 1.0);
+				b = clamp(b, 0.0, 1.0);
 				bkgcolor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
 			}
 
@@ -62,8 +69,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				double r, g, b;
 				ss >> r >> g >> b;
 				// convert colors in range 0 - 1 to range 0 - 255
+				r = clamp(r, 0.0, 1.0);
+				g = clamp(g, 0.0, 1.0);
+				b = clamp(b, 0.0, 1.0);
 				RGB materialColor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
-
 				Material *m = new Material();
 				m->setMaterialColor(materialColor);
 				material = m;
