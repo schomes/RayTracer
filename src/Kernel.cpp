@@ -64,8 +64,6 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				// convert colors in range 0 - 1 to range 0 - 255
 				RGB materialColor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
 
-				std::cout << material << std::endl;
-
 				Material *m = new Material();
 				m->setMaterialColor(materialColor);
 				material = m;
