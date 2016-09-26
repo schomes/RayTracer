@@ -19,7 +19,7 @@ double Ellipsoid::hit(Ray &ray) {
   double zc = center.z;
 
   double A = (pow(bRadius, 2.0) * pow(cRadius, 2.0) * pow(xd, 2.0)) + (pow(aRadius, 2.0) * pow(cRadius, 2.0) * pow(yd, 2.0)) + (pow(aRadius, 2.0) * pow(bRadius, 2.0) * pow(zd, 2.0));
-  double B = 2 * ((pow(bRadius, 2.0) * pow(cRadius, 2.0) * xd * x0)) + ((pow(aRadius, 2.0) * pow(cRadius, 2.0) * yd * y0)) + ((pow(aRadius, 2.0) * pow(bRadius, 2.0) * zd * z0));
+  double B = 2 * (((pow(bRadius, 2.0) * pow(cRadius, 2.0) * xd * x0)) + ((pow(aRadius, 2.0) * pow(cRadius, 2.0) * yd * y0)) + ((pow(aRadius, 2.0) * pow(bRadius, 2.0) * zd * z0)));
   double C = (pow(x0, 2.0) * pow(bRadius, 2.0) * pow(cRadius, 2.0)) + (pow(y0, 2.0) * pow(aRadius, 2.0) * pow(cRadius, 2.0)) + (pow(z0, 2.0) * pow(aRadius, 2.0) * pow(bRadius, 2.0)) - 1.0;
 
   double discriminant = pow(B, 2.0) - (4 * A * C);

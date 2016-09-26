@@ -93,7 +93,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 					e->setMaterial(*material);
 					objects.push_back(e);
 				} else {
-					std::cerr << "Error: No material was specified before defining a sphere." << std::endl;
+					std::cerr << "Error: No material was specified before defining a ellipsoid." << std::endl;
 					exit(EXIT_FAILURE);
 				}
 			}
