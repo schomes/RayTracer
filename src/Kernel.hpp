@@ -16,7 +16,7 @@
 class Kernel {
 private: 
 	RGB TraceRay(Ray &ray); 
-	//RGB ShadeRay(Point3 point, Material m); 
+	RGB ShadeRay(Point3 point, Surface *object); 
 
 public: 
 	Point3 cameraPosition; 

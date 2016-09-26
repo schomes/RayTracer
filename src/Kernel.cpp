@@ -160,9 +160,10 @@ RGB Kernel::TraceRay(Ray &ray) {
 	if (minT == FAR_CLIP) {
 		return color; 
 	} else {
-		Point3 shadingCoordinate = ray.origin + (minT * ray.direction); 
-		Material mat = object->getMaterial(); 
-		return mat.getMaterialColor(); 
+		Point3 shadingCoordinate = ray.origin + (minT * ray.direction);
+		return ShadeRay(shadingCoordinate, object);
+		//Material mat = object->getMaterial(); 
+		//return mat.getMaterialColor(); 
 	} 
 
 	//ShadeRay(shading_coordinate, object.getMaterial())
@@ -173,11 +174,12 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 }
 
-// RGB Kernel::ShadeRay(Point3 point, Surface object) {
+RGB Kernel::ShadeRay(Point3 point, Surface *object) {
 
-// 	// return m.getMaterialColor()
+	Material material = object->getMaterial(); 
+	return material.getMaterialColor(); 
 
-// }
+}
 
 
 
