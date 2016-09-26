@@ -13,7 +13,6 @@
 
 void Kernel::readScene(std::ifstream &inputFile) {
 	if (inputFile.is_open()) {
-        std::cout << "opened and reading" << std::endl;
 		std::string line = "";
 		while(std::getline(inputFile, line)) {
 
@@ -64,17 +63,27 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				ss >> r >> g >> b;
 				// convert colors in range 0 - 1 to range 0 - 255
 				RGB materialColor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
-				Material m = Material();
-				m.setMaterialColor(materialColor);
+
+				std::cout << material << std::endl;
+
+				Material *m = new Material();
+				m->setMaterialColor(materialColor);
 				material = m;
 			}
 
 			else if (variable == "sphere") {
 				double x, y, z, r;
 				ss >> x >> y >> z >> r;
-				Sphere *s = new Sphere(Point3(x, y, z), r);
-				s->setMaterial(material);
-				objects.push_back(s);
+				// Check if a material exists
+				if (material) {
+					Sphere *s = new Sphere(Point3(x, y, z), r);
+					s->setMaterial(*material);
+					objects.push_back(s);
+				} else {
+					std::cerr << "Error: No material was specified before defining a sphere." << std::endl;
+					exit(EXIT_FAILURE);
+				}
+
 			}
 
 			else if (variable.find_first_not_of (' ') == variable.npos) {
@@ -82,7 +91,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			}
 
 			else {
-				std::cerr << "Invalid input file." << std::endl;
+				std::cerr << "Error: Invalid input file." << std::endl;
 				exit(EXIT_FAILURE);
 			}
 
