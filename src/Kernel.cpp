@@ -64,16 +64,39 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				bkgcolor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
 			}
 
+			// Material
 			else if (variable == "mtlcolor") {
-				double r, g, b;
-				ss >> r >> g >> b;
+				// Diffuse color
+				double diffuse_r, diffuse_g, diffuse_b;
+				// Specular color
+				double specular_r, specular_g, specular_b; 
+				// Reflection constants
+				double ka, kd, ks; 
+				// Shininess constant
+				double n; 
+
+				ss >> diffuse_r >> diffuse_g >> diffuse_b; 
+				ss >> specular_r >> specular_g >> specular_b; 
+				ss >> ka >> kd >> ks; 
+				ss >> n; 
+
+				diffuse_r = clamp(diffuse_r, 0.0, 1.0);
+				diffuse_g = clamp(diffuse_g, 0.0, 1.0);
+				diffuse_b = clamp(diffuse_b, 0.0, 1.0);
+
+				specular_r = clamp(specular_r, 0.0, 1.0);
+				specular_g = clamp(specular_g, 0.0, 1.0);
+				specular_b = clamp(specular_b, 0.0, 1.0);
+
+				ka = clamp(ka, 0.0, 1.0); 
+				kd = clamp(kd, 0.0, 1.0); 
+				ks = clamp(ks, 0.0, 1.0); 
+
 				// convert colors in range 0 - 1 to range 0 - 255
-				r = clamp(r, 0.0, 1.0);
-				g = clamp(g, 0.0, 1.0);
-				b = clamp(b, 0.0, 1.0);
-				RGB materialColor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
-				Material *m = new Material();
-				m->setMaterialColor(materialColor);
+				RGB diffuseColor = RGB((int)(MAX_COLOR_VALUE * diffuse_r), (int)(MAX_COLOR_VALUE * diffuse_g), (int)(MAX_COLOR_VALUE * diffuse_b));
+				RGB specularColor = RGB((int)(MAX_COLOR_VALUE * specular_r), (int)(MAX_COLOR_VALUE * specular_g), (int)(MAX_COLOR_VALUE * specular_b));
+
+				Material *m = new Material(diffuseColor, specularColor, ka, kd, ks, n);
 				material = m;
 			}
 
