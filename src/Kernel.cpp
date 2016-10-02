@@ -260,7 +260,7 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
-	RGB finalColor; 
+	RGB finalColor = RGB(0, 0, 0); 
 	Material material = object->getMaterial();
 
 	// compute N vector: normal of object at point 
@@ -280,17 +280,18 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 		}
 
-		//RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * max(0, (normal.dot(lightSourceDirection)))
-
+		RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * fmax(0, (normal.dot(lightSourceDirection)));
+		finalColor = finalColor + diffuseComponent; 
 	}
 
 	// Compute L vector 
 
-	//RGB ambientComponent = material.getAmbientConstant() * material.getDiffuseColor(); 
+	RGB ambientComponent = material.getAmbientConstant() * material.getDiffuseColor();
+	finalColor = finalColor + ambientComponent;  
 	
+	return finalColor; 
 
-
-	return material.getDiffuseColor();
+	//return material.getDiffuseColor();
 }
 
 
