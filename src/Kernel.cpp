@@ -57,11 +57,11 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "bkgcolor") {
 				double r, g, b;
 				ss >> r >> g >> b;
-				// convert colors in range 0 - 1 to range 0 - 255
+				
 				r = clamp(r, 0.0, 1.0);
 				g = clamp(g, 0.0, 1.0);
 				b = clamp(b, 0.0, 1.0);
-				bkgcolor = RGB((int)(MAX_COLOR_VALUE * r), (int)(MAX_COLOR_VALUE * g), (int)(MAX_COLOR_VALUE * b));
+				bkgcolor = RGB(r, g, b);
 			}
 
 			// Material
@@ -92,9 +92,8 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				kd = clamp(kd, 0.0, 1.0); 
 				ks = clamp(ks, 0.0, 1.0); 
 
-				// convert colors in range 0 - 1 to range 0 - 255
-				RGB diffuseColor = RGB((int)(MAX_COLOR_VALUE * diffuse_r), (int)(MAX_COLOR_VALUE * diffuse_g), (int)(MAX_COLOR_VALUE * diffuse_b));
-				RGB specularColor = RGB((int)(MAX_COLOR_VALUE * specular_r), (int)(MAX_COLOR_VALUE * specular_g), (int)(MAX_COLOR_VALUE * specular_b));
+				RGB diffuseColor = RGB(diffuse_r, diffuse_g, diffuse_b);
+				RGB specularColor = RGB(specular_r, specular_g, specular_b);
 
 				Material *m = new Material();
 				m->setDiffuseColor(diffuseColor); 

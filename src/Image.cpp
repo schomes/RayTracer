@@ -15,8 +15,10 @@ Image::Image(int width_in, int height_in) : width(width_in), height(height_in) {
 void Image::setPixel(const RGB &pixel, int x, int y) {
 	// Determine the 1D coordinate from 2D coordinate (x, y).
 	int index = x + width * y;
+	// convert colors in range 0 - 1 to range 0 - 255
+	RGB p = RGB((int)(maximumColorValue * pixel.r), (int)(maximumColorValue * pixel.g), (int)(maximumColorValue * pixel.b));
 	// Set the color of the pixel.
-	image.at(index) = pixel;
+	image.at(index) = p;
 }
 
 void Image::saveImageAsPPM(const std::string filePath) {
