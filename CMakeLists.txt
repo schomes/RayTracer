@@ -26,6 +26,7 @@ set(SOURCE_FILES
 	src/Ellipsoid.hpp
 	src/Ellipsoid.cpp
 	src/RGB.hpp
+	src/RGB.cpp
 	src/Light.hpp
 )
 
