@@ -4,6 +4,7 @@
 #include <sstream> /* string streams */
 #include <stdlib.h> /* exit, EXIT_FAILURE */
 #include "Point3.hpp"
+#include "HVector.hpp"
 #include "Ray.hpp"
 #include "RGB.hpp"
 
@@ -57,7 +58,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "bkgcolor") {
 				double r, g, b;
 				ss >> r >> g >> b;
-				
+
 				r = clamp(r, 0.0, 1.0);
 				g = clamp(g, 0.0, 1.0);
 				b = clamp(b, 0.0, 1.0);
@@ -133,6 +134,29 @@ void Kernel::readScene(std::ifstream &inputFile) {
 					std::cerr << "Error: No material was specified before defining a ellipsoid." << std::endl;
 					exit(EXIT_FAILURE);
 				}
+			}
+
+			else if (variable == "light") {
+				double x, y, z, w; 
+				double r, g, b; 
+				ss >> x >> y >> z >> w; 
+				ss >> r >> g >> b; 
+
+				// check if w is invalid
+				if (w != 1 && w != 0) {
+					std::cerr << "Error: Invalid input for light. 'w' must be 0 or 1." << std::endl;
+					exit(EXIT_FAILURE);
+				}
+
+				r = clamp(r, 0.0, 1.0);
+				g = clamp(g, 0.0, 1.0);
+				b = clamp(b, 0.0, 1.0);
+
+				HVector position = HVector(x, y, z, w); 
+				RGB color = RGB(r, g, b); 
+				Light l = Light(position, color); 
+				lights.push_back(l); 
+
 			}
 
 			else if (variable.find_first_not_of (' ') == variable.npos) {
@@ -238,3 +262,10 @@ RGB Kernel::ShadeRay(Point3 point, Surface *object) {
 	Material material = object->getMaterial();
 	return material.getDiffuseColor();
 }
+
+
+
+
+
+
+

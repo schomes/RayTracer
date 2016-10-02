@@ -11,6 +11,7 @@
 #include "Sphere.hpp"
 #include "Ellipsoid.hpp"
 #include "Material.hpp"
+#include "Light.hpp"
 #include "Image.hpp"
 
 // The kernel is responsible for rendering routines and scene reading.
@@ -29,6 +30,7 @@ public:
 	RGB bkgcolor;
 	Material *material;
 	std::vector<Surface*> objects;
+	std::vector<Light> lights; 
 
 	void readScene(std::ifstream &inputFile);
 	Image render();
