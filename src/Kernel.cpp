@@ -96,8 +96,16 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				RGB diffuseColor = RGB((int)(MAX_COLOR_VALUE * diffuse_r), (int)(MAX_COLOR_VALUE * diffuse_g), (int)(MAX_COLOR_VALUE * diffuse_b));
 				RGB specularColor = RGB((int)(MAX_COLOR_VALUE * specular_r), (int)(MAX_COLOR_VALUE * specular_g), (int)(MAX_COLOR_VALUE * specular_b));
 
-				Material *m = new Material(diffuseColor, specularColor, ka, kd, ks, n);
+				Material *m = new Material();
+				m->setDiffuseColor(diffuseColor); 
+				m->setSpecularColor(specularColor); 
+				m->setAmbientConstant(ka); 
+				m->setDiffuseConstant(kd); 
+				m->setSpecularConstant(ks); 
+				m->setShininess(n); 
 				material = m;
+
+				//std::cout << << std::endl; 
 			}
 
 			else if (variable == "sphere") {
@@ -230,5 +238,5 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 RGB Kernel::ShadeRay(Point3 point, Surface *object) {
 	Material material = object->getMaterial();
-	return material.getMaterialColor();
+	return material.getDiffuseColor();
 }

@@ -16,14 +16,25 @@ private:
 	double shininess; 
 
 public: 
-	Material(RGB diffuseColor_in, RGB specularColor_in, double ka_in, double kd_in, double ks_in, double shininess_in);
+	void setDiffuseColor(RGB diffuseColor_in); 
+	void setSpecularColor(RGB specularColor_in); 
+	void setAmbientConstant(double ka_in); 
+	void setDiffuseConstant(double kd_in); 
+	void setSpecularConstant(double ks_in); 
+	void setShininess(double shininess_in); 
 
 	// TODO: remove constructor and create setter/getter methods instead
 	// This makes it easier to add more material features in the future (now we don't have to extend the constructor even more!)
 	// Also, this method will allow code to be cleaner; lines won't get very long, and each line can be associated with one aspect of a material
 
 //	void setMaterialColor(const RGB &color); 
-	RGB getMaterialColor() {return diffuseColor;}
+	//RGB getMaterialColor() {return diffuseColor;}
+	RGB getDiffuseColor() {return diffuseColor;}
+	RGB getSpecularColor() {return specularColor;}
+	double getAmbientConstant() {return ka;}
+	double getDiffuseConstant() {return kd;}
+	double setSpecularConstant() {return ks;}
+	double getShininess() {return shininess;}
 }; 
 
 #endif 
