@@ -105,7 +105,6 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				m->setShininess(n); 
 				material = m;
 
-				//std::cout << << std::endl; 
 			}
 
 			else if (variable == "sphere") {
