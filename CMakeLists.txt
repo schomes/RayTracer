@@ -14,6 +14,7 @@ set(SOURCE_FILES
 	src/Point3.cpp
 	src/Vector3.hpp
 	src/Vector3.cpp
+	src/HVector.hpp
 	src/Ray.hpp
 	src/Ray.cpp
 	src/Material.hpp
@@ -25,6 +26,7 @@ set(SOURCE_FILES
 	src/Ellipsoid.hpp
 	src/Ellipsoid.cpp
 	src/RGB.hpp
+	src/Light.hpp
 )
 
 add_executable(raytracer ${SOURCE_FILES})
