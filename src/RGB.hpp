@@ -3,7 +3,8 @@
 
 // This structure represents a color with red, green, and blue components. 
 // Each component is represented by values between 0.0 and 1.0 inclusive.
-struct RGB {
+class RGB {
+public: 
 	double r;
 	double g; 
 	double b; 

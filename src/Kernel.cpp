@@ -260,18 +260,36 @@ RGB Kernel::TraceRay(Ray &ray) {
 
 RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
+	RGB finalColor; 
+	Material material = object->getMaterial();
+
 	// compute N vector: normal of object at point 
 	Vector3 normal = object->getNormalForPoint(point);
 
-	// for each light 
-	//.. if light is directional, if light is point
+	// For each light 
+	for (int index = 0; index < lights.size(); index++) {
+		Light light = lights.at(index);  
+		HVector lightPosition = light.getPosition(); 
+		Vector3 lightSourceDirection;
+		// Directional light source
+		if (lightPosition.w == 0) { 
+			lightSourceDirection = (-1.0) * Vector3(lightPosition.x, lightPosition.y, lightPosition.z); 
+		}
+		// Positional light source
+		else {
+
+		}
+
+		//RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * max(0, (normal.dot(lightSourceDirection)))
+
+	}
 
 	// Compute L vector 
 
+	//RGB ambientComponent = material.getAmbientConstant() * material.getDiffuseColor(); 
+	
 
 
-
-	Material material = object->getMaterial();
 	return material.getDiffuseColor();
 }
 
