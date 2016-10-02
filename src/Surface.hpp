@@ -2,6 +2,7 @@
 #define SURFACE_H
 
 #include "Point3.hpp"
+#include "Vector3.hpp"
 #include "Material.hpp"
 #include "Ray.hpp"
 
@@ -22,6 +23,7 @@ public:
 	void setMaterial(Material &material_in) {material = material_in;}
 
 	virtual double hit(Ray &ray) = 0;  
+	virtual Vector3 getNormalForPoint(Point3 &point) = 0; 
 	// virtual Box bounding-box(); 
 }; 
 

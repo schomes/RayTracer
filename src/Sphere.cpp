@@ -45,3 +45,7 @@ double Sphere::hit(Ray &ray) {
 		return minValue; 
 	}
 }
+
+Vector3 Sphere::getNormalForPoint(Point3 &point) {
+	return (point - center) / radius; 
+}

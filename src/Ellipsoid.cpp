@@ -43,3 +43,8 @@ double Ellipsoid::hit(Ray &ray) {
   return 0;
 
 }
+
+// WARNING: This is not implemented 
+Vector3 Ellipsoid::getNormalForPoint(Point3 &point) {
+	return Vector3(0, 0, 0); 
+}

@@ -22,6 +22,7 @@ public:
   }
 
   double hit(Ray &ray);
+  Vector3 getNormalForPoint(Point3 &point); 
 
 }; 
 

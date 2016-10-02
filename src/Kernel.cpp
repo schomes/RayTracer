@@ -258,7 +258,19 @@ RGB Kernel::TraceRay(Ray &ray) {
 	}
 }
 
-RGB Kernel::ShadeRay(Point3 point, Surface *object) {
+RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
+
+	// compute N vector: normal of object at point 
+	Vector3 normal = object->getNormalForPoint(point);
+
+	// for each light 
+	//.. if light is directional, if light is point
+
+	// Compute L vector 
+
+
+
+
 	Material material = object->getMaterial();
 	return material.getDiffuseColor();
 }
