@@ -277,7 +277,8 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		}
 		// Positional light source
 		else {
-
+			lightSourceDirection = Point3(lightPosition.x, lightPosition.y, lightPosition.z) - point; 
+			lightSourceDirection.normalize(); 
 		}
 
 		RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * fmax(0, (normal.dot(lightSourceDirection)));
@@ -288,6 +289,11 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 	RGB ambientComponent = material.getAmbientConstant() * material.getDiffuseColor();
 	finalColor = finalColor + ambientComponent;  
+
+	// Clamp color 
+	finalColor.r = clamp(finalColor.r, 0.0, 1.0);
+	finalColor.g = clamp(finalColor.g, 0.0, 1.0);
+	finalColor.b = clamp(finalColor.b, 0.0, 1.0);
 	
 	return finalColor; 
 
