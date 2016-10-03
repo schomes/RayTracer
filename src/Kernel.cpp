@@ -288,14 +288,14 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		finalColor = finalColor + diffuseComponent; 
 
 		// Specular component 
-		// Vector3 viewerDirection = cameraPosition - point; 
-		// viewerDirection.normalize(); 
+		Vector3 viewerDirection = cameraPosition - point; 
+		viewerDirection = viewerDirection.normalize(); 
 
-		Vector3 halfwayVector = lightSourceDirection + viewingDirection.normalize(); 
+		Vector3 halfwayVector = lightSourceDirection + viewerDirection.normalize(); 
 		halfwayVector = halfwayVector.normalize(); 
 
-		//RGB specularComponent = material.getSpecularConstant() * material.getSpecularColor() * pow(fmax(0, (normal.dot(halfwayVector))), material.getShininess());
-		//finalColor = finalColor + specularComponent; 
+		RGB specularComponent = material.getSpecularConstant() * material.getSpecularColor() * pow(fmax(0, (normal.dot(halfwayVector))), material.getShininess());
+		finalColor = finalColor + specularComponent; 
 	}
 
 	// Add ambient component
