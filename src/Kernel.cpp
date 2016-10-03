@@ -263,7 +263,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 	RGB finalColor = RGB(0, 0, 0); 
 	Material material = object->getMaterial();
 
-	// compute N vector: normal of object at point 
+	// Find normal of object at point 
 	Vector3 normal = object->getNormalForPoint(point);
 	normal = normal.normalize(); 
 
@@ -275,13 +275,14 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		// Directional light source
 		if (lightPosition.w == 0) { 
 			lightSourceDirection = (-1.0) * Vector3(lightPosition.x, lightPosition.y, lightPosition.z); 
-			lightSourceDirection = lightSourceDirection.normalize(); 
 		}
 		// Positional light source
 		else {
 			lightSourceDirection = Point3(lightPosition.x, lightPosition.y, lightPosition.z) - point; 
-			lightSourceDirection = lightSourceDirection.normalize(); 
 		}
+
+		// Normalize light source direction
+		lightSourceDirection = lightSourceDirection.normalize(); 
 
 		// Diffuse component
 		RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * fmax(0, (normal.dot(lightSourceDirection)));
@@ -298,7 +299,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		finalColor = finalColor + specularComponent; 
 	}
 
-	// Add ambient component
+	// Ambient component
 	RGB ambientComponent = material.getAmbientConstant() * material.getDiffuseColor();
 	finalColor = finalColor + ambientComponent;  
 
