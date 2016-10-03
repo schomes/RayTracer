@@ -33,7 +33,7 @@ public:
 	RGB getSpecularColor() {return specularColor;}
 	double getAmbientConstant() {return ka;}
 	double getDiffuseConstant() {return kd;}
-	double setSpecularConstant() {return ks;}
+	double getSpecularConstant() {return ks;}
 	double getShininess() {return shininess;}
 }; 
 

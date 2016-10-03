@@ -265,8 +265,9 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 	// compute N vector: normal of object at point 
 	Vector3 normal = object->getNormalForPoint(point);
+	normal = normal.normalize(); 
 
-	// For each light 
+	// For each light determine the diffuse and specular color
 	for (int index = 0; index < lights.size(); index++) {
 		Light light = lights.at(index);  
 		HVector lightPosition = light.getPosition(); 
@@ -274,19 +275,30 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		// Directional light source
 		if (lightPosition.w == 0) { 
 			lightSourceDirection = (-1.0) * Vector3(lightPosition.x, lightPosition.y, lightPosition.z); 
+			lightSourceDirection = lightSourceDirection.normalize(); 
 		}
 		// Positional light source
 		else {
 			lightSourceDirection = Point3(lightPosition.x, lightPosition.y, lightPosition.z) - point; 
-			lightSourceDirection.normalize(); 
+			lightSourceDirection = lightSourceDirection.normalize(); 
 		}
 
+		// Diffuse component
 		RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * fmax(0, (normal.dot(lightSourceDirection)));
 		finalColor = finalColor + diffuseComponent; 
+
+		// Specular component 
+		// Vector3 viewerDirection = cameraPosition - point; 
+		// viewerDirection.normalize(); 
+
+		Vector3 halfwayVector = lightSourceDirection + viewingDirection.normalize(); 
+		halfwayVector = halfwayVector.normalize(); 
+
+		//RGB specularComponent = material.getSpecularConstant() * material.getSpecularColor() * pow(fmax(0, (normal.dot(halfwayVector))), material.getShininess());
+		//finalColor = finalColor + specularComponent; 
 	}
 
-	// Compute L vector 
-
+	// Add ambient component
 	RGB ambientComponent = material.getAmbientConstant() * material.getDiffuseColor();
 	finalColor = finalColor + ambientComponent;  
 
@@ -296,8 +308,6 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 	finalColor.b = clamp(finalColor.b, 0.0, 1.0);
 	
 	return finalColor; 
-
-	//return material.getDiffuseColor();
 }
 
 
