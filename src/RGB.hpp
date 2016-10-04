@@ -11,6 +11,7 @@ public:
 	RGB(double r = 0, double g = 0, double b = 0) : r(r), g(g), b(b) {}
 
 	RGB operator + (const RGB &) const; 
+	RGB operator * (const RGB &) const; 
 }; 
 
 // scalar, RGB multiplication: s * RGB

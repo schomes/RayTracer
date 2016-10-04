@@ -289,7 +289,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 		// Diffuse component
 		RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * fmax(0, (normal.dot(lightSourceDirection)));
-		finalColor = finalColor + diffuseComponent; 
+		tempColor = tempColor + diffuseComponent; 
 
 		// Specular component 
 		Vector3 viewerDirection = cameraPosition - point; 
@@ -299,7 +299,9 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		halfwayVector = halfwayVector.normalize(); 
 
 		RGB specularComponent = material.getSpecularConstant() * material.getSpecularColor() * pow(fmax(0, (normal.dot(halfwayVector))), material.getShininess());
-		finalColor = finalColor + specularComponent; 
+		tempColor = tempColor + specularComponent; 
+
+		finalColor = finalColor + (light.getColor() * tempColor); 
 	}
 
 	// Ambient component
