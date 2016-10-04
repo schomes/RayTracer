@@ -284,6 +284,9 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		// Normalize light source direction
 		lightSourceDirection = lightSourceDirection.normalize(); 
 
+		// TODO: add the diffuse and specular to temp value; then multiply by light's RGB; add this result to final color
+		RGB tempColor = RGB(0, 0, 0); 
+
 		// Diffuse component
 		RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * fmax(0, (normal.dot(lightSourceDirection)));
 		finalColor = finalColor + diffuseComponent; 
