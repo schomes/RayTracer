@@ -13,8 +13,7 @@ public:
 
 	HVector getPosition() {return position;}
 	RGB getColor() {return color;}
-
-	// get 3D vector 
+ 
 }; 
 
 #endif

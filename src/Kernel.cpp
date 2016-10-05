@@ -289,6 +289,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		double shadowFlag; 
 
 		// Determine if objects obscure the light source 
+
 		Ray r = Ray(point, lightSourceDirection); 
 		shadowFlag = findShadow(r, light); 
 
@@ -346,6 +347,10 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 		else if (lightPosition.w == 1) {
 
 			// Create loop here to detect soft shadows (use the first value seen above as well?)
+			//... create new light position point
+			//... with this point, create new ray for hit(ray) method (update the direction vector, NORMALIZE!!!)
+			//... repeat many times and return result; add 1s and divide by number of times we check for shadow
+
 
 			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
 				return 0.0; 
