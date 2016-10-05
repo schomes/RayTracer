@@ -190,9 +190,9 @@ Image Kernel::render() {
 	//...TODO: check if viewingDirection and upDirection are close to parallel
 	//...TODO cont'd: more parallel means cross is closer to (0, 0, 0) (slide 6 - raycasting02.pdf)
     w = viewingDirection.normalize();
-	u = upDirection.cross(w);
+	u = w.cross(upDirection);
 	u = u.normalize();
-	v = w.cross(u);
+	v = u.cross(w);
 	v = v.normalize();
 
 	// Unit vector in the viewing direction
@@ -344,6 +344,9 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 		}
 		// Positional light source
 		else if (lightPosition.w == 1) {
+
+			// Create loop here to detect soft shadows (use the first value seen above as well?)
+
 			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
 				return 0.0; 
 			}
