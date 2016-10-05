@@ -306,6 +306,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		RGB specularComponent = material.getSpecularConstant() * material.getSpecularColor() * pow(fmax(0, (normal.dot(halfwayVector))), material.getShininess());
 		tempColor = tempColor + specularComponent; 
 
+		// Draw shadows 
 		tempColor = shadowFlag * tempColor; 
 
 		finalColor = finalColor + (light.getColor() * tempColor); 
@@ -328,14 +329,11 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 	HVector lightPosition = light.getPosition(); 
 	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
 
-	// For each object in the scene, check for intersection with ray
+	// For each object, check if a shadow ray hits it
 	Surface *object;
-	// for each object, check if a ray hits it
 	for (int index = 0; index < objects.size(); index++) {
 		Surface *testObject = objects.at(index);
 		double tempMinT = testObject->hit(ray);
-
-		// For directional light check if tempMinT is positive, return 1 if true
 
 		// Directional light source
 		if (lightPosition.w == 0) {
@@ -350,9 +348,6 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 				return 0.0; 
 			}
 		}
-
-		// For positional light source check that tempMinT < light_T, return 1 if true
-
 	}
 
 	// No objects obscure the light source
