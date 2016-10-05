@@ -10,6 +10,7 @@
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
+#define SHADOW_RAY_INTERSECTION_THRESHOLD 0.01 // Used to reject spurious self-intersections when detecting shadows
 
 double clamp(double number, double min, double max) {
 	return std::max(min, std::min(number, max));
@@ -339,13 +340,13 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 		// Directional light source
 		if (lightPosition.w == 0) {
 			// A shadow exists
-			if (tempMinT > 0.01) {
+			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD) {
 				return 0.0; 
 			}
 		}
 		// Positional light source
 		else if (lightPosition.w == 1) {
-			if (tempMinT > 0.01 && tempMinT < lightT) {
+			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
 				return 0.0; 
 			}
 		}
