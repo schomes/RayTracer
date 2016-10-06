@@ -1,4 +1,5 @@
 #include <cmath>
+#include <random> /* For random jitter when creating soft shadows */
 #include "Kernel.hpp"
 #include <iostream>
 #include <sstream> /* string streams */
@@ -327,6 +328,68 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 double Kernel::findShadow(Ray &ray, Light &light) {
 
+	// for jitter in light position
+	//.. for each object, see if shadow
+
+	HVector lightPosition = light.getPosition(); 
+
+	if (lightPosition.w == 0) {
+		// For each object, check if a shadow ray hits it
+		Surface *object;
+		for (int index = 0; index < objects.size(); index++) {
+			Surface *testObject = objects.at(index);
+			double tempMinT = testObject->hit(ray);
+
+			// A shadow exists
+			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD) {
+				return 0.0; 
+			}			
+		}
+		return 1.0; 
+	}
+	else {
+		// Random number distribution
+		std::uniform_real_distribution<double> dist(-2.0, 2.0);  //(min, max)
+	    //Mersenne Twister
+	    std::mt19937 rng; 
+	    //Initialize with non-deterministic seeds
+	    rng.seed(std::random_device{}()); 
+
+	    double numberOfShadowHits = 0; 
+		double numberOfJitterSamples = 80; 
+		for (int jitterCount = 0; jitterCount < numberOfJitterSamples; jitterCount++) {
+			double jitterFactorX = dist(rng); 
+			double jitterFactorY = dist(rng); 
+			double jitterFactorZ = dist(rng); 
+
+			//std::cout << jitterFactorX << " " << jitterFactorY << " " << jitterFactorZ << std::endl; 
+
+			Point3 jitteredLightPosition = Point3(jitterFactorX + lightPosition.x, jitterFactorY + lightPosition.y, jitterFactorZ + lightPosition.z);
+			double lightT = (jitteredLightPosition - ray.origin).magnitude();
+
+			Vector3 jitteredVector = Vector3(jitteredLightPosition.x, jitteredLightPosition.y, jitteredLightPosition.z); 
+			jitteredVector = jitteredVector.normalize(); 
+			Ray jitteredRay = Ray(ray.origin, jitteredVector); 
+
+			// For each object, check if a shadow ray hits it
+			Surface *object;
+			for (int index = 0; index < objects.size(); index++) {
+				Surface *testObject = objects.at(index);
+				double tempMinT = testObject->hit(jitteredRay);
+
+				if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
+					numberOfShadowHits += 1; 
+				}
+			}
+
+		}
+
+		return (1.0 - (numberOfShadowHits / numberOfJitterSamples)); 
+	}
+
+	return 1.0; 
+
+	/*	
 	HVector lightPosition = light.getPosition(); 
 	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
 
@@ -360,7 +423,7 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 
 	// No objects obscure the light source
 	return 1.0; 
-
+	*/
 
 }
 
