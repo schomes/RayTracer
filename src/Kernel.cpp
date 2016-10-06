@@ -47,6 +47,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "fovv") {
 				double fovv = 0.0; // in degrees
 				ss >> fovv;
+				if (fovv >= 180.0) {
+					std::cerr << "Error: Field of view must be smaller than 180 degrees." << std::endl;
+					exit(EXIT_FAILURE);
+				}
 				verticalFieldOfView = fovv;
 			}
 
