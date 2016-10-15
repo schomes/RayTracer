@@ -332,11 +332,13 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 double Kernel::findShadow(Ray &ray, Light &light) {
 
-	// for jitter in light position
-	//.. for each object, see if shadow
+	return isInShadow(ray, objects, light); 
+
+	/*
 
 	HVector lightPosition = light.getPosition(); 
 
+	// Directional light source 
 	if (lightPosition.w == 0) {
 		// For each object, check if a shadow ray hits it
 		Surface *object;
@@ -351,6 +353,7 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 		}
 		return 1.0; 
 	}
+	// Positional light source
 	else {
 		// Random number distribution
 		std::uniform_real_distribution<double> dist(-2.0, 2.0);  //(min, max)
@@ -428,9 +431,36 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 	// No objects obscure the light source
 	return 1.0; 
 	*/
-
 }
 
+double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light) {
+	HVector lightPosition = light.getPosition(); 
+	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
+
+	// For each object, check if a shadow ray hits it
+	Surface *object;
+	for (int index = 0; index < objects.size(); index++) {
+		Surface *testObject = objects.at(index);
+		double tempMinT = testObject->hit(ray);
+
+		// Directional light source
+		if (lightPosition.w == 0) {
+			// A shadow exists
+			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD) {
+				return 0.0; 
+			}
+		}
+		// Positional light source
+		else if (lightPosition.w == 1) {
+			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
+				return 0.0; 
+			}
+		}
+	}
+
+	// No objects obscure the light source
+	return 1.0; 
+}
 
 
 
