@@ -334,7 +334,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 double Kernel::findShadow(Ray &ray, Light &light) {
 
 	double lightType = (light.getPosition()).w;
-	bool softShadows = true; 
+	bool softShadows = false; 
 
 	// Render soft shadows
 	if (softShadows && (lightType == POSITIONAL_LIGHT_SOURCE_TYPE)) {
@@ -371,106 +371,6 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 	else {
 		return isInShadow(ray, objects, light); 
 	}
-
-	
-
-	/*
-
-	HVector lightPosition = light.getPosition(); 
-
-	// Directional light source 
-	if (lightPosition.w == 0) {
-		// For each object, check if a shadow ray hits it
-		Surface *object;
-		for (int index = 0; index < objects.size(); index++) {
-			Surface *testObject = objects.at(index);
-			double tempMinT = testObject->hit(ray);
-
-			// A shadow exists
-			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD) {
-				return 0.0; 
-			}			
-		}
-		return 1.0; 
-	}
-	// Positional light source
-	else {
-		// Random number distribution
-		std::uniform_real_distribution<double> dist(-2.0, 2.0);  //(min, max)
-	    //Mersenne Twister
-	    std::mt19937 rng; 
-	    //Initialize with non-deterministic seeds
-	    rng.seed(std::random_device{}()); 
-
-	    double numberOfShadowHits = 0; 
-		double numberOfJitterSamples = 80; 
-		for (int jitterCount = 0; jitterCount < numberOfJitterSamples; jitterCount++) {
-			double jitterFactorX = dist(rng); 
-			double jitterFactorY = dist(rng); 
-			double jitterFactorZ = dist(rng); 
-
-			//std::cout << jitterFactorX << " " << jitterFactorY << " " << jitterFactorZ << std::endl; 
-
-			Point3 jitteredLightPosition = Point3(jitterFactorX + lightPosition.x, jitterFactorY + lightPosition.y, jitterFactorZ + lightPosition.z);
-			double lightT = (jitteredLightPosition - ray.origin).magnitude();
-
-			Vector3 jitteredVector = Vector3(jitteredLightPosition.x, jitteredLightPosition.y, jitteredLightPosition.z); 
-			jitteredVector = jitteredVector.normalize(); 
-			Ray jitteredRay = Ray(ray.origin, jitteredVector); 
-
-			// For each object, check if a shadow ray hits it
-			Surface *object;
-			for (int index = 0; index < objects.size(); index++) {
-				Surface *testObject = objects.at(index);
-				double tempMinT = testObject->hit(jitteredRay);
-
-				if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
-					numberOfShadowHits += 1; 
-				}
-			}
-
-		}
-
-		return (1.0 - (numberOfShadowHits / numberOfJitterSamples)); 
-	}
-
-	return 1.0; 
-
-	/*	
-	HVector lightPosition = light.getPosition(); 
-	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
-
-	// For each object, check if a shadow ray hits it
-	Surface *object;
-	for (int index = 0; index < objects.size(); index++) {
-		Surface *testObject = objects.at(index);
-		double tempMinT = testObject->hit(ray);
-
-		// Directional light source
-		if (lightPosition.w == 0) {
-			// A shadow exists
-			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD) {
-				return 0.0; 
-			}
-		}
-		// Positional light source
-		else if (lightPosition.w == 1) {
-
-			// Create loop here to detect soft shadows (use the first value seen above as well?)
-			//... create new light position point
-			//... with this point, create new ray for hit(ray) method (update the direction vector, NORMALIZE!!!)
-			//... repeat many times and return result; add 1s and divide by number of times we check for shadow
-
-
-			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
-				return 0.0; 
-			}
-		}
-	}
-
-	// No objects obscure the light source
-	return 1.0; 
-	*/
 }
 
 double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light) {
