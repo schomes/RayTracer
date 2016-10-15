@@ -12,6 +12,7 @@
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
 #define SHADOW_RAY_INTERSECTION_THRESHOLD 0.01 // Used to reject spurious self-intersections when detecting shadows
+#define POSITIONAL_LIGHT_SOURCE_TYPE 1 // Positional light source
 
 double clamp(double number, double min, double max) {
 	return std::max(min, std::min(number, max));
@@ -332,7 +333,46 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 double Kernel::findShadow(Ray &ray, Light &light) {
 
-	return isInShadow(ray, objects, light); 
+	double lightType = (light.getPosition()).w;
+	bool softShadows = true; 
+
+	// Render soft shadows
+	if (softShadows && (lightType == POSITIONAL_LIGHT_SOURCE_TYPE)) {
+		// Random number distribution
+		std::uniform_real_distribution<double> dist(-2.0, 2.0);  //(min, max)
+	    //Mersenne Twister
+	    std::mt19937 rng; 
+	    //Initialize with non-deterministic seeds
+	    rng.seed(std::random_device{}()); 
+
+	    double numberOfShadowHits = 0; 
+		double numberOfJitterSamples = 80; 
+		for (int jitterCount = 0; jitterCount < numberOfJitterSamples; jitterCount++) {
+			double jitterFactorX = dist(rng); 
+			double jitterFactorY = dist(rng); 
+			double jitterFactorZ = dist(rng); 
+
+			// Original light position 
+			HVector lightPosition = light.getPosition(); 
+			// Jitter the light's position
+			Point3 jitteredLightPosition = Point3(jitterFactorX + lightPosition.x, jitterFactorY + lightPosition.y, jitterFactorZ + lightPosition.z);
+			// Create jittered ray 
+			Vector3 jitteredVector = Vector3(jitteredLightPosition.x, jitteredLightPosition.y, jitteredLightPosition.z); 
+			jitteredVector = jitteredVector.normalize(); 
+			Ray jitteredRay = Ray(ray.origin, jitteredVector);
+			// Create jittered light
+			Light jitteredLight = Light(HVector(jitteredLightPosition.x, jitteredLightPosition.y, jitteredLightPosition.z, lightPosition.w), light.getColor()); 
+
+			numberOfShadowHits += isInShadow(jitteredRay, objects, jitteredLight); 
+		}
+		return (numberOfShadowHits / numberOfJitterSamples); 
+	} 
+	// Render without soft shadows
+	else {
+		return isInShadow(ray, objects, light); 
+	}
+
+	
 
 	/*
 
