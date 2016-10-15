@@ -8,6 +8,7 @@
 #include "HVector.hpp"
 #include "Ray.hpp"
 #include "RGB.hpp"
+#include "Perspective.hpp"
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
@@ -189,6 +190,11 @@ Image Kernel::render() {
 	}
 	Image img = Image(width, height);
 
+	// Create perspective camera
+	double aspectRatio = (double)(width) / height;
+	Perspective camera = Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+
+/*
 	// Determine camera coordinate axes
 	//... u is orthogonal to the viewingDirection
 	//... v is orthogonal to the viewingDirection and u
@@ -222,15 +228,17 @@ Image Kernel::render() {
 	// Vertical offset per pixel
 	Vector3 vOffset = (ll - ul) / (height - 1.0);
 
-
+*/
 	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
+			/*
 			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column);
 			Vector3 rayDirection = viewingWindowPoint - cameraPosition;
 			rayDirection = rayDirection.normalize();
 			Ray ray = Ray(cameraPosition, rayDirection);
-
+			*/
+			Ray ray = camera.getRay(column, row); 
 			RGB color = TraceRay(ray);
 			img.setPixel(color, column, row);
 		}

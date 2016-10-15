@@ -6,7 +6,7 @@
 #include "Ray.hpp"
 
 class Camera {
-private: 
+protected: 
 	Point3 cameraPosition;
 	Vector3 u, v, w; // Camera coordinate axes
 	Point3 ul, ur, ll, lr; // Viewing window corners (upper-left, upper-right, lower-left, lower-right)
