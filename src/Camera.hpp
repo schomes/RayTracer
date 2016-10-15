@@ -8,8 +8,9 @@
 class Camera {
 private: 
 	Point3 cameraPosition;
-	Vector3 u, v, w
-
+	Vector3 u, v, w; // Camera coordinate axes
+	Point3 ul, ur, ll, lr; // Viewing window corners (upper-left, upper-right, lower-left, lower-right)
+	Vector3 hOffset, vOffset; // Horizontal and vertical offsets per pixel 
 
 public: 
 	Camera(){}
@@ -19,7 +20,7 @@ public:
 
 	// Mutator methods
 
-	
+
 	virtual Ray getRay(int x, int y) = 0; 
 
 }; 
