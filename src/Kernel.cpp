@@ -194,50 +194,9 @@ Image Kernel::render() {
 	double aspectRatio = (double)(width) / height;
 	Perspective camera = Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
 
-/*
-	// Determine camera coordinate axes
-	//... u is orthogonal to the viewingDirection
-	//... v is orthogonal to the viewingDirection and u
-	Vector3 w, u, v;
-	//...TODO: check if viewingDirection and upDirection are close to parallel
-	//...TODO cont'd: more parallel means cross is closer to (0, 0, 0) (slide 6 - raycasting02.pdf)
-    w = viewingDirection.normalize();
-	u = w.cross(upDirection);
-	u = u.normalize();
-	v = u.cross(w);
-	v = v.normalize();
-
-	// Unit vector in the viewing direction
-	Vector3 n = viewingDirection.normalize();
-
-	// Determine corners of viewing window
-	double aspectRatio = (double)(width) / height;
-	double d = 15.0; // d is arbitrarily chosen
-	double pi = 4 * atan(1.0);
-	double radians = ((verticalFieldOfView / 2.0) * pi) / 180.0;
-	double viewHeight = 2 * d * tan(radians);
-	double viewWidth = aspectRatio * viewHeight;
-	//... Viewing window corners
-	Point3 ul = cameraPosition + (d * n) + (viewHeight / 2 * v) - (viewWidth / 2 * u);
-	Point3 ur = cameraPosition + (d * n) + (viewHeight / 2 * v) + (viewWidth / 2 * u);
-	Point3 ll = cameraPosition + (d * n) - (viewHeight / 2 * v) - (viewWidth / 2 * u);
-	Point3 lr = cameraPosition + (d * n) - (viewHeight / 2 * v) + (viewWidth / 2 * u);
-
-	// Horizontal offset per pixel
-	Vector3 hOffset = (ur - ul) / (width - 1.0);
-	// Vertical offset per pixel
-	Vector3 vOffset = (ll - ul) / (height - 1.0);
-
-*/
 	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
-			/*
-			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column);
-			Vector3 rayDirection = viewingWindowPoint - cameraPosition;
-			rayDirection = rayDirection.normalize();
-			Ray ray = Ray(cameraPosition, rayDirection);
-			*/
 			Ray ray = camera.getRay(column, row); 
 			RGB color = TraceRay(ray);
 			img.setPixel(color, column, row);
