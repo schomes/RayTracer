@@ -28,6 +28,10 @@ set(SOURCE_FILES
 	src/RGB.hpp
 	src/RGB.cpp
 	src/Light.hpp
+	src/Camera.cpp
+	src/Camera.hpp
+	src/Perspective.hpp
+	src/Perspective.cpp
 )
 
 add_executable(raytracer ${SOURCE_FILES})

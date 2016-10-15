@@ -8,10 +8,12 @@
 #include "HVector.hpp"
 #include "Ray.hpp"
 #include "RGB.hpp"
+#include "Perspective.hpp"
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
 #define SHADOW_RAY_INTERSECTION_THRESHOLD 0.01 // Used to reject spurious self-intersections when detecting shadows
+#define POSITIONAL_LIGHT_SOURCE_TYPE 1 // Positional light source
 
 double clamp(double number, double min, double max) {
 	return std::max(min, std::min(number, max));
@@ -188,48 +190,14 @@ Image Kernel::render() {
 	}
 	Image img = Image(width, height);
 
-	// Determine camera coordinate axes
-	//... u is orthogonal to the viewingDirection
-	//... v is orthogonal to the viewingDirection and u
-	Vector3 w, u, v;
-	//...TODO: check if viewingDirection and upDirection are close to parallel
-	//...TODO cont'd: more parallel means cross is closer to (0, 0, 0) (slide 6 - raycasting02.pdf)
-    w = viewingDirection.normalize();
-	u = w.cross(upDirection);
-	u = u.normalize();
-	v = u.cross(w);
-	v = v.normalize();
-
-	// Unit vector in the viewing direction
-	Vector3 n = viewingDirection.normalize();
-
-	// Determine corners of viewing window
+	// Create perspective camera
 	double aspectRatio = (double)(width) / height;
-	double d = 15.0; // d is arbitrarily chosen
-	double pi = 4 * atan(1.0);
-	double radians = ((verticalFieldOfView / 2.0) * pi) / 180.0;
-	double viewHeight = 2 * d * tan(radians);
-	double viewWidth = aspectRatio * viewHeight;
-	//... Viewing window corners
-	Point3 ul = cameraPosition + (d * n) + (viewHeight / 2 * v) - (viewWidth / 2 * u);
-	Point3 ur = cameraPosition + (d * n) + (viewHeight / 2 * v) + (viewWidth / 2 * u);
-	Point3 ll = cameraPosition + (d * n) - (viewHeight / 2 * v) - (viewWidth / 2 * u);
-	Point3 lr = cameraPosition + (d * n) - (viewHeight / 2 * v) + (viewWidth / 2 * u);
-
-	// Horizontal offset per pixel
-	Vector3 hOffset = (ur - ul) / (width - 1.0);
-	// Vertical offset per pixel
-	Vector3 vOffset = (ll - ul) / (height - 1.0);
-
+	Perspective camera = Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
 
 	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
-			Point3 viewingWindowPoint = ul + (vOffset * row) + (hOffset * column);
-			Vector3 rayDirection = viewingWindowPoint - cameraPosition;
-			rayDirection = rayDirection.normalize();
-			Ray ray = Ray(cameraPosition, rayDirection);
-
+			Ray ray = camera.getRay(column, row); 
 			RGB color = TraceRay(ray);
 			img.setPixel(color, column, row);
 		}
@@ -332,26 +300,11 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 
 double Kernel::findShadow(Ray &ray, Light &light) {
 
-	// for jitter in light position
-	//.. for each object, see if shadow
+	double lightType = (light.getPosition()).w;
+	bool softShadows = false; 
 
-	HVector lightPosition = light.getPosition(); 
-
-	if (lightPosition.w == 0) {
-		// For each object, check if a shadow ray hits it
-		Surface *object;
-		for (int index = 0; index < objects.size(); index++) {
-			Surface *testObject = objects.at(index);
-			double tempMinT = testObject->hit(ray);
-
-			// A shadow exists
-			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD) {
-				return 0.0; 
-			}			
-		}
-		return 1.0; 
-	}
-	else {
+	// Render soft shadows
+	if (softShadows && (lightType == POSITIONAL_LIGHT_SOURCE_TYPE)) {
 		// Random number distribution
 		std::uniform_real_distribution<double> dist(-2.0, 2.0);  //(min, max)
 	    //Mersenne Twister
@@ -366,34 +319,28 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 			double jitterFactorY = dist(rng); 
 			double jitterFactorZ = dist(rng); 
 
-			//std::cout << jitterFactorX << " " << jitterFactorY << " " << jitterFactorZ << std::endl; 
-
+			// Original light position 
+			HVector lightPosition = light.getPosition(); 
+			// Jitter the light's position
 			Point3 jitteredLightPosition = Point3(jitterFactorX + lightPosition.x, jitterFactorY + lightPosition.y, jitterFactorZ + lightPosition.z);
-			double lightT = (jitteredLightPosition - ray.origin).magnitude();
-
+			// Create jittered ray 
 			Vector3 jitteredVector = Vector3(jitteredLightPosition.x, jitteredLightPosition.y, jitteredLightPosition.z); 
 			jitteredVector = jitteredVector.normalize(); 
-			Ray jitteredRay = Ray(ray.origin, jitteredVector); 
+			Ray jitteredRay = Ray(ray.origin, jitteredVector);
+			// Create jittered light
+			Light jitteredLight = Light(HVector(jitteredLightPosition.x, jitteredLightPosition.y, jitteredLightPosition.z, lightPosition.w), light.getColor()); 
 
-			// For each object, check if a shadow ray hits it
-			Surface *object;
-			for (int index = 0; index < objects.size(); index++) {
-				Surface *testObject = objects.at(index);
-				double tempMinT = testObject->hit(jitteredRay);
-
-				if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
-					numberOfShadowHits += 1; 
-				}
-			}
-
+			numberOfShadowHits += isInShadow(jitteredRay, objects, jitteredLight); 
 		}
-
-		return (1.0 - (numberOfShadowHits / numberOfJitterSamples)); 
+		return (numberOfShadowHits / numberOfJitterSamples); 
+	} 
+	// Render without soft shadows
+	else {
+		return isInShadow(ray, objects, light); 
 	}
+}
 
-	return 1.0; 
-
-	/*	
+double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light) {
 	HVector lightPosition = light.getPosition(); 
 	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
 
@@ -412,13 +359,6 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 		}
 		// Positional light source
 		else if (lightPosition.w == 1) {
-
-			// Create loop here to detect soft shadows (use the first value seen above as well?)
-			//... create new light position point
-			//... with this point, create new ray for hit(ray) method (update the direction vector, NORMALIZE!!!)
-			//... repeat many times and return result; add 1s and divide by number of times we check for shadow
-
-
 			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
 				return 0.0; 
 			}
@@ -427,10 +367,7 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 
 	// No objects obscure the light source
 	return 1.0; 
-	*/
-
 }
-
 
 
 
