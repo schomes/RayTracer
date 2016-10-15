@@ -8,7 +8,7 @@
 
 int main( int argc, char **argv ) {
 
-	// check if input file has been specified
+	// Check if input file has been specified
 	if (argc < 2) {
 		std::cerr << "**Error: an input file must be specified." << std::endl;
 		return 0;
