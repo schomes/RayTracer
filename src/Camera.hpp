@@ -14,6 +14,7 @@ protected:
 
 public: 
 	Camera(){}
+	Camera(Point3 cameraPosition, Vector3 viewDirection, Vector3 upDirection, int imageWidth, int imageHeight, double verticalFieldOfView); 
 
 	// Accessor methods 
 	Point3 getPosition() const {return cameraPosition;}
