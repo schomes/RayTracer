@@ -1,6 +1,7 @@
 #include "Triangle.hpp"
 
 #define NO_COLLISION_FLAG -1.0
+#define EPSILON 0.01
 
 double Triangle::hit(Ray &ray) {
 
@@ -39,7 +40,25 @@ double Triangle::hit(Ray &ray) {
 	}
 	else {
 		double t = numerator / denominator; 
-		return t; 
+		Point3 intersectionPoint = ray.origin + (t * ray.direction); 
+
+		Vector3 e3 = intersectionPoint - v1; 
+		Vector3 e4 = intersectionPoint - v2; 
+
+		double area = 0.5 * (e1.cross(e2)).magnitude(); 
+		double a = 0.5 * (e3.cross(e4)).magnitude(); 
+		double b = 0.5 * (e4.cross(e2)).magnitude(); 
+		double c = 0.5 * (e1.cross(e3)).magnitude(); 
+
+		double alpha = a / area; 
+		double beta = b / area; 
+		double gamma = c / area; 
+
+		if ((0 < alpha) && (alpha < 1) && (0 < beta) && (beta < 1) && (0 < gamma) && (gamma < 1) && (alpha + beta + gamma - 1 < EPSILON)) {
+			return t; 
+		} else {
+			return NO_COLLISION_FLAG; 
+		}
 	}
 }
 
