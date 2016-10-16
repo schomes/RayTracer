@@ -54,7 +54,7 @@ double Triangle::hit(Ray &ray) {
 		double beta = b / area; 
 		double gamma = c / area; 
 
-		if ((0 < alpha) && (alpha < 1) && (0 < beta) && (beta < 1) && (0 < gamma) && (gamma < 1) && (alpha + beta + gamma - 1 < EPSILON)) {
+		if ((0 <= alpha) && (alpha <= 1) && (0 <= beta) && (beta <= 1) && (0 <= gamma) && (gamma <= 1) && (alpha + beta + gamma - 1 < EPSILON)) {
 			return t; 
 		} else {
 			return NO_COLLISION_FLAG; 
@@ -63,5 +63,17 @@ double Triangle::hit(Ray &ray) {
 }
 
 Vector3 Triangle::getNormalForPoint(Point3 &point) {
-	return Vector3(0, 0, 0); 
+
+	// Get vertices from vertex array 
+	Point3 v0 = vertexArray->at(p0 - 1); 
+	Point3 v1 = vertexArray->at(p1 - 1);
+	Point3 v2 = vertexArray->at(p2 - 1);
+
+	// Calculate vectors e1, e2 and n
+	Vector3 e1 = v1 - v0; 
+	Vector3 e2 = v2 - v0; 
+	Vector3 n = e1.cross(e2); 
+	n = n.normalize(); 
+
+	return n; 
 }
