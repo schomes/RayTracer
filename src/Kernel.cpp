@@ -221,6 +221,10 @@ Image Kernel::render() {
 			Ray ray = camera.getRay(column, row); 
 			RGB color = TraceRay(ray);
 			img.setPixel(color, column, row);
+
+			// Print progress to terminal
+			//std::cout << "\rProgress: " << double(column + width * row) / (width * height) << "%";
+
 		}
 	}
 	return img;
