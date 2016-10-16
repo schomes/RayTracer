@@ -10,6 +10,7 @@
 #include "Surface.hpp"
 #include "Sphere.hpp"
 #include "Ellipsoid.hpp"
+#include "Triangle.hpp"
 #include "Material.hpp"
 #include "Light.hpp"
 #include "Image.hpp"

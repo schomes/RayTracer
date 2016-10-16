@@ -152,7 +152,17 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			}
 
 			else if (variable == "f") {
-
+				int v1, v2, v3; 
+				ss >> v1 >> v2 >> v3; 
+				// Check if a material exists
+				if (material) {
+					Triangle *t = new Triangle(v1, v2, v3, 0, 0, 0); 
+					t->setMaterial(*material); 
+					objects.push_back(t); 
+				} else {
+					std::cerr << "Error: No material was specified before defining a triangle." << std::endl;
+					exit(EXIT_FAILURE);
+				}
 			}
 
 			else if (variable == "light") {
