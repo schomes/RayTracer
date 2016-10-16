@@ -25,6 +25,8 @@ set(SOURCE_FILES
 	src/Sphere.cpp
 	src/Ellipsoid.hpp
 	src/Ellipsoid.cpp
+	src/Triangle.hpp
+	src/Triangle.cpp
 	src/RGB.hpp
 	src/RGB.cpp
 	src/Light.hpp
