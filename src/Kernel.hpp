@@ -32,6 +32,7 @@ public:
 	RGB bkgcolor;
 	Material *material;
 	std::vector<Surface*> objects;
+	std::vector<Point3> vertices;
 	std::vector<Light> lights; 
 
 	void readScene(std::ifstream &inputFile);

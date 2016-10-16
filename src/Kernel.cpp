@@ -144,6 +144,17 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				}
 			}
 
+			else if (variable == "v") {
+				double x, y, z; 
+				ss >> x >> y >> z; 
+				Point3 p = Point3(x, y, z); 
+				vertices.push_back(p); 
+			}
+
+			else if (variable == "f") {
+
+			}
+
 			else if (variable == "light") {
 				double x, y, z, w; 
 				double r, g, b; 
