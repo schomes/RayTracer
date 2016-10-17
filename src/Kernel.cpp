@@ -154,6 +154,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "f") {
 				int v1, v2, v3; 
 				ss >> v1 >> v2 >> v3; 
+
 				// Check if a material exists
 				if (material) {
 					Triangle *t = new Triangle(&vertices, v1, v2, v3, 0, 0, 0); 
