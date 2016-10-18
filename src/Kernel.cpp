@@ -205,7 +205,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "f") {
 				int v1, v2, v3; // Indices into the vertex array
 				int t1, t2, t3; // Indices into the texture coordinate array
-				int n1, n2, n3; // Indices into the normal array 
+				// Indices into the normal array 
+				int n1 = 0;
+				int n2 = 0;
+				int n3 = 0;
 
 				std::string token = ""; 
 

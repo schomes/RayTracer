@@ -1,5 +1,7 @@
 #include "Triangle.hpp"
 
+#include <iostream> 
+
 #define NO_COLLISION_FLAG -1.0
 #define EPSILON 0.003
 
