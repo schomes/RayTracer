@@ -150,7 +150,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 			}
 
-			// Texture 
+			// Texture
 			else if (variable == "texture") {
 				// import (read) texture image 
 				// add texture image to vector
@@ -185,6 +185,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				}
 			}
 
+			// Vertices
 			else if (variable == "v") {
 				double x, y, z; 
 				ss >> x >> y >> z;
@@ -192,6 +193,15 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				vertices.push_back(p); 
 			}
 
+			// Per-vertex surface normals
+			else if (variable == "vn") {
+				double x, y, z; 
+				ss >> x >> y >> z; 
+				Vector3 surfaceNormal = Vector3(x, y, z); 
+				perVertexSurfaceNormals.push_back(surfaceNormal); 
+			}
+
+			// Triangles (faces)
 			else if (variable == "f") {
 				int v1, v2, v3; // Indices into the vertex array
 				int t1, t2, t3; // Indices into the texture coordinate array
@@ -260,6 +270,8 @@ void Kernel::readScene(std::ifstream &inputFile) {
 }
 
 Image Kernel::render() {
+
+	//std::cout << (perVertexSurfaceNormals.at(0)).x << (perVertexSurfaceNormals.at(0)).y << (perVertexSurfaceNormals.at(0)).z << std::endl; 
 
 	// Initialize output image
 	if (width == 0 || height == 0) {
