@@ -17,6 +17,7 @@ public:
 	 
 	double hit(Ray &ray);
 	Vector3 getNormalForPoint(Point3 &point); 
+	RGB getTextureColor(Point3 &p); 
 }; 
 
 #endif 

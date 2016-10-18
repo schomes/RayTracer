@@ -48,3 +48,7 @@ double Ellipsoid::hit(Ray &ray) {
 Vector3 Ellipsoid::getNormalForPoint(Point3 &point) {
 	return Vector3(0, 0, 0); 
 }
+
+RGB Ellipsoid::getTextureColor(Point3 &p) {
+	return material.getDiffuseColor(); 
+}

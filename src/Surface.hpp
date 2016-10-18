@@ -19,8 +19,7 @@ public:
 
 	// Accessor methods 
 	const Point3 & getCenter() const {return center;}
-	Material getMaterial() {return material;}
-	Image *getTexture() {return texture;}
+	Material getMaterial() {return material;} 
 	
 	// Mutator methods
 	void setMaterial(Material &material_in) {material = material_in;}
@@ -28,6 +27,7 @@ public:
 
 	virtual double hit(Ray &ray) = 0;  
 	virtual Vector3 getNormalForPoint(Point3 &point) = 0; 
+	virtual RGB getTextureColor(Point3 &p) = 0;
 	// virtual Box bounding-box(); 
 }; 
 

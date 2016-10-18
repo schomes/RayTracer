@@ -385,7 +385,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		shadowFlag = findShadow(r, light); 
 
 		// Diffuse component
-		RGB diffuseComponent = material.getDiffuseConstant() * material.getDiffuseColor() * fmax(0, (normal.dot(lightSourceDirection)));
+		RGB diffuseComponent = material.getDiffuseConstant() * object->getTextureColor(point) * fmax(0, (normal.dot(lightSourceDirection)));
 		tempColor = tempColor + diffuseComponent; 
 
 		// Specular component 

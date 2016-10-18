@@ -49,3 +49,7 @@ double Sphere::hit(Ray &ray) {
 Vector3 Sphere::getNormalForPoint(Point3 &point) {
 	return (point - center) / radius; 
 }
+
+RGB Sphere::getTextureColor(Point3 &p) {
+	return material.getDiffuseColor(); 
+}

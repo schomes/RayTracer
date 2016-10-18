@@ -111,3 +111,7 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 
 	
 }
+
+RGB Triangle::getTextureColor(Point3 &p) {
+	return material.getDiffuseColor(); 
+}
