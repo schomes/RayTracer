@@ -154,6 +154,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			else if (variable == "texture") {
 				// import (read) texture image 
 				// add texture image to vector
+				std::string fileName = ""; 
+				ss >> fileName; 
+				Image texture = Image(fileName); 
+				textures.push_back(texture); 
 			}
 
 			else if (variable == "sphere") {
@@ -201,6 +205,14 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				perVertexSurfaceNormals.push_back(surfaceNormal); 
 			}
 
+			// Texture coordinates 
+			else if (variable == "vt") {
+				double x, y; 
+				ss >> x >> y; 
+				Vector3 textureCoordinate = Vector3(x, y, 0); 
+				textureCoordinates.push_back(textureCoordinate); 
+			}
+
 			// Triangles (faces)
 			else if (variable == "f") {
 				int v1, v2, v3; // Indices into the vertex array
@@ -227,14 +239,20 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				ss >> token; 
 				parseToken(token, &v3, &t3, &n3); 
 
+				Triangle *t; 
 				// Check if a material exists
 				if (material) {
-					Triangle *t = new Triangle(&vertices, &perVertexSurfaceNormals, v1, v2, v3, t1, t2, t3, n1, n2, n3); 
+					t = new Triangle(&vertices, &perVertexSurfaceNormals, v1, v2, v3, t1, t2, t3, n1, n2, n3); 
 					t->setMaterial(*material); 
 					objects.push_back(t); 
 				} else {
 					std::cerr << "Error: No material was specified before defining a triangle." << std::endl;
 					exit(EXIT_FAILURE);
+				}
+
+				// Check if texture exists
+				if (!textures.empty()) {
+					t->setTexture(&(textures.back())); 
 				}
 			}
 

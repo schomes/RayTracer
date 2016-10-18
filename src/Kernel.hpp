@@ -36,6 +36,7 @@ public:
 	std::vector<Surface*> objects;
 	std::vector<Point3> vertices;
 	std::vector<Vector3> perVertexSurfaceNormals;
+	std::vector<Vector3> textureCoordinates; 
 	std::vector<Light> lights; 
 
 	void readScene(std::ifstream &inputFile);
