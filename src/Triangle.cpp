@@ -128,6 +128,8 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 }
 
 RGB Triangle::getTextureColor(Point3 &p) {
+
+	// Check if texture exists and that we have proper indices into the texture array 
 	if (texture && !((t0 == 0) || (t1 == 0) || (t2 == 0))) {
 
 		// Get vertices from vertex array 
