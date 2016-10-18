@@ -15,6 +15,9 @@
 #include "Light.hpp"
 #include "Image.hpp"
 
+#define PERSPECTIVE_TYPE 0
+#define ORTHOGRAPHIC_TYPE 1
+
 // The kernel is responsible for rendering routines and scene reading.
 class Kernel {
 private:
@@ -24,6 +27,7 @@ private:
 	double isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light); 
 
 public:
+	int cameraType = PERSPECTIVE_TYPE; 
 	Point3 cameraPosition;
 	Vector3 viewingDirection;
 	Vector3 upDirection;

@@ -70,6 +70,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				cameraPosition = Point3(x, y, z);
 			}
 
+			else if (variable == "parallel") {
+				cameraType = ORTHOGRAPHIC_TYPE; 
+			}
+
 			else if (variable == "viewdir") {
 				double x = 0.0, y = 0.0, z = 0.0;
 				ss >> x >> y >> z;
@@ -307,13 +311,19 @@ Image Kernel::render() {
 
 	// Create perspective camera
 	double aspectRatio = (double)(width) / height;
-	//Perspective camera = Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
-	Orthographic camera = Orthographic(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+
+	Camera *camera; 
+
+	if (cameraType == ORTHOGRAPHIC_TYPE) {
+		camera = new Orthographic(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+	} else {
+		camera = new Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+	} 
 
 	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
-			Ray ray = camera.getRay(column, row); 
+			Ray ray = camera->getRay(column, row); 
 			RGB color = TraceRay(ray);
 			img.setPixel(color, column, row);
 
