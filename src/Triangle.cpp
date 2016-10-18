@@ -128,7 +128,7 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 }
 
 RGB Triangle::getTextureColor(Point3 &p) {
-	if (texture) {
+	if (texture && !((t0 == 0) || (t1 == 0) || (t2 == 0))) {
 
 		// Get vertices from vertex array 
 		Point3 v0 = vertexArray->at(p0 - 1); 
@@ -150,13 +150,9 @@ RGB Triangle::getTextureColor(Point3 &p) {
 		double beta = b / area; 
 		double gamma = c / area; 
 
-
-		// ERROR: accessing an element from texture array leads to Abort trap when t0 is 0
 		Vector3 textureCoordinate0 = textureArray->at(t0 - 1); 
 		Vector3 textureCoordinate1 = textureArray->at(t1 - 1); 
 		Vector3 textureCoordinate2 = textureArray->at(t2 - 1); 
-
-		std::cout << "here" << std::endl; 
 
 		double u = (alpha * textureCoordinate0.x) + (beta * textureCoordinate1.x) + (gamma * textureCoordinate2.x); 
 		double v = (alpha * textureCoordinate0.y) + (beta * textureCoordinate1.y) + (gamma * textureCoordinate2.y); 
