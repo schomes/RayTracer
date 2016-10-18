@@ -19,6 +19,41 @@ double clamp(double number, double min, double max) {
 	return std::max(min, std::min(number, max));
 }
 
+void parseToken(std::string token, int *vertex, int *vertexTexture, int *vertexNormal) {
+	// Get value of index into vertex array  
+	int pos = 0; 
+	// ... if the token is only a vertex index
+	if ((pos = token.find("/")) == std::string::npos) {
+		*vertex = std::stoi(token); 
+		return; 
+	} 
+	// ... If the token contains slashes
+	else {
+		*vertex = std::stoi(token.substr(0, pos)); 
+	}
+
+	// Get value of index into texture coordinate array
+	int startPos = pos + 1; 
+	// ... If the token contains only vertex and texture indices 
+	if ((pos = token.find("/", startPos)) == std::string::npos) {
+		*vertexTexture = std::stoi(token.substr(startPos, pos)); 
+		return; 
+	}
+	// ... If there is texture coordinate index
+	else if (startPos != pos) {
+		*vertexTexture = std::stoi(token.substr(startPos, pos-2)); 
+	}
+
+	// Get value of index into normal array 
+	startPos = pos+1; 
+	if ((pos = token.find("/", startPos)) == std::string::npos) {
+		*vertexNormal = std::stoi(token.substr(startPos, pos)); 
+	}
+	else {
+		// ERROR 
+	}
+}
+
 void Kernel::readScene(std::ifstream &inputFile) {
 	if (inputFile.is_open()) {
 		std::string line = "";
@@ -152,31 +187,27 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			}
 
 			else if (variable == "f") {
-				int v1, v2, v3; 
+				int v1, v2, v3; // Indices into the vertex array
+				int t1, t2, t3; // Indices into the texture coordinate array
+				int n1, n2, n3; // Indices into the normal array 
 
-				//std::string vt1, vt2, vt3; 
-				//ss >> vt1 >> vt2 >> vt3; 
-				//std::cout << "vt1:" << vt1 << " vt2:" << vt2 << " vt3:" << vt3 << " " << std::endl;
+				std::string token = ""; 
 
-				// cases: 
-				// v v v
-				// v/vt v/vt v/vt
-				// v/vt/vn v/vt/vn v/vt/vn
+				// First vertex
+				ss >> token; 
+				parseToken(token, &v1, &t1, &n1); 
 
-				// tempLine = (line without 'f ')
-				// if tempLine doesn't have '/'
-				// ... ss >> v1 >> v2 >> v3
-				// else 
-				// ... ss >> (string token1)
-				// ... ... parseToken(token1)
-				// ... ss >> (string token2)
-				// ... ... parseToken(token2)
-				// ... ss >> (string token3)
-				// ... ... parseToken(token3)
+				// Second vertex
+				ss >> token; 
+				parseToken(token, &v2, &t2, &n2); 
+
+				// Third vertex
+				ss >> token; 
+				parseToken(token, &v3, &t3, &n3); 
 
 				// Check if a material exists
 				if (material) {
-					Triangle *t = new Triangle(&vertices, v1, v2, v3, 0, 0, 0); 
+					Triangle *t = new Triangle(&vertices, v1, v2, v3, t1, t2, t3, n1, n2, n3); 
 					t->setMaterial(*material); 
 					objects.push_back(t); 
 				} else {
