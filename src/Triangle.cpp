@@ -103,6 +103,8 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 		Vector3 normal = Vector3((alpha * normal0) + (beta * normal1) + (gamma * normal2)); 
 		normal = normal.normalize(); 
 
+
+
 		return normal; 
 
 	}
