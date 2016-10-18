@@ -34,6 +34,8 @@ set(SOURCE_FILES
 	src/Camera.hpp
 	src/Perspective.hpp
 	src/Perspective.cpp
+	src/Orthographic.hpp
+	src/Orthographic.cpp
 )
 
 add_executable(raytracer ${SOURCE_FILES})
