@@ -56,7 +56,6 @@ void Image::setPixel(const RGB &pixel, int x, int y) {
 RGB Image::getPixel(int x, int y) {
 	// Determine the 1D coordinate from 2D coordinate (x, y).
 	int index = x + width * y;
-	std::cout << index << std::endl; 
 	return image.at(index); 
 }
 

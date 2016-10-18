@@ -1,6 +1,7 @@
 #include "Triangle.hpp"
 
 #include <iostream> 
+#include <cassert>
 
 #define NO_COLLISION_FLAG -1.0
 #define EPSILON 0.003
@@ -103,7 +104,20 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 		Vector3 normal = Vector3((alpha * normal0) + (beta * normal1) + (gamma * normal2)); 
 		normal = normal.normalize(); 
 
+		///////
 
+		std::cout << "v0: " << v0.x << ", " << v0.y << ", " << v0.z << std::endl; 
+		std::cout << "v1: " << v1.x << ", " << v1.y << ", " << v1.z << std::endl; 
+		std::cout << "v2: " << v2.x << ", " << v2.y << ", " << v2.z << std::endl; 
+
+		std::cout << "n0: " << normal0.x << ", " << normal0.y << ", " << normal0.z << std::endl; 
+		std::cout << "n1: " << normal1.x << ", " << normal1.y << ", " << normal1.z << std::endl; 
+		std::cout << "n2: " << normal2.x << ", " << normal2.y << ", " << normal2.z << std::endl; 
+
+		std::cout << "point: " << point.x << ", " << point.y << ", " << point.z << std::endl; 
+		std::cout << "normal: " << normal.x << ", " << normal.y << ", " << normal.z << std::endl; 
+
+		///////
 
 		return normal; 
 
@@ -142,17 +156,20 @@ RGB Triangle::getTextureColor(Point3 &p) {
 		double u = (alpha * textureCoordinate0.x) + (beta * textureCoordinate1.x) + (gamma * textureCoordinate2.x); 
 		double v = (alpha * textureCoordinate0.y) + (beta * textureCoordinate1.y) + (gamma * textureCoordinate2.y); 
 
-		int i = u * (texture->getWidth() - 1); 
-		int j = v * (texture->getHeight() - 1); 
+		assert(u <= 1.0); 
+		assert(v <= 1.0); 
 
-		std::cout << i << " " << j << std::endl; 
+		int i = u * (double)(texture->getWidth() - 1); 
+		int j = v * (double)(texture->getHeight() - 1); 
 
+		RGB color = texture->getPixel(i, j);
+		color.r = color.r / 255.0; 
+		color.g = color.g / 255.0;
+		color.b = color.b / 255.0;
 
-		return texture->getPixel(i, j); 
+		std::cout << color.r << " " << color.g << " " << color.b << " " << std::endl; 
 
-		std::cout << "ran" << std::endl; 
-
-		return RGB(1, 0, 0); 
+		return color; 
 	} else {
 		return material.getDiffuseColor();
 	}
