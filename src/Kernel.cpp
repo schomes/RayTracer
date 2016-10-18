@@ -150,6 +150,12 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 			}
 
+			// Texture 
+			else if (variable == "texture") {
+				// import (read) texture image 
+				// add texture image to vector
+			}
+
 			else if (variable == "sphere") {
 				double x, y, z, r;
 				ss >> x >> y >> z >> r;

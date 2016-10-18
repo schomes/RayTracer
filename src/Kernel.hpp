@@ -32,6 +32,7 @@ public:
 	int height;
 	RGB bkgcolor;
 	Material *material;
+	std::vector<Image> textures;
 	std::vector<Surface*> objects;
 	std::vector<Point3> vertices;
 	std::vector<Light> lights; 
