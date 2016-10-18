@@ -72,8 +72,13 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 	// Calculate vectors e1, e2 and n
 	Vector3 e1 = v1 - v0; 
 	Vector3 e2 = v2 - v0; 
-	Vector3 n = e1.cross(e2); 
-	n = n.normalize(); 
 
-	return n; 
+	// Per-vertex surface normals were not included; use flat shading 
+	if ((n0 == 0) || (n1 == 0) || (n2 == 0)) {
+		Vector3 n = e1.cross(e2); 
+		n = n.normalize(); 
+		return n; 
+	}
+
+	
 }
