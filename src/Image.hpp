@@ -38,6 +38,8 @@ public:
 	 */ 
 	void setPixel(const RGB &pixel, int x, int y); 
 
+	RGB getPixel(int x, int y); 
+
 	/*
 	 * Saves an image as a PPM file. 
 	 * \param filePath The path and name of the new file. 

@@ -12,6 +12,8 @@ class Triangle : public Surface {
 private: 
 	// Pointer to a vertex array 
 	std::vector<Point3> *vertexArray; 
+	// Pointer to a texture coordinate array
+	std::vector<Vector3> *textureArray; 
 	// Pointer to a per-vertex normal array 
 	std::vector<Vector3> *normalArray; 
 	// Indices into the vertex array 
@@ -23,7 +25,7 @@ private:
 
 public: 
 	Triangle() {}
-	Triangle(std::vector<Point3> *vertexArray_in, std::vector<Vector3> *normalArray_in, int p0_in, int p1_in, int p2_in, int t0_in, int t1_in, int t2_in, int n0_in, int n1_in, int n2_in) : vertexArray(vertexArray_in), normalArray(normalArray_in), p0(p0_in), p1(p1_in), p2(p2_in), t0(t0_in), t1(t1_in), t2(t2_in), n0(n0_in), n1(n1_in), n2(n2_in) {}
+	Triangle(std::vector<Point3> *vertexArray_in, std::vector<Vector3> *textureArray_in, std::vector<Vector3> *normalArray_in, int p0_in, int p1_in, int p2_in, int t0_in, int t1_in, int t2_in, int n0_in, int n1_in, int n2_in) : vertexArray(vertexArray_in), textureArray(textureArray_in), normalArray(normalArray_in), p0(p0_in), p1(p1_in), p2(p2_in), t0(t0_in), t1(t1_in), t2(t2_in), n0(n0_in), n1(n1_in), n2(n2_in) {}
 
 	double hit(Ray &ray); 
 	Vector3 getNormalForPoint(Point3 &point); 

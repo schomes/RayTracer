@@ -242,7 +242,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				Triangle *t; 
 				// Check if a material exists
 				if (material) {
-					t = new Triangle(&vertices, &perVertexSurfaceNormals, v1, v2, v3, t1, t2, t3, n1, n2, n3); 
+					t = new Triangle(&vertices, &textureCoordinates, &perVertexSurfaceNormals, v1, v2, v3, t1, t2, t3, n1, n2, n3); 
 					t->setMaterial(*material); 
 					objects.push_back(t); 
 				} else {
