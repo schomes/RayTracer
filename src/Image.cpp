@@ -1,6 +1,7 @@
 #include "Image.hpp"
 #include <iostream>
 #include <fstream>
+#include <sstream> /* string streams */
 
 Image::Image(int width_in, int height_in) : width(width_in), height(height_in) {
 	// Set all pixels to black
@@ -8,6 +9,37 @@ Image::Image(int width_in, int height_in) : width(width_in), height(height_in) {
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
 			image.push_back(defaultColor);
+		}
+	}
+}
+
+// Reads (imports) image 
+Image::Image(const std::string filePath) {
+	std::ifstream inputFile(filePath.c_str());
+	if (inputFile.is_open()) {
+		std::string line = "";
+
+		// get headers 
+		(std::getline(inputFile, line)); // P3
+		if (std::getline(inputFile, line)) {
+			std::stringstream ss(line);
+			int w, h; 
+			ss >> w >> h; 
+			width = w; 
+			height = h; 
+		}
+
+		while(std::getline(inputFile, line)) {
+			std::stringstream ss(line);
+			int r = 0; 
+			int g = 0; 
+			int b = 0; 
+			while (ss >> r) {
+				// set pixel
+				ss >> g >> b; 
+				RGB pixel = RGB(r, g, b); 
+				image.push_back(pixel); 
+			}
 		}
 	}
 }

@@ -22,6 +22,8 @@ public:
 	 */
 	Image(int width, int height); 
 
+	Image(const std::string filePath); 
+
 	// Returns the width of the image. 
 	int getWidth() const {return width;}
 

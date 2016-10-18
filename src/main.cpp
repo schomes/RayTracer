@@ -14,6 +14,12 @@ int main( int argc, char **argv ) {
 		return 0;
 	}
 
+	Image img = Image("monkey1.ppm"); 
+
+	img.saveImageAsPPM("monkeyPPMTest.ppm"); 
+
+	/*
+
 	// Initialize kernel and read scene description
 	Kernel raytracer;
 	//... Get file name, and save filename without extension
@@ -29,6 +35,8 @@ int main( int argc, char **argv ) {
 
 	// Save image
 	img.saveImageAsPPM(filenameWithoutExtension + ".ppm");
+
+	*/
 
 	return 0;
 }
