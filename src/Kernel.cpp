@@ -146,14 +146,33 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 			else if (variable == "v") {
 				double x, y, z; 
-				ss >> x >> y >> z; 
+				ss >> x >> y >> z;
 				Point3 p = Point3(x, y, z); 
 				vertices.push_back(p); 
 			}
 
 			else if (variable == "f") {
 				int v1, v2, v3; 
-				ss >> v1 >> v2 >> v3; 
+
+				//std::string vt1, vt2, vt3; 
+				//ss >> vt1 >> vt2 >> vt3; 
+				//std::cout << "vt1:" << vt1 << " vt2:" << vt2 << " vt3:" << vt3 << " " << std::endl;
+
+				// cases: 
+				// v v v
+				// v/vt v/vt v/vt
+				// v/vt/vn v/vt/vn v/vt/vn
+
+				// tempLine = (line without 'f ')
+				// if tempLine doesn't have '/'
+				// ... ss >> v1 >> v2 >> v3
+				// else 
+				// ... ss >> (string token1)
+				// ... ... parseToken(token1)
+				// ... ss >> (string token2)
+				// ... ... parseToken(token2)
+				// ... ss >> (string token3)
+				// ... ... parseToken(token3)
 
 				// Check if a material exists
 				if (material) {
