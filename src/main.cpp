@@ -14,6 +14,10 @@ int main( int argc, char **argv ) {
 		return 0;
 	}
 
+	//Image tex = Image("texture1.ppm"); 
+	//tex.saveImageAsPPM("texture1OUTPUT.ppm"); 
+
+	
 	// Initialize kernel and read scene description
 	Kernel raytracer;
 	//... Get file name, and save filename without extension

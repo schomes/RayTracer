@@ -162,7 +162,7 @@ RGB Triangle::getTextureColor(Point3 &p) {
 		int i = u * (double)(texture->getWidth() - 1); 
 		int j = v * (double)(texture->getHeight() - 1); 
 
-		RGB color = texture->getPixel(i, j);
+		RGB color = texture->getPixel((texture->getWidth() - i), j);
 		color.r = color.r / 255.0; 
 		color.g = color.g / 255.0;
 		color.b = color.b / 255.0;
