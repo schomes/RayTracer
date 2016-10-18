@@ -204,7 +204,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 			// Triangles (faces)
 			else if (variable == "f") {
 				int v1, v2, v3; // Indices into the vertex array
-				int t1, t2, t3; // Indices into the texture coordinate array
+				// Indices into the texture coordinate array
+				int t1 = 0; 
+				int t2 = 0; 
+				int t3 = 0; 
 				// Indices into the normal array 
 				int n1 = 0;
 				int n2 = 0;
