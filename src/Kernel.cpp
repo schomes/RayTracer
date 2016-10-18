@@ -9,6 +9,7 @@
 #include "Ray.hpp"
 #include "RGB.hpp"
 #include "Perspective.hpp"
+#include "Orthographic.hpp"
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
@@ -306,7 +307,8 @@ Image Kernel::render() {
 
 	// Create perspective camera
 	double aspectRatio = (double)(width) / height;
-	Perspective camera = Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+	//Perspective camera = Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+	Orthographic camera = Orthographic(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
 
 	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {

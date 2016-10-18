@@ -1,7 +1,7 @@
-#include "Perspective.hpp"
+#include "Orthographic.hpp"
 #include <cmath>
 
-Perspective::Perspective(Point3 cameraPosition, Vector3 viewDirection, Vector3 upDirection, int imageWidth, int imageHeight, double verticalFieldOfView) {
+Orthographic::Orthographic(Point3 cameraPosition, Vector3 viewDirection, Vector3 upDirection, int imageWidth, int imageHeight, double verticalFieldOfView) {
 
 	this->cameraPosition = cameraPosition;
 
@@ -26,10 +26,10 @@ Perspective::Perspective(Point3 cameraPosition, Vector3 viewDirection, Vector3 u
 	double viewWidth = aspectRatio * viewHeight;
 
 	//... Viewing window corners
-	ul = cameraPosition + (d * w) + (viewHeight / 2 * v) - (viewWidth / 2 * u);
-	ur = cameraPosition + (d * w) + (viewHeight / 2 * v) + (viewWidth / 2 * u);
-	ll = cameraPosition + (d * w) - (viewHeight / 2 * v) - (viewWidth / 2 * u);
-	lr = cameraPosition + (d * w) - (viewHeight / 2 * v) + (viewWidth / 2 * u);
+	ul = cameraPosition + (viewHeight / 2 * v) - (viewWidth / 2 * u);
+	ur = cameraPosition + (viewHeight / 2 * v) + (viewWidth / 2 * u);
+	ll = cameraPosition - (viewHeight / 2 * v) - (viewWidth / 2 * u);
+	lr = cameraPosition - (viewHeight / 2 * v) + (viewWidth / 2 * u);
 
 	// Horizontal offset per pixel
 	hOffset = (ur - ul) / (imageWidth - 1.0);
@@ -38,9 +38,7 @@ Perspective::Perspective(Point3 cameraPosition, Vector3 viewDirection, Vector3 u
 
 }
 
-Ray Perspective::getRay(int x, int y) {
+Ray Orthographic::getRay(int x, int y) {
 	Point3 viewingWindowPoint = ul + (vOffset * y) + (hOffset * x);
-	Vector3 rayDirection = viewingWindowPoint - cameraPosition;
-	rayDirection = rayDirection.normalize();
-	return Ray(cameraPosition, rayDirection);
+	return Ray(viewingWindowPoint, w);
 }
