@@ -274,7 +274,7 @@ Image Kernel::render() {
 			img.setPixel(color, column, row);
 
 			// Print progress to terminal
-			//std::cout << "\rProgress: " << double(column + width * row) / (width * height) << "%";
+			std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
 
 		}
 	}
