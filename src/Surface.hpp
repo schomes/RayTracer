@@ -12,7 +12,7 @@ class Surface {
 protected: 
 	Point3 center;
 	Material material; 
-	Image *texture; 
+	Image *texture = NULL; 
 
 public: 
 	Surface(){}

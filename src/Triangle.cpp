@@ -104,8 +104,8 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 		Vector3 normal = Vector3((alpha * normal0) + (beta * normal1) + (gamma * normal2)); 
 		normal = normal.normalize(); 
 
+		/*
 		///////
-
 		std::cout << "v0: " << v0.x << ", " << v0.y << ", " << v0.z << std::endl; 
 		std::cout << "v1: " << v1.x << ", " << v1.y << ", " << v1.z << std::endl; 
 		std::cout << "v2: " << v2.x << ", " << v2.y << ", " << v2.z << std::endl; 
@@ -118,6 +118,7 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 		std::cout << "normal: " << normal.x << ", " << normal.y << ", " << normal.z << std::endl; 
 
 		///////
+		*/
 
 		return normal; 
 
@@ -149,9 +150,13 @@ RGB Triangle::getTextureColor(Point3 &p) {
 		double beta = b / area; 
 		double gamma = c / area; 
 
+
+		// ERROR: accessing an element from texture array leads to Abort trap when t0 is 0
 		Vector3 textureCoordinate0 = textureArray->at(t0 - 1); 
 		Vector3 textureCoordinate1 = textureArray->at(t1 - 1); 
 		Vector3 textureCoordinate2 = textureArray->at(t2 - 1); 
+
+		std::cout << "here" << std::endl; 
 
 		double u = (alpha * textureCoordinate0.x) + (beta * textureCoordinate1.x) + (gamma * textureCoordinate2.x); 
 		double v = (alpha * textureCoordinate0.y) + (beta * textureCoordinate1.y) + (gamma * textureCoordinate2.y); 
@@ -167,7 +172,7 @@ RGB Triangle::getTextureColor(Point3 &p) {
 		color.g = color.g / 255.0;
 		color.b = color.b / 255.0;
 
-		std::cout << color.r << " " << color.g << " " << color.b << " " << std::endl; 
+		//std::cout << color.r << " " << color.g << " " << color.b << " " << std::endl; 
 
 		return color; 
 	} else {
