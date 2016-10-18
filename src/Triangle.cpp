@@ -81,6 +81,31 @@ Vector3 Triangle::getNormalForPoint(Point3 &point) {
 		n = n.normalize(); 
 		return n; 
 	}
+	// Use smooth shading 
+	else { 
+
+		Vector3 normal0 = normalArray->at(n0 - 1); 
+		Vector3 normal1 = normalArray->at(n1 - 1); 
+		Vector3 normal2 = normalArray->at(n2 - 1); 
+
+		Vector3 e3 = point - v1; 
+		Vector3 e4 = point - v2;
+
+		double area = 0.5 * (e1.cross(e2)).magnitude(); 
+		double a = 0.5 * (e3.cross(e4)).magnitude(); 
+		double b = 0.5 * (e4.cross(e2)).magnitude(); 
+		double c = 0.5 * (e1.cross(e3)).magnitude(); 
+
+		double alpha = a / area; 
+		double beta = b / area; 
+		double gamma = c / area; 
+
+		Vector3 normal = Vector3((alpha * normal0) + (beta * normal1) + (gamma * normal2)); 
+		normal = normal.normalize(); 
+
+		return normal; 
+
+	}
 
 	
 }
