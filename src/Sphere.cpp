@@ -58,8 +58,9 @@ RGB Sphere::getTextureColor(Point3 &p) {
 		double normalY = (p.y - center.y) / radius; 
 		double normalZ = (p.z - center.z) / radius; 
 
-		double phi = acos(normalZ); 
-		double theta = atan2(normalY, normalX); 
+		// Align the polls with the y-axis
+		double phi = acos(-normalY); 
+		double theta = atan2(normalX, -normalZ); 
 
 		double pi = 4 * atan(1.0);
 		double u = (theta + pi) / (2 * pi);

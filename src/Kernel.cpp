@@ -423,7 +423,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 	}
 
 	// Ambient component
-	RGB ambientComponent = material.getAmbientConstant() * material.getDiffuseColor();
+	RGB ambientComponent = material.getAmbientConstant() * object->getTextureColor(point);
 	finalColor = finalColor + ambientComponent;  
 
 	// Clamp color 
