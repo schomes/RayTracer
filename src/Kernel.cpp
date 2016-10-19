@@ -169,13 +169,19 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				double x, y, z, r;
 				ss >> x >> y >> z >> r;
 				// Check if a material exists
+				Sphere *s; 
 				if (material) {
-					Sphere *s = new Sphere(Point3(x, y, z), r);
+					s = new Sphere(Point3(x, y, z), r);
 					s->setMaterial(*material);
 					objects.push_back(s);
 				} else {
 					std::cerr << "Error: No material was specified before defining a sphere." << std::endl;
 					exit(EXIT_FAILURE);
+				}
+
+				// Check if texture exists
+				if (!textures.empty()) {
+					s->setTexture(&(textures.back())); 
 				}
 
 			}

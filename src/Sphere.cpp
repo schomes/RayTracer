@@ -51,5 +51,31 @@ Vector3 Sphere::getNormalForPoint(Point3 &point) {
 }
 
 RGB Sphere::getTextureColor(Point3 &p) {
-	return material.getDiffuseColor(); 
+
+	if (texture) {
+
+		double normalX = (p.x - center.x) / radius; 
+		double normalY = (p.y - center.y) / radius; 
+		double normalZ = (p.z - center.z) / radius; 
+
+		double phi = acos(normalZ); 
+		double theta = atan2(normalY, normalX); 
+
+		double pi = 4 * atan(1.0);
+		double u = (theta + pi) / (2 * pi);
+		double v = phi / pi;  
+
+		int i = u * (double)(texture->getWidth() - 1); 
+		int j = v * (double)(texture->getHeight() - 1); 
+
+		RGB color = texture->getPixel((texture->getWidth() - i), j);
+		color.r = color.r / 255.0; 
+		color.g = color.g / 255.0;
+		color.b = color.b / 255.0;
+
+		return color; 
+	} else {
+		return material.getDiffuseColor(); 
+	}
+
 }
