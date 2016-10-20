@@ -69,9 +69,7 @@ RGB Sphere::getTextureColor(Point3 &p) {
 		double v = phi / pi;  
 
 		int i = u * (double)(texture->getWidth() - 1); 
-		int j = v * (double)(texture->getHeight() - 1); 
-
-		std::cout << texture->getWidth() << std::endl; 
+		int j = v * (double)(texture->getHeight() - 1);  
 
 		RGB color = texture->getPixel((texture->getWidth() - i), j);
 		color.r = color.r / 255.0; 
