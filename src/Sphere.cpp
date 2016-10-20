@@ -2,6 +2,8 @@
 #include "Point3.hpp"
 #include <cmath> 
 
+#include <iostream>
+
 #define NO_COLLISION_FLAG -1.0
 
 double Sphere::hit(Ray &ray) {
@@ -68,6 +70,8 @@ RGB Sphere::getTextureColor(Point3 &p) {
 
 		int i = u * (double)(texture->getWidth() - 1); 
 		int j = v * (double)(texture->getHeight() - 1); 
+
+		std::cout << texture->getWidth() << std::endl; 
 
 		RGB color = texture->getPixel((texture->getWidth() - i), j);
 		color.r = color.r / 255.0; 

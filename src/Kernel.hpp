@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <vector>
+#include <list>
 #include "Point3.hpp"
 #include "Vector3.hpp"
 #include "Ray.hpp"
@@ -36,7 +37,7 @@ public:
 	int height;
 	RGB bkgcolor;
 	Material *material;
-	std::vector<Image> textures;
+	std::list<Image> textures;
 	std::vector<Surface*> objects;
 	std::vector<Point3> vertices;
 	std::vector<Vector3> perVertexSurfaceNormals;

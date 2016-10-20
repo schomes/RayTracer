@@ -161,7 +161,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				// add texture image to vector
 				std::string fileName = ""; 
 				ss >> fileName; 
-				Image texture = Image(fileName); 
+				Image texture = Image(fileName);  
 				textures.push_back(texture); 
 			}
 
@@ -181,7 +181,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 				// Check if texture exists
 				if (!textures.empty()) {
-					s->setTexture(&(textures.back())); 
+					s->setTexture(&textures.back()); 
 				}
 
 			}
@@ -334,7 +334,7 @@ Image Kernel::render() {
 			img.setPixel(color, column, row);
 
 			// Print progress to terminal
-			std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
+			//std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
 
 		}
 	}
