@@ -20,11 +20,11 @@ Image::Image(const std::string filePath) {
 		std::string line = "";
 
 		// get headers 
-		(std::getline(inputFile, line)); // P3
 		if (std::getline(inputFile, line)) {
 			std::stringstream ss(line);
+			std::string p3; 
 			int w, h; 
-			ss >> w >> h; 
+			ss >> p3 >> w >> h; 
 			width = w; 
 			height = h; 
 		}
