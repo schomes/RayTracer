@@ -419,12 +419,19 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 		// Draw shadows 
 		tempColor = shadowFlag * tempColor; 
 
+		// Add light's color
 		finalColor = finalColor + (light.getColor() * tempColor); 
 	}
 
 	// Ambient component
 	RGB ambientComponent = material.getAmbientConstant() * object->getTextureColor(point);
 	finalColor = finalColor + ambientComponent;  
+
+	// Specular reflection component 
+
+	//... Find Fresnel reflectance 
+
+	//... Find illumination given by a reflection ray 
 
 	// Clamp color 
 	finalColor.r = clamp(finalColor.r, 0.0, 1.0);
