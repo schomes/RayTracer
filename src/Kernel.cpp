@@ -413,7 +413,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object) {
 		tempColor = tempColor + diffuseComponent; 
 
 		// Specular component 
-		Vector3 viewerDirection = cameraPosition - point; 
+		Vector3 viewerDirection = ray.origin - point; 
 		viewerDirection = viewerDirection.normalize(); 
 
 		Vector3 halfwayVector = lightSourceDirection + viewerDirection.normalize(); 
