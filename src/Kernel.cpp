@@ -339,7 +339,7 @@ Image Kernel::render() {
 			img.setPixel(color, column, row);
 
 			// Print progress to terminal
-			std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
+			//std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
 
 		}
 	}
@@ -348,7 +348,7 @@ Image Kernel::render() {
 
 RGB Kernel::TraceRay(Ray &ray, int depth) {
 
-	if (depth > 2) {
+	if (depth > 1) {
 		return RGB(0, 0, 0); 
 	}
 
@@ -445,7 +445,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	// Specular reflection component 
 
 	//Find Fresnel reflectance 
-
+	double fresnelReflectance = object->getFresnelReflectance(ray); 
 
 	// Find illumination given by a reflection ray 
 	//... Reverse the direction of the incoming ray
@@ -455,7 +455,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	Vector3 reflectedRayDirection = (2 * angleOfIncidenceCosine * normal) - incomingRayDirectionReversed; 
 	Ray reflectedRay = Ray(point, reflectedRayDirection); 
 
-	RGB specularReflectionColor = TraceRay(reflectedRay, depth+1);
+	RGB specularReflectionColor = fresnelReflectance * TraceRay(reflectedRay, depth+1);
 	finalColor = finalColor + specularReflectionColor; 
 
 	// Clamp color 

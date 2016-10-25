@@ -28,6 +28,8 @@ public:
 	virtual double hit(Ray &ray) = 0;  
 	virtual Vector3 getNormalForPoint(Point3 &point) = 0; 
 	virtual RGB getTextureColor(Point3 &p) = 0;
+
+	double getFresnelReflectance(Ray &incidentRay); 
 	// virtual Box bounding-box(); 
 }; 
 
