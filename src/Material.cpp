@@ -24,6 +24,14 @@ void Material::setShininess(double shininess_in) {
 	shininess = shininess_in; 
 }
 
+void Material::setOpacity(double opacity_in) {
+	opacity = opacity_in; 
+}
+
+void Material::setIndexOfRefraction(double indexOfRefraction_in) {
+	indexOfRefraction = indexOfRefraction_in; 
+}
+
 
 // void Material::setMaterialColor(const RGB &color) {
 // 	materialColor = color; 

@@ -124,10 +124,13 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				// Shininess constant
 				double n; 
 
+				double opacity, indexOfRefraction; 
+
 				ss >> diffuse_r >> diffuse_g >> diffuse_b; 
 				ss >> specular_r >> specular_g >> specular_b; 
 				ss >> ka >> kd >> ks; 
 				ss >> n; 
+				ss >> opacity >> indexOfRefraction; 
 
 				diffuse_r = clamp(diffuse_r, 0.0, 1.0);
 				diffuse_g = clamp(diffuse_g, 0.0, 1.0);
@@ -151,6 +154,8 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				m->setDiffuseConstant(kd); 
 				m->setSpecularConstant(ks); 
 				m->setShininess(n); 
+				m->setOpacity(opacity); 
+				m->setIndexOfRefraction(indexOfRefraction); 
 				material = m;
 
 			}
@@ -330,7 +335,7 @@ Image Kernel::render() {
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
 			Ray ray = camera->getRay(column, row); 
-			RGB color = TraceRay(ray);
+			RGB color = TraceRay(ray, 0);
 			img.setPixel(color, column, row);
 
 			// Print progress to terminal
@@ -341,7 +346,11 @@ Image Kernel::render() {
 	return img;
 }
 
-RGB Kernel::TraceRay(Ray &ray) {
+RGB Kernel::TraceRay(Ray &ray, int depth) {
+
+	if (depth > 2) {
+		return RGB(0, 0, 0); 
+	}
 
 	RGB color = bkgcolor;
 
@@ -367,11 +376,11 @@ RGB Kernel::TraceRay(Ray &ray) {
 		Point3 incidentRayOrigin = ray.origin; 
 		Vector3 incidentRayDirection = minT * ray.direction;
 		Ray incidentRay = Ray(incidentRayOrigin, incidentRayDirection);
-		return ShadeRay(incidentRay, object);
+		return ShadeRay(incidentRay, object, depth);
 	}
 }
 
-RGB Kernel::ShadeRay(Ray &ray, Surface *object) {
+RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Shading coordinate
 	Point3 point = ray.origin + ray.direction; 
@@ -435,10 +444,19 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object) {
 
 	// Specular reflection component 
 
-	//... Find Fresnel reflectance 
+	//Find Fresnel reflectance 
 
-	//... Find illumination given by a reflection ray 
-	//Vector3 incomingRayDirection = -1 * 
+
+	// Find illumination given by a reflection ray 
+	//... Reverse the direction of the incoming ray
+	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize()); 
+	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
+
+	Vector3 reflectedRayDirection = (2 * angleOfIncidenceCosine * normal) - incomingRayDirectionReversed; 
+	Ray reflectedRay = Ray(point, reflectedRayDirection); 
+
+	RGB specularReflectionColor = TraceRay(reflectedRay, depth+1);
+	finalColor = finalColor + specularReflectionColor; 
 
 	// Clamp color 
 	finalColor.r = clamp(finalColor.r, 0.0, 1.0);

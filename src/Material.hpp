@@ -14,6 +14,8 @@ private:
 	double ks; // Specular
 
 	double shininess; 
+	double opacity; 
+	double indexOfRefraction; 
 
 public: 
 	void setDiffuseColor(RGB diffuseColor_in); 
@@ -22,6 +24,8 @@ public:
 	void setDiffuseConstant(double kd_in); 
 	void setSpecularConstant(double ks_in); 
 	void setShininess(double shininess_in); 
+	void setOpacity(double opacity_in);
+	void setIndexOfRefraction(double indexOfRefraction_in); 
 
 	// TODO: remove constructor and create setter/getter methods instead
 	// This makes it easier to add more material features in the future (now we don't have to extend the constructor even more!)
@@ -35,6 +39,8 @@ public:
 	double getDiffuseConstant() {return kd;}
 	double getSpecularConstant() {return ks;}
 	double getShininess() {return shininess;}
+	double getOpacity() {return opacity;}
+	double getIndexOfRefraction() {return indexOfRefraction;}
 }; 
 
 #endif 

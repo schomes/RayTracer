@@ -22,8 +22,8 @@
 // The kernel is responsible for rendering routines and scene reading.
 class Kernel {
 private:
-	RGB TraceRay(Ray &ray);
-	RGB ShadeRay(Ray &ray, Surface *object);
+	RGB TraceRay(Ray &ray, int depth);
+	RGB ShadeRay(Ray &ray, Surface *object, int depth);
 	double findShadow(Ray &ray, Light &light); 
 	double isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light); 
 
