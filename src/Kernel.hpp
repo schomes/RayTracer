@@ -23,7 +23,7 @@
 class Kernel {
 private:
 	RGB TraceRay(Ray &ray);
-	RGB ShadeRay(Point3 &point, Surface *object);
+	RGB ShadeRay(Ray &ray, Surface *object);
 	double findShadow(Ray &ray, Light &light); 
 	double isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light); 
 

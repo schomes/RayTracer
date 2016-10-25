@@ -363,12 +363,18 @@ RGB Kernel::TraceRay(Ray &ray) {
 	if (minT == FAR_CLIP) {
 		return color;
 	} else {
-		Point3 shadingCoordinate = ray.origin + (minT * ray.direction);
-		return ShadeRay(shadingCoordinate, object);
+		//Point3 shadingCoordinate = ray.origin + (minT * ray.direction);
+		Point3 incidentRayOrigin = ray.origin; 
+		Vector3 incidentRayDirection = minT * ray.direction;
+		Ray incidentRay = Ray(incidentRayOrigin, incidentRayDirection);
+		return ShadeRay(incidentRay, object);
 	}
 }
 
-RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
+RGB Kernel::ShadeRay(Ray &ray, Surface *object) {
+
+	// Shading coordinate
+	Point3 point = ray.origin + ray.direction; 
 
 	RGB finalColor = RGB(0, 0, 0); 
 	Material material = object->getMaterial();
@@ -432,6 +438,7 @@ RGB Kernel::ShadeRay(Point3 &point, Surface *object) {
 	//... Find Fresnel reflectance 
 
 	//... Find illumination given by a reflection ray 
+	//Vector3 incomingRayDirection = -1 * 
 
 	// Clamp color 
 	finalColor.r = clamp(finalColor.r, 0.0, 1.0);
