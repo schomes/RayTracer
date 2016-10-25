@@ -13,7 +13,7 @@
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
-#define SHADOW_RAY_INTERSECTION_THRESHOLD 0.01 // Used to reject spurious self-intersections when detecting shadows
+#define INTERSECTION_THRESHOLD 0.03 // Used to reject spurious self-intersections when detecting shadows
 #define POSITIONAL_LIGHT_SOURCE_TYPE 1 // Positional light source
 
 double clamp(double number, double min, double max) {
@@ -362,7 +362,7 @@ RGB Kernel::TraceRay(Ray &ray, int depth) {
 		Surface *testObject = objects.at(index);
 		double tempMinT = testObject->hit(ray);
 
-		if ((tempMinT > 0) && (tempMinT < minT)) {
+		if ((tempMinT > INTERSECTION_THRESHOLD) && (tempMinT < minT)) {
 			object = testObject;
 			minT = tempMinT;
 		}
@@ -449,7 +449,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Find illumination given by a reflection ray 
 	//... Reverse the direction of the incoming ray
-	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize()); 
+	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize());  
 	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 
 	Vector3 reflectedRayDirection = (2 * angleOfIncidenceCosine * normal) - incomingRayDirectionReversed; 
@@ -521,13 +521,13 @@ double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light
 		// Directional light source
 		if (lightPosition.w == 0) {
 			// A shadow exists
-			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD) {
+			if (tempMinT > INTERSECTION_THRESHOLD) {
 				return 0.0; 
 			}
 		}
 		// Positional light source
 		else if (lightPosition.w == 1) {
-			if (tempMinT > SHADOW_RAY_INTERSECTION_THRESHOLD && tempMinT < lightT) {
+			if (tempMinT > INTERSECTION_THRESHOLD && tempMinT < lightT) {
 				return 0.0; 
 			}
 		}
