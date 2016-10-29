@@ -295,6 +295,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 			}
 
+			// Empty line 
 			else if (variable.find_first_not_of (' ') == variable.npos) {
 				continue;
 			}
@@ -339,7 +340,7 @@ Image Kernel::render() {
 			img.setPixel(color, column, row);
 
 			// Print progress to terminal
-			//std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
+			std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
 
 		}
 	}
@@ -348,7 +349,7 @@ Image Kernel::render() {
 
 RGB Kernel::TraceRay(Ray &ray, int depth) {
 
-	if (depth > 1) {
+	if (depth > 2) {
 		return RGB(0, 0, 0); 
 	}
 
@@ -438,12 +439,13 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 		finalColor = finalColor + (light.getColor() * tempColor); 
 	}
 
+
 	// Ambient component
 	RGB ambientComponent = material.getAmbientConstant() * object->getTextureColor(point);
 	finalColor = finalColor + ambientComponent;  
 
-	// Specular reflection component 
 
+	// Specular reflection component 
 	//Find Fresnel reflectance 
 	double fresnelReflectance = object->getFresnelReflectance(ray); 
 
@@ -457,6 +459,9 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	RGB specularReflectionColor = fresnelReflectance * TraceRay(reflectedRay, depth+1);
 	finalColor = finalColor + specularReflectionColor; 
+
+
+	
 
 	// Clamp color 
 	finalColor.r = clamp(finalColor.r, 0.0, 1.0);

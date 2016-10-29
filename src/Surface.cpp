@@ -20,6 +20,7 @@ double Surface::getFresnelReflectance(Ray &incidentRay) {
 
 	double fresnelReflectance = reflectionCoefficient + (1 - reflectionCoefficient) * pow((1 - incidentNormalAngle), 5); 
 
+	/*
 	std::cout << "indexOfRefraction: " << indexOfRefraction << std::endl; 
 	std::cout << "reflectionCoefficient: " << reflectionCoefficient << std::endl; 
 	std::cout << "point: " << point.x << " " << point.y << " " << point.z << std::endl; 
@@ -27,6 +28,7 @@ double Surface::getFresnelReflectance(Ray &incidentRay) {
 	std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl;
 	std::cout << "incidentNormalAngle: " << incidentNormalAngle << std::endl; 
 	std::cout << "Fresnel: " << fresnelReflectance << std::endl; 
+	*/ 
 
 	return fresnelReflectance; 
 }
