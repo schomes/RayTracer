@@ -478,7 +478,18 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Transparent component 
 	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 
-	//Vector3 transmittedRayDirection  
+	Ray incidentRay = Ray(point, incomingRayDirectionReversed); 
+	//Ray transmittedRay = object->getTransmittedRayDirection(incidentRay, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
+
+	// TEST CODE
+	Point3 p = Point3(3, -1, -3); 
+	Vector3 v = Vector3(-1.0/9.0, 4.0/9.0, 8.0/9.0); 
+	Ray testI = Ray(p, v); 
+	Ray tRay = object->getTransmittedRayDirection(testI, 1.0, 1.2); 
+
+	std::cout << (tRay.direction).x << " " << (tRay.direction).y << " " << (tRay.direction).z << std::endl; 
+
+	/////////
 
 	// Clamp color 
 	finalColor.r = clamp(finalColor.r, 0.0, 1.0);
