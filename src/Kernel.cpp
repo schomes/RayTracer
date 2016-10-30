@@ -15,6 +15,7 @@
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
 #define INTERSECTION_THRESHOLD 0.03 // Used to reject spurious self-intersections when detecting shadows
 #define POSITIONAL_LIGHT_SOURCE_TYPE 1 // Positional light source
+#define AIR_INDEX_OF_REFRACTION 1
 
 double clamp(double number, double min, double max) {
 	return std::max(min, std::min(number, max));
@@ -446,8 +447,12 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 
 	// Specular reflection component 
+	// Determine if the ray is going into or out of an object 
+
+	double indexOfRefraction = (object->getMaterial()).getIndexOfRefraction(); 
+
 	//Find Fresnel reflectance 
-	double fresnelReflectance = object->getFresnelReflectance(ray); 
+	double fresnelReflectance = object->getFresnelReflectance(ray, AIR_INDEX_OF_REFRACTION, indexOfRefraction); 
 
 	// Find illumination given by a reflection ray 
 	//... Reverse the direction of the incoming ray
@@ -461,7 +466,9 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	finalColor = finalColor + specularReflectionColor; 
 
 
-	
+	// Transparent component 
+	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 
+
 
 	// Clamp color 
 	finalColor.r = clamp(finalColor.r, 0.0, 1.0);

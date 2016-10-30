@@ -3,11 +3,11 @@
 
 #include <iostream> 
 
-double Surface::getFresnelReflectance(Ray &incidentRay) {
+double Surface::getFresnelReflectance(Ray &incidentRay, double incomingIndexOfRefraction, double transmittedIndexOfRefraction) {
 
-	double indexOfRefraction = material.getIndexOfRefraction(); 
+	//double indexOfRefraction = material.getIndexOfRefraction(); 
 	// Reflection coefficient for the angle of incidence of the incoming ray; controls the sensitivity of the surface reflectivity 
-	double reflectionCoefficient = pow(((indexOfRefraction - 1) / (indexOfRefraction + 1)), 2); 
+	double reflectionCoefficient = pow(((transmittedIndexOfRefraction - incomingIndexOfRefraction) / (transmittedIndexOfRefraction + incomingIndexOfRefraction)), 2); 
 
 	Point3 point = incidentRay.origin + incidentRay.direction; 
 	Vector3 normal = getNormalForPoint(point);

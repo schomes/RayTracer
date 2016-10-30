@@ -29,7 +29,7 @@ public:
 	virtual Vector3 getNormalForPoint(Point3 &point) = 0; 
 	virtual RGB getTextureColor(Point3 &p) = 0;
 
-	double getFresnelReflectance(Ray &incidentRay); 
+	double getFresnelReflectance(Ray &incidentRay, double incomingIndexOfRefraction, double transmittedIndexOfRefraction); 
 	// virtual Box bounding-box(); 
 }; 
 
