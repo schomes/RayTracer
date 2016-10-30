@@ -447,18 +447,22 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 
 	// Specular reflection component 
-	// Determine if the ray is going into or out of an object 
 
-	double indexOfRefraction = (object->getMaterial()).getIndexOfRefraction(); 
-
-	//Find Fresnel reflectance 
-	double fresnelReflectance = object->getFresnelReflectance(ray, AIR_INDEX_OF_REFRACTION, indexOfRefraction); 
-
-	// Find illumination given by a reflection ray 
 	//... Reverse the direction of the incoming ray
 	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize());  
 	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 
+	//... Find Fresnel reflectance depending on if the ray is going into or out of an object 
+	//... This implementation assumes that there are no intersecting surfaces or full containment of a surface in another
+	double indexOfRefraction = (object->getMaterial()).getIndexOfRefraction(); 
+	double fresnelReflectance; 
+	if (angleOfIncidenceCosine > 0) {
+		fresnelReflectance = object->getFresnelReflectance(ray, AIR_INDEX_OF_REFRACTION, indexOfRefraction); 
+	} else {
+		fresnelReflectance = object->getFresnelReflectance(ray, indexOfRefraction, AIR_INDEX_OF_REFRACTION);
+	}
+
+	// Find illumination given by a reflection ray 
 	Vector3 reflectedRayDirection = (2 * angleOfIncidenceCosine * normal) - incomingRayDirectionReversed; 
 	Ray reflectedRay = Ray(point, reflectedRayDirection); 
 
