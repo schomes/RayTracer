@@ -13,7 +13,7 @@
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
-#define INTERSECTION_THRESHOLD 0.03 // Used to reject spurious self-intersections when detecting shadows
+#define INTERSECTION_THRESHOLD 0.003 // Used to reject spurious self-intersections when detecting shadows
 #define POSITIONAL_LIGHT_SOURCE_TYPE 1 // Positional light source
 #define AIR_INDEX_OF_REFRACTION 1
 
@@ -341,7 +341,7 @@ Image Kernel::render() {
 			img.setPixel(color, column, row);
 
 			// Print progress to terminal
-			std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
+			//std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
 
 		}
 	}
@@ -350,7 +350,7 @@ Image Kernel::render() {
 
 RGB Kernel::TraceRay(Ray &ray, int depth) {
 
-	if (depth > 2) {
+	if (depth > 5) {
 		return RGB(0, 0, 0); 
 	}
 
@@ -452,21 +452,26 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize());  
 	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 
+	std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl; 
+	std::cout << "incomingRayDirectionReversed: " << incomingRayDirectionReversed.x << " " << incomingRayDirectionReversed.y << " " << incomingRayDirectionReversed.z << std::endl; 
+
 	//... Determine indices of refraction depending on if the ray is going into or out of an object 
 	//... This implementation assumes that there are no intersecting surfaces or full containment of a surface in another
 	double objectIndexOfRefraction = (object->getMaterial()).getIndexOfRefraction();  
 	double incomingIndexOfRefraction; 
-	double transmittedIndexOfRefraction; 
-	if (angleOfIncidenceCosine > 0) {
+	double transmittedIndexOfRefraction;  
+	if (angleOfIncidenceCosine >= 0) {
+		std::cout << "angleOfIncidenceCosine: " << angleOfIncidenceCosine << std::endl; 
 		incomingIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
 		transmittedIndexOfRefraction = objectIndexOfRefraction; 
 	} else {
 		incomingIndexOfRefraction = objectIndexOfRefraction; 
 		transmittedIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
+		normal = -1 * normal; 
 	}
 
 	// Find Fresnel Reflectance 
-	double fresnelReflectance = object->getFresnelReflectance(ray, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
+	double fresnelReflectance = object->getFresnelReflectance(ray, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
 
 	// Find illumination given by a reflection ray 
 	Vector3 reflectedRayDirection = (2 * angleOfIncidenceCosine * normal) - incomingRayDirectionReversed; 
@@ -479,16 +484,19 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	// Transparent component 
 	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 
 	Ray incidentRay = Ray(point, incomingRayDirectionReversed); 
-	//Ray transmittedRay = object->getTransmittedRayDirection(incidentRay, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
+	Ray transmittedRay = object->getTransmittedRayDirection(incidentRay, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
+	RGB transparentColor = (1.0 - fresnelReflectance) * (1 - material.getOpacity()) * TraceRay(transmittedRay, depth+1); 
+	finalColor = finalColor + transparentColor; 
 
 	// TEST CODE
+	/*
 	Point3 p = Point3(3, -1, -3); 
 	Vector3 v = Vector3(-1.0/9.0, 4.0/9.0, 8.0/9.0); 
 	Ray testI = Ray(p, v); 
 	Ray tRay = object->getTransmittedRayDirection(testI, 1.0, 1.2); 
 
 	std::cout << (tRay.direction).x << " " << (tRay.direction).y << " " << (tRay.direction).z << std::endl; 
-
+	*/ 
 	/////////
 
 	// Clamp color 

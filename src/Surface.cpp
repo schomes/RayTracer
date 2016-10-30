@@ -3,14 +3,14 @@
 
 #include <iostream> 
 
-double Surface::getFresnelReflectance(Ray &incidentRay, double incomingIndexOfRefraction, double transmittedIndexOfRefraction) {
+double Surface::getFresnelReflectance(Ray &incidentRay, Vector3 normal, double incomingIndexOfRefraction, double transmittedIndexOfRefraction) {
 
 	//double indexOfRefraction = material.getIndexOfRefraction(); 
 	// Reflection coefficient for the angle of incidence of the incoming ray; controls the sensitivity of the surface reflectivity 
 	double reflectionCoefficient = pow(((transmittedIndexOfRefraction - incomingIndexOfRefraction) / (transmittedIndexOfRefraction + incomingIndexOfRefraction)), 2); 
 
 	Point3 point = incidentRay.origin + incidentRay.direction; 
-	Vector3 normal = getNormalForPoint(point);
+	//Vector3 normal = getNormalForPoint(point);
 	normal = normal.normalize(); 
 
 	Vector3 incidentRayVector = -1 * incidentRay.direction; 
@@ -34,20 +34,20 @@ double Surface::getFresnelReflectance(Ray &incidentRay, double incomingIndexOfRe
 }
 
 
-Ray Surface::getTransmittedRayDirection(Ray &incidentRay, double incomingIndexOfRefraction, double transmittedIndexOfRefraction) {
+Ray Surface::getTransmittedRayDirection(Ray &incidentRay, Vector3 normal, double incomingIndexOfRefraction, double transmittedIndexOfRefraction) {
 
 	Point3 intersectionPoint = incidentRay.origin; 
 
 	// Find normal for point
 	//Vector3 normal = getNormalForPoint(intersectionPoint); 
-	// normal = normal.normalize(); 
-	Vector3 normal = Vector3(0, 1.0, 0); 
+	normal = normal.normalize(); 
+	// TEST: Vector3 normal = Vector3(0, 1.0, 0); 
 
 	Vector3 incidentRayDirection = (incidentRay.direction).normalize(); 
 
 	// Calculate cos() N.dot(incidentRayDirection)
-	//double cosineOfIncidentAngle = normal.dot(incidentRayDirection); 
 	double cosineOfIncidentAngle = normal.dot(incidentRayDirection); 
+	// TEST: double cosineOfIncidentAngle = normal.dot(incidentRayDirection); 
 
 	//std::cout << "cosineOfIncidentAngle: " << cosineOfIncidentAngle << std::endl; 
 
