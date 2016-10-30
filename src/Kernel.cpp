@@ -13,7 +13,7 @@
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
-#define INTERSECTION_THRESHOLD 0.003 // Used to reject spurious self-intersections when detecting shadows
+#define INTERSECTION_THRESHOLD 0.0001 // Used to reject spurious self-intersections when detecting shadows
 #define POSITIONAL_LIGHT_SOURCE_TYPE 1 // Positional light source
 #define AIR_INDEX_OF_REFRACTION 1
 
