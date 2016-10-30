@@ -452,15 +452,21 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize());  
 	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 
-	//... Find Fresnel reflectance depending on if the ray is going into or out of an object 
+	//... Determine indices of refraction depending on if the ray is going into or out of an object 
 	//... This implementation assumes that there are no intersecting surfaces or full containment of a surface in another
-	double indexOfRefraction = (object->getMaterial()).getIndexOfRefraction(); 
-	double fresnelReflectance; 
+	double objectIndexOfRefraction = (object->getMaterial()).getIndexOfRefraction();  
+	double incomingIndexOfRefraction; 
+	double transmittedIndexOfRefraction; 
 	if (angleOfIncidenceCosine > 0) {
-		fresnelReflectance = object->getFresnelReflectance(ray, AIR_INDEX_OF_REFRACTION, indexOfRefraction); 
+		incomingIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
+		transmittedIndexOfRefraction = objectIndexOfRefraction; 
 	} else {
-		fresnelReflectance = object->getFresnelReflectance(ray, indexOfRefraction, AIR_INDEX_OF_REFRACTION);
+		incomingIndexOfRefraction = objectIndexOfRefraction; 
+		transmittedIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
 	}
+
+	// Find Fresnel Reflectance 
+	double fresnelReflectance = object->getFresnelReflectance(ray, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
 
 	// Find illumination given by a reflection ray 
 	Vector3 reflectedRayDirection = (2 * angleOfIncidenceCosine * normal) - incomingRayDirectionReversed; 
@@ -472,7 +478,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Transparent component 
 	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 
-
+	//Vector3 transmittedRayDirection  
 
 	// Clamp color 
 	finalColor.r = clamp(finalColor.r, 0.0, 1.0);
