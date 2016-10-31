@@ -350,7 +350,7 @@ Image Kernel::render() {
 
 RGB Kernel::TraceRay(Ray &ray, int depth) {
 
-	if (depth > 4) {
+	if (depth > 10) {
 		return RGB(0, 0, 0); 
 	}
 
@@ -393,6 +393,15 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	// Find normal of object at point 
 	Vector3 normal = object->getNormalForPoint(point);
 	normal = normal.normalize(); 
+
+
+
+
+
+
+
+
+
 
 	// For each light determine the diffuse and specular color
 	for (int index = 0; index < lights.size(); index++) {
@@ -448,8 +457,16 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Specular reflection component 
 
+
+
+
+
+	///// GOES HERE 
+
+	///// PASTED CODE
+
 	//... Reverse the direction of the incoming ray
-	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize());  
+	Vector3 incomingRayDirectionReversed = (-1 * (ray.direction)).normalize();  
 	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 
 	//std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl; 
@@ -460,17 +477,25 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	double objectIndexOfRefraction = (object->getMaterial()).getIndexOfRefraction();  
 	double incomingIndexOfRefraction; 
 	double transmittedIndexOfRefraction;  
+	int ON = 1; 
 	if (angleOfIncidenceCosine >= 0) {
 		//std::cout << "angleOfIncidenceCosine: " << angleOfIncidenceCosine << std::endl; 
 		incomingIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
 		transmittedIndexOfRefraction = objectIndexOfRefraction; 
+		ON = 1; 
 	} else {
 		incomingIndexOfRefraction = objectIndexOfRefraction; 
 		transmittedIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
 		normal = -1 * normal; 
+		normal = normal.normalize(); 
 		//finalColor = finalColor + RGB(0, 1, 0); 
 		angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 	}
+
+	////////
+
+
+
 
 	// Find Fresnel Reflectance 
 	double fresnelReflectance = object->getFresnelReflectance(ray, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
@@ -483,6 +508,8 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	finalColor = finalColor + specularReflectionColor; 
 
 	//////
+
+	finalColor = finalColor * ON; 
 
 	// Transparent component 
 	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 

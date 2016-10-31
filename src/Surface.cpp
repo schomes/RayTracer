@@ -48,10 +48,11 @@ Ray Surface::getTransmittedRayDirection(Ray &incidentRay, Vector3 normal, double
 	// 	std::cout << "TIR occured" << std::endl; 
 	// }
 
-	Vector3 transmittedRayDirection = (-1 * normal) 
-							        * sqrt(1 - (pow((incomingIndexOfRefraction / transmittedIndexOfRefraction), 2.0) * (1 - pow(cosineOfIncidentAngle, 2.0)))) 
-							        + (incomingIndexOfRefraction / transmittedIndexOfRefraction) * (cosineOfIncidentAngle * normal - incidentRayDirection); 
+	Vector3 transmittedRayDirection = ((-1 * normal) 
+							        * sqrt(1 - (pow((incomingIndexOfRefraction / transmittedIndexOfRefraction), 2.0) * (1 - pow(cosineOfIncidentAngle, 2.0))))) 
+							        + ((incomingIndexOfRefraction / transmittedIndexOfRefraction) * ((cosineOfIncidentAngle * normal) - incidentRayDirection)); 
 
+	transmittedRayDirection = transmittedRayDirection.normalize(); 
 	return Ray(intersectionPoint, transmittedRayDirection); 
 
 }
