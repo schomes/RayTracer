@@ -395,12 +395,36 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	normal = normal.normalize(); 
 
 
+	///// PASTED CODE
 
+	//... Reverse the direction of the incoming ray
+	Vector3 incomingRayDirectionReversed = (-1 * (ray.direction)).normalize();  
+	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 
+	//std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl; 
+	//std::cout << "incomingRayDirectionReversed: " << incomingRayDirectionReversed.x << " " << incomingRayDirectionReversed.y << " " << incomingRayDirectionReversed.z << std::endl; 
 
+	//... Determine indices of refraction depending on if the ray is going into or out of an object 
+	//... This implementation assumes that there are no intersecting surfaces or full containment of a surface in another
+	double objectIndexOfRefraction = (object->getMaterial()).getIndexOfRefraction();  
+	double incomingIndexOfRefraction; 
+	double transmittedIndexOfRefraction;  
+	int ON = 1; 
+	if (angleOfIncidenceCosine >= 0) {
+		//std::cout << "angleOfIncidenceCosine: " << angleOfIncidenceCosine << std::endl; 
+		incomingIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
+		transmittedIndexOfRefraction = objectIndexOfRefraction; 
+		ON = 1; 
+	} else {
+		incomingIndexOfRefraction = objectIndexOfRefraction; 
+		transmittedIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
+		normal = -1 * normal; 
+		normal = normal.normalize(); 
+		//finalColor = finalColor + RGB(0, 1, 0); 
+		angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
+	}
 
-
-
+	////////
 
 
 	// For each light determine the diffuse and specular color
@@ -463,36 +487,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	///// GOES HERE 
 
-	///// PASTED CODE
-
-	//... Reverse the direction of the incoming ray
-	Vector3 incomingRayDirectionReversed = (-1 * (ray.direction)).normalize();  
-	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
-
-	//std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl; 
-	//std::cout << "incomingRayDirectionReversed: " << incomingRayDirectionReversed.x << " " << incomingRayDirectionReversed.y << " " << incomingRayDirectionReversed.z << std::endl; 
-
-	//... Determine indices of refraction depending on if the ray is going into or out of an object 
-	//... This implementation assumes that there are no intersecting surfaces or full containment of a surface in another
-	double objectIndexOfRefraction = (object->getMaterial()).getIndexOfRefraction();  
-	double incomingIndexOfRefraction; 
-	double transmittedIndexOfRefraction;  
-	int ON = 1; 
-	if (angleOfIncidenceCosine >= 0) {
-		//std::cout << "angleOfIncidenceCosine: " << angleOfIncidenceCosine << std::endl; 
-		incomingIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
-		transmittedIndexOfRefraction = objectIndexOfRefraction; 
-		ON = 1; 
-	} else {
-		incomingIndexOfRefraction = objectIndexOfRefraction; 
-		transmittedIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
-		normal = -1 * normal; 
-		normal = normal.normalize(); 
-		//finalColor = finalColor + RGB(0, 1, 0); 
-		angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
-	}
-
-	////////
+	
 
 
 
