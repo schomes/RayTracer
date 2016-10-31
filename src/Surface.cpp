@@ -38,22 +38,15 @@ Ray Surface::getTransmittedRayDirection(Ray &incidentRay, Vector3 normal, double
 
 	Point3 intersectionPoint = incidentRay.origin; 
 
-	// Find normal for point
-	//Vector3 normal = getNormalForPoint(intersectionPoint); 
 	normal = normal.normalize(); 
-	// TEST: Vector3 normal = Vector3(0, 1.0, 0); 
-
 	Vector3 incidentRayDirection = (incidentRay.direction).normalize(); 
-
-	// Calculate cos() N.dot(incidentRayDirection)
 	double cosineOfIncidentAngle = normal.dot(incidentRayDirection); 
-	// TEST: double cosineOfIncidentAngle = normal.dot(incidentRayDirection); 
 
-	//std::cout << "cosineOfIncidentAngle: " << cosineOfIncidentAngle << std::endl; 
+	// double sinIncidentAngle = sqrt(1 - pow(cosineOfIncidentAngle, 2.0)); 
 
-	//std::cout << "sin2i: " << (1.0 - pow(cosineOfIncidentAngle, 2.0)) << std::endl; 
-
-	//std::cout << "cosT: " << sqrt(1 - (pow((incomingIndexOfRefraction / transmittedIndexOfRefraction), 2.0) * (1 - pow(cosineOfIncidentAngle, 2.0)))) << std::endl; 
+	// if (sinIncidentAngle > (transmittedIndexOfRefraction / incomingIndexOfRefraction)) {
+	// 	std::cout << "TIR occured" << std::endl; 
+	// }
 
 	Vector3 transmittedRayDirection = (-1 * normal) 
 							        * sqrt(1 - (pow((incomingIndexOfRefraction / transmittedIndexOfRefraction), 2.0) * (1 - pow(cosineOfIncidentAngle, 2.0)))) 

@@ -350,7 +350,7 @@ Image Kernel::render() {
 
 RGB Kernel::TraceRay(Ray &ray, int depth) {
 
-	if (depth > 5) {
+	if (depth > 4) {
 		return RGB(0, 0, 0); 
 	}
 
@@ -452,8 +452,8 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	Vector3 incomingRayDirectionReversed = -1 * ((ray.direction).normalize());  
 	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 
-	std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl; 
-	std::cout << "incomingRayDirectionReversed: " << incomingRayDirectionReversed.x << " " << incomingRayDirectionReversed.y << " " << incomingRayDirectionReversed.z << std::endl; 
+	//std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl; 
+	//std::cout << "incomingRayDirectionReversed: " << incomingRayDirectionReversed.x << " " << incomingRayDirectionReversed.y << " " << incomingRayDirectionReversed.z << std::endl; 
 
 	//... Determine indices of refraction depending on if the ray is going into or out of an object 
 	//... This implementation assumes that there are no intersecting surfaces or full containment of a surface in another
@@ -461,7 +461,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	double incomingIndexOfRefraction; 
 	double transmittedIndexOfRefraction;  
 	if (angleOfIncidenceCosine >= 0) {
-		std::cout << "angleOfIncidenceCosine: " << angleOfIncidenceCosine << std::endl; 
+		//std::cout << "angleOfIncidenceCosine: " << angleOfIncidenceCosine << std::endl; 
 		incomingIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
 		transmittedIndexOfRefraction = objectIndexOfRefraction; 
 	} else {
@@ -482,6 +482,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	RGB specularReflectionColor = fresnelReflectance * TraceRay(reflectedRay, depth+1);
 	finalColor = finalColor + specularReflectionColor; 
 
+	//////
 
 	// Transparent component 
 	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 
