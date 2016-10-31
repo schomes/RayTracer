@@ -159,8 +159,8 @@ RGB Triangle::getTextureColor(Point3 &p) {
 		double u = (alpha * textureCoordinate0.x) + (beta * textureCoordinate1.x) + (gamma * textureCoordinate2.x); 
 		double v = (alpha * textureCoordinate0.y) + (beta * textureCoordinate1.y) + (gamma * textureCoordinate2.y); 
 
-		assert(u <= 1.0); 
-		assert(v <= 1.0); 
+		//assert(u <= 1.0); 
+		//assert(v <= 1.0); 
 
 		int i = u * (double)(texture->getWidth() - 1); 
 		int j = v * (double)(texture->getHeight() - 1); 
