@@ -468,6 +468,8 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 		incomingIndexOfRefraction = objectIndexOfRefraction; 
 		transmittedIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
 		normal = -1 * normal; 
+		//finalColor = finalColor + RGB(0, 1, 0); 
+		angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 	}
 
 	// Find Fresnel Reflectance 
@@ -485,7 +487,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 
 	Ray incidentRay = Ray(point, incomingRayDirectionReversed); 
 	Ray transmittedRay = object->getTransmittedRayDirection(incidentRay, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
-	RGB transparentColor = (1.0 - fresnelReflectance) * (1 - material.getOpacity()) * TraceRay(transmittedRay, depth+1); 
+	RGB transparentColor = (1.0 - fresnelReflectance) * (1.0 - material.getOpacity()) * TraceRay(transmittedRay, depth+1); 
 	finalColor = finalColor + transparentColor; 
 
 	// TEST CODE
