@@ -13,9 +13,15 @@
 
 #define MAX_COLOR_VALUE 255 // maximum value for an RGB component
 #define FAR_CLIP 1000.0 // maximum distance to consider ray collision
-#define INTERSECTION_THRESHOLD 0.0001 // Used to reject spurious self-intersections when detecting shadows
+#define INTERSECTION_THRESHOLD 0.001 // Used to reject spurious self-intersections when detecting shadows
 #define POSITIONAL_LIGHT_SOURCE_TYPE 1 // Positional light source
 #define AIR_INDEX_OF_REFRACTION 1
+
+/// These are debugging statements
+
+bool inObject = false; 
+
+//////////////////////////////////
 
 double clamp(double number, double min, double max) {
 	return std::max(min, std::min(number, max));
@@ -311,6 +317,9 @@ void Kernel::readScene(std::ifstream &inputFile) {
 	}
 }
 
+std::vector<double> indexOfRefractionStack; 
+bool DEBUG = false; 
+
 Image Kernel::render() {
 
 	//std::cout << (perVertexSurfaceNormals.at(0)).x << (perVertexSurfaceNormals.at(0)).y << (perVertexSurfaceNormals.at(0)).z << std::endl; 
@@ -333,12 +342,35 @@ Image Kernel::render() {
 		camera = new Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
 	} 
 
+	indexOfRefractionStack.push_back(AIR_INDEX_OF_REFRACTION); 
+
 	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
 			Ray ray = camera->getRay(column, row); 
+
+			if (row == 99 && (column == 126 || column == 126)) {
+				DEBUG = true; 
+				std::cout << "===========" << std::endl; 
+			} else {
+				DEBUG = true; 
+			}
+
 			RGB color = TraceRay(ray, 0);
+
+			//std::cout << color.r << std::endl; 
+			//std::cout << color.g << std::endl; 
+			//std::cout << color.b << std::endl; 
+
+			// Clamp color 
+			color.r = clamp(color.r, 0.0, 1.0);
+			color.g = clamp(color.g, 0.0, 1.0);
+			color.b = clamp(color.b, 0.0, 1.0);
+
 			img.setPixel(color, column, row);
+
+			// w 127, h 100 
+
 
 			// Print progress to terminal
 			//std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
@@ -350,7 +382,7 @@ Image Kernel::render() {
 
 RGB Kernel::TraceRay(Ray &ray, int depth) {
 
-	if (depth > 10) {
+	if (depth > 2 || DEBUG == false) {
 		return RGB(0, 0, 0); 
 	}
 
@@ -394,9 +426,6 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	Vector3 normal = object->getNormalForPoint(point);
 	normal = normal.normalize(); 
 
-
-	///// PASTED CODE
-
 	//... Reverse the direction of the incoming ray
 	Vector3 incomingRayDirectionReversed = (-1 * (ray.direction)).normalize();  
 	double angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
@@ -408,24 +437,28 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	//... This implementation assumes that there are no intersecting surfaces or full containment of a surface in another
 	double objectIndexOfRefraction = (object->getMaterial()).getIndexOfRefraction();  
 	double incomingIndexOfRefraction; 
-	double transmittedIndexOfRefraction;  
-	int ON = 1; 
-	if (angleOfIncidenceCosine >= 0) {
-		//std::cout << "angleOfIncidenceCosine: " << angleOfIncidenceCosine << std::endl; 
+	double transmittedIndexOfRefraction;   
+
+	double currentIndexOfRefraction = indexOfRefractionStack.back(); 
+	//std::cout << currentIndexOfRefraction << std::endl; 
+
+	if (angleOfIncidenceCosine > 0) { 
+		//std::cout << "in air" << std::endl; 
+		//std::cout << currentIndexOfRefraction << std::endl; 
+
 		incomingIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
-		transmittedIndexOfRefraction = objectIndexOfRefraction; 
-		ON = 1; 
+		transmittedIndexOfRefraction = objectIndexOfRefraction;  
 	} else {
+
+		//std::cout << currentIndexOfRefraction << std::endl; 
+		//std::cout << "in object" << std::endl; 
+
 		incomingIndexOfRefraction = objectIndexOfRefraction; 
 		transmittedIndexOfRefraction = AIR_INDEX_OF_REFRACTION; 
 		normal = -1 * normal; 
 		normal = normal.normalize(); 
-		//finalColor = finalColor + RGB(0, 1, 0); 
 		angleOfIncidenceCosine = normal.dot(incomingRayDirectionReversed);
 	}
-
-	////////
-
 
 	// For each light determine the diffuse and specular color
 	for (int index = 0; index < lights.size(); index++) {
@@ -481,17 +514,6 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Specular reflection component 
 
-
-
-
-
-	///// GOES HERE 
-
-	
-
-
-
-
 	// Find Fresnel Reflectance 
 	double fresnelReflectance = object->getFresnelReflectance(ray, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
 
@@ -502,32 +524,21 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	RGB specularReflectionColor = fresnelReflectance * TraceRay(reflectedRay, depth+1);
 	finalColor = finalColor + specularReflectionColor; 
 
-	//////
-
-	finalColor = finalColor * ON; 
 
 	// Transparent component 
-	//... (1 - fresnelReflectance) * (1 - material.getOpacity()) * transparentColor 
+
+	indexOfRefractionStack.push_back(transmittedIndexOfRefraction); 
+
 	Ray incidentRay = Ray(point, incomingRayDirectionReversed); 
 	Ray transmittedRay = object->getTransmittedRayDirection(incidentRay, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
+
+
 	RGB transparentColor = (1.0 - fresnelReflectance) * (1.0 - material.getOpacity()) * TraceRay(transmittedRay, depth+1); 
 	finalColor = finalColor + transparentColor; 
 
-	// TEST CODE
-	/*
-	Point3 p = Point3(3, -1, -3); 
-	Vector3 v = Vector3(-1.0/9.0, 4.0/9.0, 8.0/9.0); 
-	Ray testI = Ray(p, v); 
-	Ray tRay = object->getTransmittedRayDirection(testI, 1.0, 1.2); 
+	indexOfRefractionStack.pop_back(); 
 
-	std::cout << (tRay.direction).x << " " << (tRay.direction).y << " " << (tRay.direction).z << std::endl; 
-	*/ 
-	/////////
-
-	// Clamp color 
-	finalColor.r = clamp(finalColor.r, 0.0, 1.0);
-	finalColor.g = clamp(finalColor.g, 0.0, 1.0);
-	finalColor.b = clamp(finalColor.b, 0.0, 1.0);
+	
 	
 	return finalColor; 
 }

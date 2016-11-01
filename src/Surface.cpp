@@ -40,19 +40,41 @@ Ray Surface::getTransmittedRayDirection(Ray &incidentRay, Vector3 normal, double
 
 	normal = normal.normalize(); 
 	Vector3 incidentRayDirection = (incidentRay.direction).normalize(); 
+	
+
+	//double sinIncidentAngle = sqrt(1 - pow(cosineOfIncidentAngle, 2.0)); 
+
+	//if (sinIncidentAngle > (transmittedIndexOfRefraction / incomingIndexOfRefraction)) {
+	// 	std::cout << "TIR occured" << std::endl; 
+	//}
+
+	Vector3 inverseNormal = (-1 * normal); 
+	double indexOfRefractionRatio = incomingIndexOfRefraction / transmittedIndexOfRefraction; 
 	double cosineOfIncidentAngle = normal.dot(incidentRayDirection); 
 
-	// double sinIncidentAngle = sqrt(1 - pow(cosineOfIncidentAngle, 2.0)); 
+	double indexOfRefractionRatioSquared = pow(indexOfRefractionRatio, 2.0); 
+	double cosineOfIncidentAngleSquared = pow(cosineOfIncidentAngle, 2.0); 
 
-	// if (sinIncidentAngle > (transmittedIndexOfRefraction / incomingIndexOfRefraction)) {
-	// 	std::cout << "TIR occured" << std::endl; 
-	// }
+	Vector3 lhs = sqrt(1 - (indexOfRefractionRatioSquared * (1 - cosineOfIncidentAngleSquared))) * inverseNormal;
+	Vector3 rhs = indexOfRefractionRatio * ((cosineOfIncidentAngle * normal) - incidentRayDirection);  
 
+	Vector3 transmittedRayDirection = lhs + rhs; 
+	transmittedRayDirection = transmittedRayDirection.normalize(); 
+
+
+	/*
 	Vector3 transmittedRayDirection = ((-1 * normal) 
 							        * sqrt(1 - (pow((incomingIndexOfRefraction / transmittedIndexOfRefraction), 2.0) * (1 - pow(cosineOfIncidentAngle, 2.0))))) 
 							        + ((incomingIndexOfRefraction / transmittedIndexOfRefraction) * ((cosineOfIncidentAngle * normal) - incidentRayDirection)); 
 
+	*/ 
+
+
+	std::cout << "incomingIndexOfRefraction: " << incomingIndexOfRefraction << std::endl; 
+	std::cout << "transmittedIndexOfRefraction: " << transmittedIndexOfRefraction << std::endl; 						      
+
 	transmittedRayDirection = transmittedRayDirection.normalize(); 
+	intersectionPoint = intersectionPoint - (0.0001 * transmittedRayDirection); 
 	return Ray(intersectionPoint, transmittedRayDirection); 
 
 }
