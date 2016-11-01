@@ -67,11 +67,7 @@ Ray Surface::getTransmittedRayDirection(Ray &incidentRay, Vector3 normal, double
 							        * sqrt(1 - (pow((incomingIndexOfRefraction / transmittedIndexOfRefraction), 2.0) * (1 - pow(cosineOfIncidentAngle, 2.0))))) 
 							        + ((incomingIndexOfRefraction / transmittedIndexOfRefraction) * ((cosineOfIncidentAngle * normal) - incidentRayDirection)); 
 
-	*/ 
-
-
-	std::cout << "incomingIndexOfRefraction: " << incomingIndexOfRefraction << std::endl; 
-	std::cout << "transmittedIndexOfRefraction: " << transmittedIndexOfRefraction << std::endl; 						      
+	*/ 						      
 
 	transmittedRayDirection = transmittedRayDirection.normalize(); 
 	intersectionPoint = intersectionPoint - (0.0001 * transmittedRayDirection); 

@@ -351,7 +351,6 @@ Image Kernel::render() {
 
 			if (row == 99 && (column == 126 || column == 126)) {
 				DEBUG = true; 
-				std::cout << "===========" << std::endl; 
 			} else {
 				DEBUG = true; 
 			}
@@ -373,7 +372,7 @@ Image Kernel::render() {
 
 
 			// Print progress to terminal
-			//std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
+			std::cout << "\rProgress: " << (int)((double(column + width * row) / (width * height)) * 100.0) << "%";
 
 		}
 	}
