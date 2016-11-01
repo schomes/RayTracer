@@ -340,17 +340,44 @@ Image Kernel::render() {
 	Camera *camera; 
 
 	if (cameraType == ORTHOGRAPHIC_TYPE) {
-		camera = new Orthographic(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+		// If depth of field is activated 
+		if (distance > NO_DEPTH_OF_FIELD_TAG) {
+			camera = new Orthographic(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView, distance);
+		} else {
+			camera = new Orthographic(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+		}
+		
 	} else {
-		camera = new Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+		// If depth of field is activated
+		if (distance > NO_DEPTH_OF_FIELD_TAG) {
+			camera = new Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView, distance);
+		} else {
+			camera = new Perspective(cameraPosition, viewingDirection, upDirection, width, height, verticalFieldOfView);
+		}
 	} 
 
 	// Map pixel to 3D viewing window and trace a ray
 	for (int row = 0; row < height; row++) {
 		for (int column = 0; column < width; column++) {
-			Ray ray = camera->getRay(column, row); 
 
-			RGB color = TraceRay(ray, 0);
+			RGB color = RGB(0, 0, 0); 
+			if (distance > NO_DEPTH_OF_FIELD_TAG) {
+				std::cout << "depth of field" << std::endl; 
+
+				int numberOfJitters = 10; 
+				std::vector<Ray> rayCluster = camera->getRayCluster(column, row, numberOfJitters); 
+				for (int rayClusterIndex = 0; rayClusterIndex < rayCluster.size(); rayClusterIndex++) {
+					Ray ray = rayCluster.at(rayClusterIndex); 
+					RGB tempColor = TraceRay(ray, 0);
+					color = color + tempColor; 
+				}
+
+				color = color * (1.0 / numberOfJitters); 
+
+			} else {
+				Ray ray = camera->getRay(column, row);
+				color = TraceRay(ray, 0);	
+			}
 
 			// Clamp color 
 			color.r = clamp(color.r, 0.0, 1.0);

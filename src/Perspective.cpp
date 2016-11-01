@@ -1,5 +1,6 @@
 #include "Perspective.hpp"
 #include <cmath>
+#include <random> // For random jitter when creating depth of field effects 
 
 Perspective::Perspective(Point3 cameraPosition, Vector3 viewDirection, Vector3 upDirection, int imageWidth, int imageHeight, double verticalFieldOfView, double distance) {
 
@@ -43,4 +44,34 @@ Ray Perspective::getRay(int x, int y) {
 	Vector3 rayDirection = viewingWindowPoint - cameraPosition;
 	rayDirection = rayDirection.normalize();
 	return Ray(cameraPosition, rayDirection);
+}
+
+std::vector<Ray> Perspective::getRayCluster(int x, int y, int numberOfJitters) {
+
+	std::vector<Ray> rayCluster; 
+
+	// Random number distribution
+	std::uniform_real_distribution<double> dist(-0.5, 0.5);  //(min, max)
+    // Mersenne Twister
+    std::mt19937 rng; 
+    // Initialize with non-deterministic seeds
+    rng.seed(std::random_device{}()); 
+
+    for (int jitterCount = 0; jitterCount < numberOfJitters; jitterCount++) {
+    	double jitterFactorX = dist(rng); 
+    	double jitterFactorY = dist(rng); 
+    	double jitterFactorZ = dist(rng); 
+
+    	Point3 viewingWindowPoint = ul + (vOffset * y) + (hOffset * x);
+    	Point3 jitteredCameraPosition = Point3(cameraPosition.x + jitterFactorX, cameraPosition.y + jitterFactorY, cameraPosition.z + jitterFactorZ); 
+    	Vector3 rayDirection = viewingWindowPoint - jitteredCameraPosition;
+    	rayDirection = rayDirection.normalize();
+    	Ray ray = Ray(jitteredCameraPosition, rayDirection); 
+
+    	rayCluster.push_back(ray); 
+
+    }
+
+    return rayCluster; 
+
 }

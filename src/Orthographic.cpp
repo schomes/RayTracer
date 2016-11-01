@@ -1,5 +1,6 @@
 #include "Orthographic.hpp"
 #include <cmath>
+#include <iostream> 
 
 Orthographic::Orthographic(Point3 cameraPosition, Vector3 viewDirection, Vector3 upDirection, int imageWidth, int imageHeight, double verticalFieldOfView, double distance) {
 
@@ -41,4 +42,8 @@ Orthographic::Orthographic(Point3 cameraPosition, Vector3 viewDirection, Vector3
 Ray Orthographic::getRay(int x, int y) {
 	Point3 viewingWindowPoint = ul + (vOffset * y) + (hOffset * x);
 	return Ray(viewingWindowPoint, w);
+}
+
+std::vector<Ray> Orthographic::getRayCluster(int x, int y, int numberOfJitters) {
+	std::cout << "Depth of field is unavailable for orthographic cameras." << std::endl; 
 }

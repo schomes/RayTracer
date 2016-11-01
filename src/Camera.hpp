@@ -4,6 +4,7 @@
 #include "Point3.hpp"
 #include "Vector3.hpp"
 #include "Ray.hpp"
+#include <vector> 
 
 class Camera {
 protected: 
@@ -23,6 +24,7 @@ public:
 
 
 	virtual Ray getRay(int x, int y) = 0; 
+	virtual std::vector<Ray> getRayCluster(int x, int y, int numberOfJitters) = 0; 
 
 }; 
 

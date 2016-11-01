@@ -18,6 +18,7 @@
 
 #define PERSPECTIVE_TYPE 0
 #define ORTHOGRAPHIC_TYPE 1
+#define NO_DEPTH_OF_FIELD_TAG -1
 
 // The kernel is responsible for rendering routines and scene reading.
 class Kernel {
@@ -33,7 +34,7 @@ public:
 	Vector3 viewingDirection;
 	Vector3 upDirection;
 	double verticalFieldOfView; // in degrees
-	double distance; // depth-of-field distance for camera 
+	double distance = NO_DEPTH_OF_FIELD_TAG; // depth-of-field distance for camera 
 	int width;
 	int height;
 	RGB bkgcolor;
