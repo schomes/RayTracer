@@ -20,16 +20,6 @@ double Surface::getFresnelReflectance(Ray &incidentRay, Vector3 normal, double i
 
 	double fresnelReflectance = reflectionCoefficient + (1 - reflectionCoefficient) * pow((1 - incidentNormalAngle), 5); 
 
-	/*
-	std::cout << "indexOfRefraction: " << indexOfRefraction << std::endl; 
-	std::cout << "reflectionCoefficient: " << reflectionCoefficient << std::endl; 
-	std::cout << "point: " << point.x << " " << point.y << " " << point.z << std::endl; 
-	std::cout << "incident ray: " << (incidentRay.direction).x << " " << (incidentRay.direction).y << " " << (incidentRay.direction).z << std::endl; 
-	std::cout << "normal: " << normal.x << " " << normal.y << " " << normal.z << std::endl;
-	std::cout << "incidentNormalAngle: " << incidentNormalAngle << std::endl; 
-	std::cout << "Fresnel: " << fresnelReflectance << std::endl; 
-	*/ 
-
 	return fresnelReflectance; 
 }
 
@@ -60,7 +50,6 @@ Ray Surface::getTransmittedRayDirection(Ray &incidentRay, Vector3 normal, double
 
 	Vector3 transmittedRayDirection = lhs + rhs; 
 	transmittedRayDirection = transmittedRayDirection.normalize(); 
-
 
 	/*
 	Vector3 transmittedRayDirection = ((-1 * normal) 

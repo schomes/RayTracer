@@ -455,7 +455,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 		// Determine if objects obscure the light source 
 
 		Ray r = Ray(point, lightSourceDirection); 
-		shadowFlag = findShadow(r, light); 
+		shadowFlag = findShadow(r, light);  
 
 		// Diffuse component
 		RGB diffuseComponent = material.getDiffuseConstant() * object->getTextureColor(point) * fmax(0, (normal.dot(lightSourceDirection)));
@@ -553,6 +553,7 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 }
 
 double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light) {
+	ray.origin = ray.origin + (0.001 * (ray.direction).normalize()); 
 	HVector lightPosition = light.getPosition(); 
 	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
 
