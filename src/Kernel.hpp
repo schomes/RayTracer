@@ -33,6 +33,7 @@ public:
 	Vector3 viewingDirection;
 	Vector3 upDirection;
 	double verticalFieldOfView; // in degrees
+	double distance; // depth-of-field distance for camera 
 	int width;
 	int height;
 	RGB bkgcolor;

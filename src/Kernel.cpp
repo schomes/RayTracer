@@ -302,6 +302,12 @@ void Kernel::readScene(std::ifstream &inputFile) {
 
 			}
 
+			else if (variable == "viewdist") {
+				double d; 
+				ss >> d; 
+				distance = d; 
+			}
+
 			// Empty line 
 			else if (variable.find_first_not_of (' ') == variable.npos) {
 				continue;

@@ -1,7 +1,7 @@
 #include "Orthographic.hpp"
 #include <cmath>
 
-Orthographic::Orthographic(Point3 cameraPosition, Vector3 viewDirection, Vector3 upDirection, int imageWidth, int imageHeight, double verticalFieldOfView) {
+Orthographic::Orthographic(Point3 cameraPosition, Vector3 viewDirection, Vector3 upDirection, int imageWidth, int imageHeight, double verticalFieldOfView, double distance) {
 
 	this->cameraPosition = cameraPosition;
 
@@ -19,10 +19,10 @@ Orthographic::Orthographic(Point3 cameraPosition, Vector3 viewDirection, Vector3
 
 	// Determine corners of viewing window
 	double aspectRatio = (double)(imageWidth) / imageHeight;
-	double d = 15.0; // d is arbitrarily chosen
+	//double d = 15.0; // d is arbitrarily chosen
 	double pi = 4 * atan(1.0);
 	double radians = ((verticalFieldOfView / 2.0) * pi) / 180.0;
-	double viewHeight = 2 * d * tan(radians);
+	double viewHeight = 2 * distance * tan(radians);
 	double viewWidth = aspectRatio * viewHeight;
 
 	//... Viewing window corners
