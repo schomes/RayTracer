@@ -362,9 +362,7 @@ Image Kernel::render() {
 
 			RGB color = RGB(0, 0, 0); 
 			if (distance > NO_DEPTH_OF_FIELD_TAG) {
-				std::cout << "depth of field" << std::endl; 
-
-				int numberOfJitters = 10; 
+				int numberOfJitters = 100; 
 				std::vector<Ray> rayCluster = camera->getRayCluster(column, row, numberOfJitters); 
 				for (int rayClusterIndex = 0; rayClusterIndex < rayCluster.size(); rayClusterIndex++) {
 					Ray ray = rayCluster.at(rayClusterIndex); 

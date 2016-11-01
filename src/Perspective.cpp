@@ -51,7 +51,7 @@ std::vector<Ray> Perspective::getRayCluster(int x, int y, int numberOfJitters) {
 	std::vector<Ray> rayCluster; 
 
 	// Random number distribution
-	std::uniform_real_distribution<double> dist(-0.5, 0.5);  //(min, max)
+	std::uniform_real_distribution<double> dist(-0.1, 0.1);  //(min, max)
     // Mersenne Twister
     std::mt19937 rng; 
     // Initialize with non-deterministic seeds
