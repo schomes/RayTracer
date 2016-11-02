@@ -534,14 +534,16 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Transparent component 
 
-	Ray incidentRay = Ray(point, incomingRayDirectionReversed); 
-	Ray transmittedRay = object->getTransmittedRayDirection(incidentRay, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
+	// Check for Total Internal Reflection 
+	double angleOfIncidenceSin = sqrt(1 - pow(angleOfIncidenceCosine, 2.0)); 
+	if (!(angleOfIncidenceSin > (transmittedIndexOfRefraction / incomingIndexOfRefraction))) {
+		Ray incidentRay = Ray(point, incomingRayDirectionReversed); 
+		Ray transmittedRay = object->getTransmittedRayDirection(incidentRay, normal, incomingIndexOfRefraction, transmittedIndexOfRefraction); 
 
-	RGB transparentColor = (1.0 - fresnelReflectance) * (1.0 - material.getOpacity()) * TraceRay(transmittedRay, depth+1); 
-	finalColor = finalColor + transparentColor; 
+		RGB transparentColor = (1.0 - fresnelReflectance) * (1.0 - material.getOpacity()) * TraceRay(transmittedRay, depth+1); 
+		finalColor = finalColor + transparentColor; 	
+	}
 
-	
-	
 	return finalColor; 
 }
 
