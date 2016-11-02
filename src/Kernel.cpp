@@ -313,6 +313,10 @@ void Kernel::readScene(std::ifstream &inputFile) {
 				continue;
 			}
 
+			else if (variable == "#" || variable == "o" || variable == "mtllib" || variable == "usemtl" || variable == "s") {
+				continue; 
+			}
+
 			else {
 				std::cerr << "Error: Invalid input file." << std::endl;
 				exit(EXIT_FAILURE);
