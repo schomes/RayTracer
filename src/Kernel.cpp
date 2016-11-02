@@ -594,6 +594,8 @@ double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light
 	HVector lightPosition = light.getPosition(); 
 	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
 
+	double shadowFactor = 1.0; // Default to no objects obscuring the light source 
+
 	// For each object, check if a shadow ray hits it
 	Surface *object;
 	for (int index = 0; index < objects.size(); index++) {
@@ -604,19 +606,19 @@ double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light
 		if (lightPosition.w == 0) {
 			// A shadow exists
 			if (tempMinT > INTERSECTION_THRESHOLD) {
-				return 0.0; 
+				shadowFactor -= (testObject->getMaterial()).getOpacity(); 
 			}
 		}
 		// Positional light source
 		else if (lightPosition.w == 1) {
 			if (tempMinT > INTERSECTION_THRESHOLD && tempMinT < lightT) {
-				return 0.0; 
+				shadowFactor -= (testObject->getMaterial()).getOpacity();  
 			}
 		}
 	}
 
 	// No objects obscure the light source
-	return 1.0; 
+	return fmax(0.0, shadowFactor); 
 }
 
 
