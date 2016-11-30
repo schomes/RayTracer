@@ -1,6 +1,6 @@
 # RayTracer 
 
-This program implements ray tracing to create computer generated images. This program supports spheres and triangle meshes. Simple linear algebra classes are also implemented.
+This program implements ray tracing to create computer generated images. Spheres and triangle meshes are supported. Simple linear algebra classes are also implemented.
 
 ![Alt text](/samples/still_life-1.png?raw=true "Still Life Image")
 
