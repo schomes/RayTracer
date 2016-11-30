@@ -37,4 +37,4 @@ Currently, it takes a long time to produce a small, simple image. We can improve
 ### Code Organization 
 To support more features in the future, it is important to improve the structure of the program. Similar data regarding rays gets passed around the program many times. Therefore, a data structure such as a RayPayload could improve readability and scalability by keeping track of rays, the objects they've intersected, and other relevant data. 
 
-Also, it may be more appropriate to move functions in the Kernel class to their own classes. The Kernel class holds a lot of the ray tracing routines; this will not scale well in the future. 
+Also, it may be more appropriate to move functions in the Kernel class to their own classes. The Kernel class holds a significant portion of the ray tracing routines; this will not scale well in the future. 
