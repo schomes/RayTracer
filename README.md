@@ -30,6 +30,13 @@ This ray tracer supports the following:
 ![Alt text](/samples/earth-1.png?raw=true "Earth")
 
 
+## How to Build and Run
+`cmake . && make`
+
+`./raytracer <path to scene file>`
+
+
+
 ## What can be improved
 ### Render Time
 Currently, it takes a long time to produce a small, simple image. We can improve the rendering time by adopting a multithreaded approach. OpenMP is an API that can be used for multithreaded programming. 
