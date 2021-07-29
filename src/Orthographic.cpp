@@ -45,5 +45,6 @@ Ray Orthographic::getRay(int x, int y) {
 }
 
 std::vector<Ray> Orthographic::getRayCluster(int x, int y, int numberOfJitters) {
-	std::cout << "Depth of field is unavailable for orthographic cameras." << std::endl; 
+	std::cout << "Depth of field is unavailable for orthographic cameras." << std::endl;
+	return std::vector<Ray>{};
 }

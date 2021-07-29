@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "Kernel.hpp"
+#include "RayTracer.hpp"
 #include "Image.hpp"
 
 // testing
@@ -13,13 +13,9 @@ int main( int argc, char **argv ) {
 		std::cerr << "**Error: an input file must be specified." << std::endl;
 		return 0;
 	}
-
-	//Image tex = Image("texture1.ppm"); 
-	//tex.saveImageAsPPM("texture1OUTPUT.ppm"); 
-
 	
-	// Initialize kernel and read scene description
-	Kernel raytracer;
+	// Initialize RayTracer and read scene description
+	RayTracer raytracer;
 	//... Get file name, and save filename without extension
 	std::string filename(argv[1]);
 	std::size_t indexOfFileExtension = filename.find_last_of(".");

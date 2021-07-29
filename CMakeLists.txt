@@ -8,8 +8,8 @@ set(SOURCE_FILES
 	src/main.cpp
 	src/Image.hpp
 	src/Image.cpp
-	src/Kernel.hpp
-	src/Kernel.cpp
+	src/RayTracer.hpp
+	src/RayTracer.cpp
 	src/Point3.hpp
 	src/Point3.cpp
 	src/Vector3.hpp

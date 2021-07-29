@@ -1,5 +1,5 @@
-#ifndef KERNEL_H
-#define KERNEL_H
+#ifndef RAYTRACER_H
+#define RAYTRACER_H
 
 #include <fstream>
 #include <vector>
@@ -20,8 +20,8 @@
 #define ORTHOGRAPHIC_TYPE 1
 #define NO_DEPTH_OF_FIELD_TAG -1
 
-// The kernel is responsible for rendering routines and scene reading.
-class Kernel {
+// The RayTracer is responsible for rendering routines and scene reading.
+class RayTracer {
 private:
 	RGB TraceRay(Ray &ray, int depth);
 	RGB ShadeRay(Ray &ray, Surface *object, int depth);

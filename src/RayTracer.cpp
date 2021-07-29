@@ -1,6 +1,6 @@
 #include <cmath>
 #include <random> /* For random jitter when creating soft shadows */
-#include "Kernel.hpp"
+#include "RayTracer.hpp"
 #include <iostream>
 #include <sstream> /* string streams */
 #include <stdlib.h> /* exit, EXIT_FAILURE */
@@ -19,7 +19,7 @@
 
 /// These are debugging statements
 
-bool inObject = false; 
+bool inObject = false;
 
 //////////////////////////////////
 
@@ -62,7 +62,7 @@ void parseToken(std::string token, int *vertex, int *vertexTexture, int *vertexN
 	}
 }
 
-void Kernel::readScene(std::ifstream &inputFile) {
+void RayTracer::readScene(std::ifstream &inputFile) {
 	if (inputFile.is_open()) {
 		std::string line = "";
 		while(std::getline(inputFile, line)) {
@@ -327,10 +327,7 @@ void Kernel::readScene(std::ifstream &inputFile) {
 	}
 }
 
-Image Kernel::render() {
-
-	//std::cout << (perVertexSurfaceNormals.at(0)).x << (perVertexSurfaceNormals.at(0)).y << (perVertexSurfaceNormals.at(0)).z << std::endl; 
-
+Image RayTracer::render() {
 	// Initialize output image
 	if (width == 0 || height == 0) {
 		std::cerr << "Error: Invalid image width or height." << std::endl;
@@ -396,7 +393,7 @@ Image Kernel::render() {
 	return img;
 }
 
-RGB Kernel::TraceRay(Ray &ray, int depth) {
+RGB RayTracer::TraceRay(Ray &ray, int depth) {
 
 	if (depth > 4) {
 		return RGB(0, 0, 0); 
@@ -430,7 +427,7 @@ RGB Kernel::TraceRay(Ray &ray, int depth) {
 	}
 }
 
-RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
+RGB RayTracer::ShadeRay(Ray &ray, Surface *object, int depth) {
 
 	// Shading coordinate
 	Point3 point = ray.origin + ray.direction; 
@@ -547,7 +544,7 @@ RGB Kernel::ShadeRay(Ray &ray, Surface *object, int depth) {
 	return finalColor; 
 }
 
-double Kernel::findShadow(Ray &ray, Light &light) {
+double RayTracer::findShadow(Ray &ray, Light &light) {
 
 	double lightType = (light.getPosition()).w;
 	bool softShadows = false; 
@@ -589,7 +586,7 @@ double Kernel::findShadow(Ray &ray, Light &light) {
 	}
 }
 
-double Kernel::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light) {
+double RayTracer::isInShadow(Ray &ray, std::vector<Surface*> &objects, Light &light) {
 	ray.origin = ray.origin + (0.001 * (ray.direction).normalize()); 
 	HVector lightPosition = light.getPosition(); 
 	double lightT = (Point3(lightPosition.x, lightPosition.y, lightPosition.z) - ray.origin).magnitude();
